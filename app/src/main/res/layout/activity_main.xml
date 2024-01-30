@@ -100,13 +100,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
-        android:layout_marginTop="125dp"
         android:layout_marginEnd="160dp"
         android:layout_marginBottom="63dp"
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/NotAUserTextView"
+        android:layout_width="76dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="285dp"
+        android:layout_marginBottom="195dp"
+        android:text="Not a user?"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PasswordTextView" />
+
+    <TextView
+        android:id="@+id/RegisterLinkTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="227dp"
+        android:layout_marginBottom="84dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Register"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/LoginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/NotAUserTextView"
         app:layout_constraintTop_toBottomOf="@+id/EditTextTextPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
