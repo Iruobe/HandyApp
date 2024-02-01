@@ -6,8 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +28,43 @@ public class CustomerRegistration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_registration);
         mAuth= FirebaseAuth.getInstance();// Initialize FirebaseAuth instance to handle user authentication tasks
+
+
+        //ID of components link to disappearing UI Elements
+        Switch aSwitch = findViewById(R.id.RoleSwitch);
+        Spinner ExperienceSpinner = findViewById(R.id.ExperienceSpinner); //Spinner for experience level
+        ImageView ImageView= findViewById(R.id.HandymanImageView);// Image view for handyman picture
+        TextView ServiceTextView = findViewById(R.id.ServiceEditTextText);
+        TextView PricePerHourEditText = findViewById(R.id.PricePerHourEditTextNumberDecimal);
+        //On change listener for disappearing UI elements with switch
+        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Hide elements
+                ServiceTextView.setVisibility(View.GONE);
+                PricePerHourEditText.setVisibility(View.GONE);
+                ExperienceSpinner.setVisibility(View.GONE);
+                ImageView.setVisibility(View.VISIBLE);
+            } else {
+                // Show elements
+                ServiceTextView.setVisibility(View.VISIBLE);
+                PricePerHourEditText.setVisibility(View.VISIBLE);
+                ExperienceSpinner.setVisibility(View.VISIBLE);
+                ImageView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //Spinner for experience level
+        // options for Experience Spinner
+        String[] ExperienceOptions = new String[]{"Beginner", "Intermediate", "Experienced","Specialist", "Consultant"};
+        // Created an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ExperienceOptions);
+        //Layout when list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ExperienceSpinner.setAdapter(adapter);
+
+
+
+        //Signup Button
         Button signupButton = (Button) findViewById(R.id.button);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +105,7 @@ public class CustomerRegistration extends AppCompatActivity {
                     });
     }
 
-
+    //Method called when signup button clicked.
     public void signupButtonClicked(View view){
         EditText email = findViewById(R.id.editTextTextEmailAddress);
         EditText password = findViewById(R.id.editTextTextPassword);

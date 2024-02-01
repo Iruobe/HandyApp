@@ -11,28 +11,32 @@
         android:layout_width="160dp"
         android:layout_height="51dp"
         android:layout_marginStart="13dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="238dp"
-        android:layout_marginBottom="570dp"
         android:text="Register"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="409dp"
-        android:layout_height="568dp"
+        android:layout_height="590dp"
         android:layout_marginStart="1dp"
+        android:layout_marginTop="136dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="0sp"
+            android:layout_marginBottom="10sp"
             android:fillViewport="true">
 
             <LinearLayout
@@ -64,14 +68,108 @@
                     android:inputType="textPassword"
                     android:paddingLeft="20sp" />
 
-                <Button
-                    android:id="@+id/button"
+                <EditText
+                    android:id="@+id/FullNameEditTextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginRight="20sp"
+                    android:ems="10"
+                    android:hint="Full Name"
+                    android:inputType="text"
+                    android:paddingLeft="20sp" />
+
+                <EditText
+                    android:id="@+id/FullNameEditTextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginRight="20sp"
+                    android:ems="10"
+                    android:hint="Location"
+                    android:inputType="text"
+                    android:paddingLeft="20sp" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/RoleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20sp"
+                        android:layout_marginRight="20sp"
+                        android:layout_weight="1"
+                        android:paddingLeft="20sp"
+                        android:text="Role:" />
+
+                    <Switch
+                        android:id="@+id/RoleSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20sp"
+                        android:layout_marginRight="20sp"
+                        android:layout_weight="1"
+                        android:text="Customer" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/ServiceEditTextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:ems="10"
+                    android:hint="Service Provided"
+                    android:inputType="text"
+                    android:paddingLeft="20sp" />
+
+                <EditText
+                    android:id="@+id/PricePerHourEditTextNumberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:ems="10"
+                    android:hint="Price Per Hour"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="20sp" />
+
+                <Spinner
+                    android:id="@+id/ExperienceSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginRight="20sp" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:gravity="right|center_horizontal|center_vertical"
                     android:text="Submit" />
+
             </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/HandymanImageView"
+        android:layout_width="120dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@color/black" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
