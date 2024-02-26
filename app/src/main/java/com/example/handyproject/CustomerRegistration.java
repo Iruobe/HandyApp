@@ -16,13 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomerRegistration extends AppCompatActivity {
     private FirebaseAuth mAuth; // mAuth //shared instance of the FirebaseAuth object
+    FirebaseFirestore db = FirebaseFirestore.getInstance();// Intitialize firebase firestore database
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,30 +38,8 @@ public class CustomerRegistration extends AppCompatActivity {
         mAuth= FirebaseAuth.getInstance();// Initialize FirebaseAuth instance to handle user authentication tasks
 
 
-        //ID of components link to disappearing UI Elements
-        Switch aSwitch = findViewById(R.id.RoleSwitch);
-        Spinner ExperienceSpinner = findViewById(R.id.ExperienceSpinner); //Spinner for experience level
-        ImageView ImageView= findViewById(R.id.HandymanImageView);// Image view for handyman picture
-        TextView ServiceTextView = findViewById(R.id.ServiceEditTextText);
-        TextView PricePerHourEditText = findViewById(R.id.PricePerHourEditTextNumberDecimal);
-        //On change listener for disappearing UI elements with switch
-        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                // Hide elements
-                ServiceTextView.setVisibility(View.GONE);
-                PricePerHourEditText.setVisibility(View.GONE);
-                ExperienceSpinner.setVisibility(View.GONE);
-                ImageView.setVisibility(View.VISIBLE);
-            } else {
-                // Show elements
-                ServiceTextView.setVisibility(View.VISIBLE);
-                PricePerHourEditText.setVisibility(View.VISIBLE);
-                ExperienceSpinner.setVisibility(View.VISIBLE);
-                ImageView.setVisibility(View.VISIBLE);
-            }
-        });
-
         //Spinner for experience level
+        Spinner ExperienceSpinner = findViewById(R.id.ExperienceSpinner); //Spinner for experience level
         // options for Experience Spinner
         String[] ExperienceOptions = new String[]{"Beginner", "Intermediate", "Experienced","Specialist", "Consultant"};
         // Created an ArrayAdapter using the string array and a default spinner layout
@@ -68,9 +54,8 @@ public class CustomerRegistration extends AppCompatActivity {
         Button signupButton = (Button) findViewById(R.id.button);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                signupButtonClicked(view);
-            }
+            public void onClick(View view) {signupButtonClicked(view);}
+
         });
     }
 
@@ -84,16 +69,38 @@ public class CustomerRegistration extends AppCompatActivity {
         }
     }
 
-    public void signup(String email, String password){
+    public void signup(String email, String password,String fullName, String location){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Log.d("CustomerRegistration",
-                                            "createUserWithEmail:success");
+                                    Log.d("CustomerRegistration","createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     Toast.makeText(CustomerRegistration.this, "Authentication success. Use an intent to move to a new activity", Toast.LENGTH_SHORT).show(); ////////////ASK IN LAB
+                                    //Handymen details to be added to database
+                                    //Map Storing the retrieved data from UI and handyman input
+                                    Map<String, Object> users = new HashMap<>();
+                                    users.put("Email", email);
+                                    users.put("Full Name", fullName);
+                                    users.put("Location", location);
+
+                                    // Add a new document with a generated ID
+                                    db.collection("users")
+                                            .add(users)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Log.d("CustomerRegistration", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@org.checkerframework.checker.nullness.qual.NonNull Exception e) {
+                                                    Log.w("CustomerRegistration", "Error adding document", e);
+                                                }
+                                            });
+
                                     //user has been signed in, use an intent to
                                     //move to the next activity
 
@@ -102,21 +109,22 @@ public class CustomerRegistration extends AppCompatActivity {
                                     Toast.makeText(CustomerRegistration.this, "Authentication failed.",Toast.LENGTH_SHORT).show(); ////////////ASK IN LAB
                                 }
                             }
-                    });
+                });
     }
 
     //Method called when signup button clicked.
     public void signupButtonClicked(View view){
         EditText email = findViewById(R.id.editTextTextEmailAddress);
         EditText password = findViewById(R.id.editTextTextPassword);
-
+        //User details
+        EditText FullName = findViewById(R.id.FullNameEditTextText);
+        EditText Location = findViewById(R.id.LocationEditTextText);
+        //Casting user input to string.Format to be added to database
         String sEmail = email.getText().toString();
         String sPassword = password.getText().toString();
+        String FullNameInString = FullName.getText().toString();
+        String LocationInString = Location.getText().toString();
 
-        signup(sEmail, sPassword);
+        signup(sEmail, sPassword, FullNameInString, LocationInString);
     }
 }
-
-
-
-

@@ -98,6 +98,28 @@
                     android:layout_marginTop="20sp"
                     android:orientation="horizontal"/>
 
+                <EditText
+                    android:id="@+id/ServiceEditTextText"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:ems="10"
+                    android:hint="Service Provided"
+                    android:inputType="text"
+                    android:paddingLeft="20sp" />
+
+                <EditText
+                    android:id="@+id/PricePerHourEditTextNumberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:ems="10"
+                    android:hint="Price Per Hour"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="20sp" />
+
                 <Spinner
                     android:id="@+id/ExperienceSpinner"
                     android:layout_width="match_parent"

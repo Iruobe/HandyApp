@@ -36,11 +36,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        //OnClickLister for handyman registration textview
+        TextView handyManRegistration = findViewById(R.id.RegisterLinkTextView);
+        handyManRegistration.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //Intent intent = new Intent(MainActivity.this, CustomerRegistration.class);
+                Intent intent2 = new Intent(MainActivity.this, HandymanRegistration.class);
+                startActivity(intent2);
+            }
+        });
 
-
-        //OnClickLister for registration textview
-        TextView textView = findViewById(R.id.RegisterLinkTextView);
-        textView.setOnClickListener(new View.OnClickListener(){
+        //OnClickLister for customer registration textview
+        TextView customerRegistration = findViewById(R.id.RegisterLinkTextView2);
+        customerRegistration.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, CustomerRegistration.class);
