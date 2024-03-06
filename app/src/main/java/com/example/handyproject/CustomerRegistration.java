@@ -3,6 +3,7 @@ package com.example.handyproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +38,6 @@ public class CustomerRegistration extends AppCompatActivity {
         setContentView(R.layout.activity_customer_registration);
         mAuth= FirebaseAuth.getInstance();// Initialize FirebaseAuth instance to handle user authentication tasks
 
-
         //Spinner for experience level
         Spinner ExperienceSpinner = findViewById(R.id.ExperienceSpinner); //Spinner for experience level
         // options for Experience Spinner
@@ -47,8 +47,6 @@ public class CustomerRegistration extends AppCompatActivity {
         //Layout when list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ExperienceSpinner.setAdapter(adapter);
-
-
 
         //Signup Button
         Button signupButton = (Button) findViewById(R.id.button);
@@ -103,6 +101,8 @@ public class CustomerRegistration extends AppCompatActivity {
 
                                     //user has been signed in, use an intent to
                                     //move to the next activity
+                                    Intent intent = new Intent(CustomerRegistration.this, ServiceMenu.class);
+                                    startActivity(intent);
 
                                 } else {// If sign in fails, display a message to the user.
                                     Log.w("CustomerRegistration","createUserWithEmail:failure", task.getException());

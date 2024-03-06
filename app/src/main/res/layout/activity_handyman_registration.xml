@@ -7,7 +7,7 @@
     tools:context=".CustomerRegistration">
 
     <TextView
-        android:id="@+id/RegisterTextView"
+        android:id="@+id/AvailableServicesTextView"
         android:layout_width="160dp"
         android:layout_height="51dp"
         android:layout_marginStart="13dp"

@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 
 
@@ -92,15 +93,20 @@ public class HandymanRegistration extends AppCompatActivity {
                             HandyMen.put("Service Provided", service);
                             HandyMen.put("Rate Charged", pricePerHour);
 
+                            //Random Int for document ID
+                            int RandomNumber = generateRandomNumber();
+                            String RandomNumberInString = String.valueOf(RandomNumber);
+
                             // Add a new document with a generated ID
-                            db.collection("HandyMen")
-                                    .add(HandyMen)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            db.collection("HandyMen").document(RandomNumberInString)
+                                    .set(HandyMen).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.d("HandymanRegistration", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("HandymanRegistration","DocumentSnapshot successfully written!");
                                         }
                                     })
+
+
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@org.checkerframework.checker.nullness.qual.NonNull Exception e) {
@@ -142,5 +148,11 @@ public class HandymanRegistration extends AppCompatActivity {
         Double pricePerHour = Double.parseDouble(PricePerHourInString);
 
         signup(sEmail, sPassword, FullNameInString, pricePerHour, LocationInString, ServiceInString);
+    }
+
+    // Function to generate a random integer between 1 and 1000
+    private static int generateRandomNumber() {
+        Random random = new Random();
+        return random.nextInt(1000) + 1;
     }
 }

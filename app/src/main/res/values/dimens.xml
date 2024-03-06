@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_width">20dp</dimen>
+    <dimen name="image_height">60dp</dimen>
+    <dimen name="image_margin_top">10dp</dimen>
+    <dimen name="nested_layout_width">50dp</dimen>
+    <dimen name="text_size">24sp</dimen>
+    <dimen name="description_text_height">20dp</dimen>
+</resources>
