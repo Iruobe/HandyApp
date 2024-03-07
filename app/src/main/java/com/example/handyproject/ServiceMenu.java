@@ -9,9 +9,14 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +55,9 @@ public class ServiceMenu extends AppCompatActivity {
         ScrollView scrollView = findViewById(R.id.scrollView);
         LinearLayout containerLayout = findViewById(R.id.containerLayout);
 
+        // Apply styling to the containerLayout
+        containerLayout.setBackground(getStyledBackground());
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if(Build.VERSION.SDK_INT >= 33){
@@ -75,6 +83,7 @@ public class ServiceMenu extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String fullname = document.getString("Full Name");
                             String Serviceprovided = document.getString("Service Provided");
+                            String Rate = document.getString("Rate Charged");
 
                             Log.d("ServiceMenu", "DocumentSnapshot data: " + document.getData());
 //                            String NameValue = document.getData().toString();
@@ -86,15 +95,15 @@ public class ServiceMenu extends AppCompatActivity {
                                     ViewGroup.LayoutParams.WRAP_CONTENT));
                             handymanNameTextView.setText(fullname);
                             handymanNameTextView.setTextSize(24); // Set text size to 24sp
-                            handymanNameTextView.setPadding(0, 10, 0, 10); // Add top margin
+                            handymanNameTextView.setPadding(20, 10, 0, 10); // Add top margin
 
                              //Dynamically create and add DescriptionTextView
                             TextView descriptionTextView = new TextView(ServiceMenu.this);
                             descriptionTextView.setLayoutParams(new ViewGroup.LayoutParams(
                                     ViewGroup.LayoutParams.MATCH_PARENT,
-                                    getResources().getDimensionPixelSize(R.dimen.description_text_height))); // Set height to 46dp
-                            descriptionTextView.setText(Serviceprovided);
-                            descriptionTextView.setPadding(0, 0, 0, 10); // Add bottom margin
+                                    getResources().getDimensionPixelSize(R.dimen.description_text_height))); // Set height to 20dp
+                            descriptionTextView.setText(Serviceprovided + "\t\t\tRate: £"+ Rate);
+                            descriptionTextView.setPadding(20, 0, 0, 10); // Add bottom margin
 
                             // Add the TextView to the LinearLayout
                             containerLayout.addView(handymanNameTextView);
@@ -110,9 +119,11 @@ public class ServiceMenu extends AppCompatActivity {
                                 }
                             });
 
-
-                            // Add the DescriptionTextView to the LinearLayout
                             containerLayout.addView(descriptionTextView);
+                            containerLayout.addView(createLineView());
+
+
+
                         }
                     } else {
                         Log.d("ServiceMenu", "get failed with ", task.getException());
@@ -207,8 +218,9 @@ public class ServiceMenu extends AppCompatActivity {
 
         // Show the AlertDialog
         AlertDialog alertDialog = builder.create();
+        // Set the background color of the AlertDialog window
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.parseColor("#ADD8E6")));
         alertDialog.show();
-
     }
 
     public void EmailClientGenerator(String SenderEmail,String EmailBody){
@@ -242,32 +254,6 @@ public class ServiceMenu extends AppCompatActivity {
         return title;
     }
 
-    public String HandymenEmailFromDatabase(String FullName){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final String[] Email = new String[1];
-        db.collection("HandyMen").document(FullName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(Task<DocumentSnapshot> task) {
-                String email;
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()){
-                        email = document.getString("Email");
-                        Email[0] = email;
-                        Log.d("ServiceMenu", "DocumentSnapshot data: " + email);
-                    }else{
-                        Log.d("ServiceMenu", "No such document");
-                    }
-                } else {
-                    Log.d("ServiceMenu", "get failed with ", task.getException());
-                }
-
-            }
-
-        });
-        return Email[0];
-    }
-
     private void RetrieveEmailAndUpdateTextView(String fullName, TextView textView) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("HandyMen").document(fullName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -294,81 +280,34 @@ public class ServiceMenu extends AppCompatActivity {
         });
     }
 
-//    public String HandymenEmailFromDatabase(String FullName) {
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        DocumentReference docRef = db.collection("HandyMen").document(FullName);
-//
-//        final String[] email = {null}; // Using an array to store the email and make it effectively final
-//
-//        docRef.get().addOnSuccessListener(documentSnapshot -> {
-//            if (documentSnapshot.exists()) {
-//                email[0] = documentSnapshot.getString("Email");
-//                Log.d("ServiceMenu", "DocumentSnapshot data: " + email[0]);
-//            } else {
-//                Log.d("ServiceMenu", "No such document");
-//            }
-//        }).addOnFailureListener(e -> {
-//            Log.d("ServiceMenu", "get failed with ", e);
-//        });
-//
-//        return email[0]; // Return null or handle the absence of data as needed
-//    }
+    // Create a View element for the horizontal line
+    private View createLineView() {
+        View lineView = new View(ServiceMenu.this);
+        lineView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                2)); // Set the height of the line (adjust as needed)
+        lineView.setBackgroundColor(Color.BLACK); // Set the color of the line (adjust as needed)
+        return lineView;
+    }
+
+    // Method to create a styled background for the containerLayout
+    private Drawable getStyledBackground() {
+        // Create a shape drawable with a solid color, borders, and corner radius
+        GradientDrawable shapeDrawable = new GradientDrawable();
+        shapeDrawable.setColor(Color.WHITE); // Set the background color
+        shapeDrawable.setStroke(2, Color.BLACK); // Set the border color and width
+        shapeDrawable.setCornerRadius(16); // Set the corner radius
+
+        // You can also add additional styling attributes:
+        shapeDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+        shapeDrawable.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+        shapeDrawable.setDither(true);
+
+        // Return the styled background drawable
+        return shapeDrawable;
+    }
 
 }
 
 
 
-
-
-//
-//        // Dynamically create and add TextViews
-//        for (int i = 0; i < 5; i++) {
-//            TextView handymanNameTextView = new TextView(this);
-//            handymanNameTextView.setLayoutParams(new ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT));
-//            handymanNameTextView.setText("Name " + (i + 1));
-//            handymanNameTextView.setTextSize(24); // Set text size to 24sp
-//            handymanNameTextView.setPadding(0, 10, 0, 10); // Add top margin
-//
-//            // Add the TextView to the LinearLayout
-//            containerLayout.addView(handymanNameTextView);
-//
-//            // Dynamically create and add DescriptionTextView
-//            TextView descriptionTextView = new TextView(this);
-//            descriptionTextView.setLayoutParams(new ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    getResources().getDimensionPixelSize(R.dimen.description_text_height))); // Set height to 46dp
-//            descriptionTextView.setText("Description of service " + (i + 1));
-//            descriptionTextView.setPadding(0, 0, 0, 10); // Add bottom margin
-//
-//            // Add the DescriptionTextView to the LinearLayout
-//            containerLayout.addView(descriptionTextView);
-//        }
-//    }
-
-    // Function to check a Firestore document by ID
-//    public void checkDocumentById(int documentId) {
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        DocumentReference documentRef = db.collection("HandyMen").document(String.valueOf(documentId));
-//
-//        documentRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                @Override
-//                public void onSuccess(DocumentSnapshot document) {
-//                    if (document.exists()) {
-//                        // Document exists, retrieve the Full Name field
-//                        String fullName = document.getString("Full Name");
-//                        // Use fullName as needed
-//                        // For example, you can store it in a variable or perform further actions
-//                        // ...
-//                    } else {
-//                        // Document does not exist
-//                    }
-//                }
-//        })
-//                .addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(Exception e) {
-//                    // Error checking document
-//                }});
-//    }

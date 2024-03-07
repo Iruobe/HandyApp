@@ -73,7 +73,7 @@ public class HandymanRegistration extends AppCompatActivity {
         }
     }
 
-    public void signup(String email, String password, String fullName, Double pricePerHour, String location, String service) {
+    public void signup(String email, String password, String fullName, String pricePerHour, String location, String service) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -93,11 +93,7 @@ public class HandymanRegistration extends AppCompatActivity {
                             HandyMen.put("Service Provided", service);
                             HandyMen.put("Rate Charged", pricePerHour);
 
-                            //Random Int for document ID
-                            int RandomNumber = generateRandomNumber();
-                            String RandomNumberInString = String.valueOf(RandomNumber);
-
-                            // Add a new document with a generated ID
+                            // Add a new document with full name as ID
                             db.collection("HandyMen").document(fullName)
                                     .set(HandyMen).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -145,9 +141,9 @@ public class HandymanRegistration extends AppCompatActivity {
         String LocationInString = Location.getText().toString();
 
         // Convert the String to a double
-        Double pricePerHour = Double.parseDouble(PricePerHourInString);
+        //Double pricePerHour = Double.parseDouble(PricePerHourInString);
 
-        signup(sEmail, sPassword, FullNameInString, pricePerHour, LocationInString, ServiceInString);
+        signup(sEmail, sPassword, FullNameInString, PricePerHourInString, LocationInString, ServiceInString);
     }
 
     // Function to generate a random integer between 1 and 1000

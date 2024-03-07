@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E8F5E9"
+    android:backgroundTint="#F0F0F0"
     tools:context=".ServiceMenu">
 
     <TextView
@@ -14,6 +16,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="120dp"
         android:layout_marginBottom="644dp"
+        android:fontFamily='sans-serif'
         android:text="Available Services"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -54,10 +57,14 @@
                     android:layout_marginLeft="20sp"
                     android:layout_marginRight="20sp"
                     android:layout_weight="1"
-                    android:orientation="vertical"/>
+                    android:background="#E8F5E9"
+                    android:backgroundTint="#F0F0F0 "
+                    android:orientation="vertical" />
 
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

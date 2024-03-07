@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="#E8F5E9"
+    android:backgroundTint="#F0F0F0"
     tools:context=".MainActivity">
 
     <TextView
@@ -66,7 +68,7 @@
         android:layout_marginTop="353dp"
         android:layout_marginEnd="288dp"
         android:layout_marginBottom="359dp"
-        android:text="Name:"
+        android:text="Email:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
