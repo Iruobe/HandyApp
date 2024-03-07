@@ -24,18 +24,18 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.concurrent.ExecutionException;
 
 public class ServiceMenu extends AppCompatActivity {
     private FirebaseAuth mAuth; // mAuth //shared instance of the FirebaseAuth object
@@ -104,6 +104,7 @@ public class ServiceMenu extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v){
                                     //handleNotification(handymanNameTextViewInString);
+                                    //HandymenEmailFromDatabase(handymanNameTextViewInString);
 
                                     showPopup(v,handymanNameTextViewInString);
                                 }
@@ -146,6 +147,7 @@ public class ServiceMenu extends AppCompatActivity {
     }
 
 
+    //Display dialog box when user clicks on handymen
     public void showPopup(View view, String HandymanNameDisplay) {
         // Create a layout to hold multiple EditText views
         LinearLayout layout = new LinearLayout(ServiceMenu.this);
@@ -155,11 +157,19 @@ public class ServiceMenu extends AppCompatActivity {
         TextView HandymanName = new TextView(ServiceMenu.this);
         HandymanName.setText(HandymanNameDisplay);
         HandymanName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-        //emailEditText.setHint("Email:");
+
+        // Create TextView views for email to display
+        TextView HandymanEmail = new TextView(ServiceMenu.this);
+        //String Email =HandymenEmailFromDatabase(HandymanNameDisplay);
+        RetrieveEmailAndUpdateTextView(HandymanNameDisplay,HandymanEmail);
+        //HandymanEmail.setText(HandymenEmailFromDatabase(HandymanNameDisplay));
+        HandymanEmail.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+
+
 
         // Create EditText views for email, email body, and recipient
-        EditText emailEditText = new EditText(ServiceMenu.this);
-        emailEditText.setHint("Email:");
+//        EditText emailEditText = new EditText(ServiceMenu.this);
+//        emailEditText.setHint("Email:");
 
         EditText bodyEditText = new EditText(ServiceMenu.this);
         bodyEditText.setHint("Email Body:");
@@ -169,7 +179,8 @@ public class ServiceMenu extends AppCompatActivity {
 
         // Add EditText views and textview to the layout
         layout.addView(HandymanName);
-        layout.addView(emailEditText);
+        layout.addView(HandymanEmail);
+        //layout.addView(emailEditText);
         layout.addView(bodyEditText);
         //layout.addView(recipientEditText);
 
@@ -180,7 +191,7 @@ public class ServiceMenu extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Retrieve user input and store in the variables
-                        String userEmail = emailEditText.getText().toString();
+                        String userEmail = HandymanEmail.getText().toString();
                         String emailBody = bodyEditText.getText().toString();
                         //String recipient = recipientEditText.getText().toString();
 
@@ -230,6 +241,78 @@ public class ServiceMenu extends AppCompatActivity {
 
         return title;
     }
+
+    public String HandymenEmailFromDatabase(String FullName){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final String[] Email = new String[1];
+        db.collection("HandyMen").document(FullName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(Task<DocumentSnapshot> task) {
+                String email;
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()){
+                        email = document.getString("Email");
+                        Email[0] = email;
+                        Log.d("ServiceMenu", "DocumentSnapshot data: " + email);
+                    }else{
+                        Log.d("ServiceMenu", "No such document");
+                    }
+                } else {
+                    Log.d("ServiceMenu", "get failed with ", task.getException());
+                }
+
+            }
+
+        });
+        return Email[0];
+    }
+
+    private void RetrieveEmailAndUpdateTextView(String fullName, TextView textView) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("HandyMen").document(fullName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String email = document.getString("Email");
+                        Log.d("ServiceMenu", "DocumentSnapshot data: " + email);
+                        textView.setText(email != null ? email : "Email not available");
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+                    } else {
+                        Log.d("ServiceMenu", "No such document");
+                        textView.setText("Email not available");
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+                    }
+                } else {
+                    Log.d("ServiceMenu", "get failed with ", task.getException());
+                    textView.setText("Email not available");
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+                }
+            }
+        });
+    }
+
+//    public String HandymenEmailFromDatabase(String FullName) {
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        DocumentReference docRef = db.collection("HandyMen").document(FullName);
+//
+//        final String[] email = {null}; // Using an array to store the email and make it effectively final
+//
+//        docRef.get().addOnSuccessListener(documentSnapshot -> {
+//            if (documentSnapshot.exists()) {
+//                email[0] = documentSnapshot.getString("Email");
+//                Log.d("ServiceMenu", "DocumentSnapshot data: " + email[0]);
+//            } else {
+//                Log.d("ServiceMenu", "No such document");
+//            }
+//        }).addOnFailureListener(e -> {
+//            Log.d("ServiceMenu", "get failed with ", e);
+//        });
+//
+//        return email[0]; // Return null or handle the absence of data as needed
+//    }
 
 }
 

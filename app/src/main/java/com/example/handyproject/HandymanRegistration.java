@@ -98,7 +98,7 @@ public class HandymanRegistration extends AppCompatActivity {
                             String RandomNumberInString = String.valueOf(RandomNumber);
 
                             // Add a new document with a generated ID
-                            db.collection("HandyMen").document(RandomNumberInString)
+                            db.collection("HandyMen").document(fullName)
                                     .set(HandyMen).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
