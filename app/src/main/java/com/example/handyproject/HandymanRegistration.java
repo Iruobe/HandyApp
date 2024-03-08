@@ -3,6 +3,7 @@ package com.example.handyproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +34,7 @@ import java.util.Random;
 
 
 public class HandymanRegistration extends AppCompatActivity {
-    private FirebaseAuth mAuth; // mAuth //shared instance of the FirebaseAuth object
+    private FirebaseAuth mAuth;//shared instance of the FirebaseAuth object
     FirebaseFirestore db = FirebaseFirestore.getInstance();// Intitialize firebase firestore database
 
     @Override
@@ -44,16 +45,12 @@ public class HandymanRegistration extends AppCompatActivity {
 
         //ID of components link to disappearing UI Elements
         Spinner ExperienceSpinner = findViewById(R.id.ExperienceSpinner); //Spinner for experience level
-        ImageView ImageView = findViewById(R.id.HandymanImageView);//Image view for handyman picture
-        TextView ServiceTextView = findViewById(R.id.ServiceEditTextText);
-        TextView PricePerHourEditText = findViewById(R.id.PricePerHourEditTextNumberDecimal);
 
-        // options for Experience Spinner//Spinner for experience level
+        // options for Experience Spinner
         String[] ExperienceOptions = new String[]{"Beginner", "Intermediate", "Experienced", "Specialist", "Consultant"};
         // Created an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ExperienceOptions);
-        //Layout when list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//Layout when list of choices appears
         ExperienceSpinner.setAdapter(adapter);
         //Signup Button
         Button signupButton = (Button) findViewById(R.id.button);
@@ -73,6 +70,7 @@ public class HandymanRegistration extends AppCompatActivity {
         }
     }
 
+    //Takes user details and adds to database as well as creates the user
     public void signup(String email, String password, String fullName, String pricePerHour, String location, String service) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -111,8 +109,9 @@ public class HandymanRegistration extends AppCompatActivity {
                                     });
 
 
-                            //user has been signed in, use an intent to
-                            //move to the next activity
+                            //user has been signed in, use an intent to move to the next activity
+                            Intent intent = new Intent(HandymanRegistration.this, ServiceMenu.class);
+                            startActivity(intent);
 
                         } else {// If sign in fails, display a message to the user.
                             Log.w("CustomerRegistration", "createUserWithEmail:failure", task.getException());
@@ -127,7 +126,7 @@ public class HandymanRegistration extends AppCompatActivity {
         EditText email = findViewById(R.id.editTextTextEmailAddress);
         EditText password = findViewById(R.id.editTextTextPassword);
         //handyman details
-        ImageView ImageView= findViewById(R.id.HandymanImageView);// Image view for handyman picture
+        //ImageView ImageView= findViewById(R.id.HandymanImageView);// Image view for handyman picture
         EditText FullName = findViewById(R.id.FullNameEditTextText);
         EditText Location = findViewById(R.id.LocationEditTextText);
         EditText ServiceTextView = findViewById(R.id.ServiceEditTextText);
@@ -140,15 +139,7 @@ public class HandymanRegistration extends AppCompatActivity {
         String FullNameInString = FullName.getText().toString();
         String LocationInString = Location.getText().toString();
 
-        // Convert the String to a double
-        //Double pricePerHour = Double.parseDouble(PricePerHourInString);
-
         signup(sEmail, sPassword, FullNameInString, PricePerHourInString, LocationInString, ServiceInString);
     }
 
-    // Function to generate a random integer between 1 and 1000
-    private static int generateRandomNumber() {
-        Random random = new Random();
-        return random.nextInt(1000) + 1;
-    }
 }

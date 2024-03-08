@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerRegistration extends AppCompatActivity {
-    private FirebaseAuth mAuth; // mAuth //shared instance of the FirebaseAuth object
+    private FirebaseAuth mAuth;//shared instance of the FirebaseAuth object
     FirebaseFirestore db = FirebaseFirestore.getInstance();// Intitialize firebase firestore database
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,22 +38,19 @@ public class CustomerRegistration extends AppCompatActivity {
         setContentView(R.layout.activity_customer_registration);
         mAuth= FirebaseAuth.getInstance();// Initialize FirebaseAuth instance to handle user authentication tasks
 
-        //Spinner for experience level
-        Spinner ExperienceSpinner = findViewById(R.id.ExperienceSpinner); //Spinner for experience level
-        // options for Experience Spinner
-        String[] ExperienceOptions = new String[]{"Beginner", "Intermediate", "Experienced","Specialist", "Consultant"};
-        // Created an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ExperienceOptions);
-        //Layout when list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ExperienceSpinner.setAdapter(adapter);
+//        //Spinner
+//        //Spinner ExperienceSpinner = findViewById(R.id.ExperienceSpinner); //Spinner for experience level
+//        String[] ExperienceOptions = new String[]{"Beginner", "Intermediate", "Experienced","Specialist", "Consultant"};// options for Experience Spinner
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ExperienceOptions);// Created an ArrayAdapter using the string array and a default spinner layout
+//        //Layout when list of options appears
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        //ExperienceSpinner.setAdapter(adapter);
 
-        //Signup Button
-        Button signupButton = (Button) findViewById(R.id.button);
+
+        Button signupButton = (Button) findViewById(R.id.button);//Signup Button
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {signupButtonClicked(view);}
-
         });
     }
 
@@ -63,53 +60,51 @@ public class CustomerRegistration extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
             FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            //User is signed in use an intent to move to another activity
         }
     }
 
     public void signup(String email, String password,String fullName, String location){
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("CustomerRegistration","createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(CustomerRegistration.this, "Authentication success. Use an intent to move to a new activity", Toast.LENGTH_SHORT).show(); ////////////ASK IN LAB
-                                    //Handymen details to be added to database
-                                    //Map Storing the retrieved data from UI and handyman input
-                                    Map<String, Object> users = new HashMap<>();
-                                    users.put("Email", email);
-                                    users.put("Full Name", fullName);
-                                    users.put("Location", location);
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        //Log.d("CustomerRegistration","createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Toast.makeText(CustomerRegistration.this, "Authentication success. Use an intent to move to a new activity", Toast.LENGTH_SHORT).show(); ////////////ASK IN LAB
+                        //Handymen details to be added to database
+                        //Map Storing the retrieved data from UI and handyman input
+                        Map<String, Object> users = new HashMap<>();
+                        users.put("Email", email);
+                        users.put("Full Name", fullName);
+                        users.put("Location", location);
 
-                                    // Add a new document with a generated ID
-                                    db.collection("users")
-                                            .add(users)
-                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                @Override
-                                                public void onSuccess(DocumentReference documentReference) {
-                                                    Log.d("CustomerRegistration", "DocumentSnapshot added with ID: " + documentReference.getId());
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@org.checkerframework.checker.nullness.qual.NonNull Exception e) {
-                                                    Log.w("CustomerRegistration", "Error adding document", e);
-                                                }
-                                            });
+                        //Add a document with a generated ID
+                        db.collection("users")
+                                .add(users)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d("CustomerRegistration", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@org.checkerframework.checker.nullness.qual.NonNull Exception e) {
+                                        Log.w("CustomerRegistration", "Error adding document", e);
+                                    }
+                                });
 
-                                    //user has been signed in, use an intent to
-                                    //move to the next activity
-                                    Intent intent = new Intent(CustomerRegistration.this, ServiceMenu.class);
-                                    startActivity(intent);
+                        //user has been signed in, use an intent to move to the next activity
+                        Intent intent = new Intent(CustomerRegistration.this, ServiceMenu.class);
+                        startActivity(intent);
 
-                                } else {// If sign in fails, display a message to the user.
-                                    Log.w("CustomerRegistration","createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(CustomerRegistration.this, "Authentication failed.",Toast.LENGTH_SHORT).show(); ////////////ASK IN LAB
-                                }
-                            }
-                });
+                    } else {// If sign in fails, display a message to the user.
+                        Log.w("CustomerRegistration","createUserWithEmail:failure", task.getException());
+                        Toast.makeText(CustomerRegistration.this, "Authentication failed.",Toast.LENGTH_SHORT).show(); ////////////ASK IN LAB
+                    }
+                }
+            });
     }
 
     //Method called when signup button clicked.

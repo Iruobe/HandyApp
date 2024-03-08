@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main); //main
         mAuth= FirebaseAuth.getInstance();// Initialize FirebaseAuth instance to handle user authentication tasks
         Button signupButton = (Button) findViewById(R.id.LoginButton);
-
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     @Override
@@ -71,27 +68,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void signin(String email, String password){
+    public void signin(String email, String password){//Checks user email and password and signs them in
         Task<AuthResult> mainActivity = mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Toast.makeText(MainActivity.this, "Authentication success. Use an intent to move to a new activity", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Authentication success.", Toast.LENGTH_SHORT).show();
                     //user has been signed in, use an intent to move to the next activity
                     Intent intent = new Intent(MainActivity.this, ServiceMenu.class);
                     startActivity(intent);
 
                 } else {
-                    // If sign in fails, display a message to the user.
                     Log.w("MainActivity", "signInWithEmail:failure", task.getException());
                     Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
-
         });
     }
 

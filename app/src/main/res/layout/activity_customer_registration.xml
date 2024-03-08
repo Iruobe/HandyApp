@@ -100,13 +100,13 @@
                     android:layout_marginTop="20sp"
                     android:orientation="horizontal" />
 
-                <Spinner
-                    android:id="@+id/ExperienceSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="10sp"
-                    android:layout_marginRight="20sp" />
+<!--                <Spinner-->
+<!--                    android:id="@+id/ExperienceSpinner"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_marginLeft="20sp"-->
+<!--                    android:layout_marginTop="10sp"-->
+<!--                    android:layout_marginRight="20sp" />-->
 
                 <Button
                     android:id="@+id/button"
@@ -115,7 +115,7 @@
                     android:layout_marginLeft="150dp"
                     android:gravity="right|center_horizontal|center_vertical"
                     android:onClick="signupButtonClicked"
-                    android:text="Submitt" />
+                    android:text="Submit" />
 
             </LinearLayout>
 

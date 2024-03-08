@@ -52,34 +52,16 @@ public class ServiceMenu extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Get references to the ScrollView and LinearLayout
-        ScrollView scrollView = findViewById(R.id.scrollView);
+        //ScrollView scrollView = findViewById(R.id.scrollView);
         LinearLayout containerLayout = findViewById(R.id.containerLayout);
 
-        // Apply styling to the containerLayout
+        // Apply styles to the containerLayout
         containerLayout.setBackground(getStyledBackground());
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if(Build.VERSION.SDK_INT >= 33){
-                if(ContextCompat.checkSelfPermission(ServiceMenu.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(ServiceMenu.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
-                }
-            }
-            CharSequence name = "This is the notification channel name";
-            String description = "This is the description channel name";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("app_channel", name, importance);
-            channel.setDescription(description);
-            //Register channel with system
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
 
             db.collection("HandyMen").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
-                        //QuerySnapshot document = task.getResult();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String fullname = document.getString("Full Name");
                             String Serviceprovided = document.getString("Service Provided");
@@ -88,42 +70,29 @@ public class ServiceMenu extends AppCompatActivity {
                             Log.d("ServiceMenu", "DocumentSnapshot data: " + document.getData());
 //                            String NameValue = document.getData().toString();
 
-                            // Use ServiceMenu.this to reference the outer class context
-                            TextView handymanNameTextView = new TextView(ServiceMenu.this);
-                            handymanNameTextView.setLayoutParams(new ViewGroup.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.WRAP_CONTENT));
-                            handymanNameTextView.setText(fullname);
-                            handymanNameTextView.setTextSize(24); // Set text size to 24sp
-                            handymanNameTextView.setPadding(20, 10, 0, 10); // Add top margin
+                            //Dynamically create HandymanNameTextView
+                            TextView HandymanNameTextView = new TextView(ServiceMenu.this);
+                            HandymanNameTextView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            HandymanNameTextView.setText(fullname);
+                            HandymanNameTextView.setTextSize(24); // Set text size to 24sp
+                            HandymanNameTextView.setPadding(20, 10, 0, 10); // Add top margin
 
-                             //Dynamically create and add DescriptionTextView
-                            TextView descriptionTextView = new TextView(ServiceMenu.this);
-                            descriptionTextView.setLayoutParams(new ViewGroup.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    getResources().getDimensionPixelSize(R.dimen.description_text_height))); // Set height to 20dp
-                            descriptionTextView.setText(Serviceprovided + "\t\t\tRate: £"+ Rate);
-                            descriptionTextView.setPadding(20, 0, 0, 10); // Add bottom margin
+                             //Dynamically create descriptionTextView
+                            TextView DescriptionTextView = new TextView(ServiceMenu.this);
+                            DescriptionTextView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,getResources().getDimensionPixelSize(R.dimen.description_text_height))); //height 20dp
+                            DescriptionTextView.setText(Serviceprovided + "\t\t\tRate: £"+ Rate);
+                            DescriptionTextView.setPadding(20, 0, 0, 10); // Add bottom margin
 
-                            // Add the TextView to the LinearLayout
-                            containerLayout.addView(handymanNameTextView);
-                            handymanNameTextView.setOnClickListener(new View.OnClickListener(){
-
-                                String handymanNameTextViewInString= handymanNameTextView.getText().toString();
+                            // Add HandymanNameTextView to the containerLayout
+                            containerLayout.addView(HandymanNameTextView);
+                            HandymanNameTextView.setOnClickListener(new View.OnClickListener(){
+                                String HandymanNameTextViewInString= HandymanNameTextView.getText().toString();
                                 @Override
-                                public void onClick(View v){
-                                    //handleNotification(handymanNameTextViewInString);
-                                    //HandymenEmailFromDatabase(handymanNameTextViewInString);
-
-                                    showPopup(v,handymanNameTextViewInString);
-                                }
+                                public void onClick(View v){showPopup(v,HandymanNameTextViewInString);}
                             });
-
-                            containerLayout.addView(descriptionTextView);
+                            //Add DescriptionTextView to the containerLayout
+                            containerLayout.addView(DescriptionTextView);
                             containerLayout.addView(createLineView());
-
-
-
                         }
                     } else {
                         Log.d("ServiceMenu", "get failed with ", task.getException());
@@ -133,19 +102,11 @@ public class ServiceMenu extends AppCompatActivity {
             });
     }
 
-    public void TextViewValue(View v){
-        TextView clickedTextView = (TextView) v;
-        String HandymanName = clickedTextView.getText().toString();
-
-        // Now, you can use the textViewValue as needed
-        Log.d("ServiceMenu", "Clicked TextView Value: " + HandymanName);
-    }
-
-    private void handleNotification(String name){
+    public void requestNotification(){
         NotificationCompat.Builder builder= new NotificationCompat.Builder(this,"app_channel")
                 .setSmallIcon(R.drawable.baseline_notifications_active_24)
-                .setContentTitle("Service Request")
-                .setContentText("Hello,"+ name + " You have a request from Handy")
+                .setContentTitle("Service Request.")
+                .setContentText("Request made the via Handy App.\nThe service provider will be with you as soon as possible.")
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
 
@@ -160,67 +121,56 @@ public class ServiceMenu extends AppCompatActivity {
 
     //Display dialog box when user clicks on handymen
     public void showPopup(View view, String HandymanNameDisplay) {
-        // Create a layout to hold multiple EditText views
+        //Create a layout to hold multiple EditText views
         LinearLayout layout = new LinearLayout(ServiceMenu.this);
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        // Create TextView views for name user clicked on to display
+        //Create TextView views for name user clicked on to display
         TextView HandymanName = new TextView(ServiceMenu.this);
         HandymanName.setText(HandymanNameDisplay);
         HandymanName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
 
-        // Create TextView views for email to display
+        //Create TextView views for email to display
         TextView HandymanEmail = new TextView(ServiceMenu.this);
-        //String Email =HandymenEmailFromDatabase(HandymanNameDisplay);
-        RetrieveEmailAndUpdateTextView(HandymanNameDisplay,HandymanEmail);
-        //HandymanEmail.setText(HandymenEmailFromDatabase(HandymanNameDisplay));
-        HandymanEmail.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+        RetrieveEmailAndUpdateTextView(HandymanNameDisplay,HandymanEmail);//Uses HandymanNameDisplay display to collect the id for the HandymanEmail display
+        //HandymanEmail.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
 
-
-
-        // Create EditText views for email, email body, and recipient
-//        EditText emailEditText = new EditText(ServiceMenu.this);
-//        emailEditText.setHint("Email:");
-
+        //Create EditText views foremail body
         EditText bodyEditText = new EditText(ServiceMenu.this);
         bodyEditText.setHint("Email Body:");
 
-        //EditText recipientEditText = new EditText(ServiceMenu.this);
-        //recipientEditText.setHint("Recipient Email:");
-
-        // Add EditText views and textview to the layout
+        //Added EditText views and textview to the layout
         layout.addView(HandymanName);
         layout.addView(HandymanEmail);
-        //layout.addView(emailEditText);
         layout.addView(bodyEditText);
-        //layout.addView(recipientEditText);
 
+        //Pop up for user to compose email.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(layout)
-                .setCustomTitle(CenterTitle("Enter Details"))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Retrieve user input and store in the variables
-                        String userEmail = HandymanEmail.getText().toString();
-                        String emailBody = bodyEditText.getText().toString();
-                        //String recipient = recipientEditText.getText().toString();
+            .setCustomTitle(CenterTitle("Compose Email"))
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Retrieve user input and store in the variables
+                    //String recipient = recipientEditText.getText().toString();
+                    String userEmail = HandymanEmail.getText().toString();
+                    String handyRequestMessage = "\tWe are reaching out to you from the Handy Team with an exciting new service request that matches your skill set and area of expertise. This opportunity comes directly from a user within our community who has specifically requested your services based on your outstanding profile.Additional information from the client will be displayed below. \n\n";
+                    String handyRequestMessageEnding = "\n\nThank you for being a valued member of our Handy professional community. We look forward to your continued success and are excited to see how you'll make a positive impact on the clients request.\n\nBest regards,\n" + "The Handy Team.\n";
+                    String emailBody = handyRequestMessage + bodyEditText.getText().toString()+ handyRequestMessageEnding;
+                    EmailClientGenerator(userEmail,emailBody);//Give the user option to select email client and passes datails to them
+                }
+            })
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();//To close the dialog
+                }
+            });
 
-                        EmailClientGenerator(userEmail,emailBody);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();//To close the dialog
-                    }
-                });
-
-        // Show the AlertDialog
         AlertDialog alertDialog = builder.create();
         // Set the background color of the AlertDialog window
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.parseColor("#ADD8E6")));
-        alertDialog.show();
+        alertDialog.show();// Show the AlertDialog
     }
 
     public void EmailClientGenerator(String SenderEmail,String EmailBody){
@@ -228,33 +178,33 @@ public class ServiceMenu extends AppCompatActivity {
         String EmailSubject = "Service Request From Handy";
         String Emailbody = EmailBody;
 
-        // define Intent object with action attribute as ACTION_SEND
+        //Define Intent object with action attribute as ACTION_SEND
         Intent intent = new Intent(Intent.ACTION_SEND);
 
-        // add three fields to intent using putExtra function
+        //Add fields to intent with putExtra
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{EmailSend});
         intent.putExtra(Intent.EXTRA_SUBJECT, EmailSubject);
         intent.putExtra(Intent.EXTRA_TEXT, Emailbody);
 
         // set type of intent
-        intent.setType("message/rfc822");
+        intent.setType("message/rfc822");//Intent mime type email messages
 
-        // startActivity with intent with chooser as Email client using createChooser function
+        //Display list of email clients to select from
         startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+        requestNotification();// to send a notification to users when they send an email
     }
 
     // Function to create a centered title for the AlertDialog
-    private View CenterTitle(String titleText) {
+    public View CenterTitle(String titleText) {
         TextView title = new TextView(this);
         title.setText(titleText);
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
         title.setGravity(Gravity.CENTER);
-        title.setPadding(0, 20, 0, 20); // Adjust padding as needed
-
+        title.setPadding(0, 20, 0, 20);
         return title;
     }
 
-    private void RetrieveEmailAndUpdateTextView(String fullName, TextView textView) {
+    public void RetrieveEmailAndUpdateTextView(String fullName, TextView textView) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("HandyMen").document(fullName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -280,18 +230,17 @@ public class ServiceMenu extends AppCompatActivity {
         });
     }
 
-    // Create a View element for the horizontal line
-    private View createLineView() {
+    // Create View element for the horizontal line
+    public View createLineView() {
         View lineView = new View(ServiceMenu.this);
         lineView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                2)); // Set the height of the line (adjust as needed)
+                ViewGroup.LayoutParams.MATCH_PARENT, 2)); // Set the height of the line (adjust as needed)
         lineView.setBackgroundColor(Color.BLACK); // Set the color of the line (adjust as needed)
         return lineView;
     }
 
     // Method to create a styled background for the containerLayout
-    private Drawable getStyledBackground() {
+    public Drawable getStyledBackground() {
         // Create a shape drawable with a solid color, borders, and corner radius
         GradientDrawable shapeDrawable = new GradientDrawable();
         shapeDrawable.setColor(Color.WHITE); // Set the background color
@@ -306,6 +255,16 @@ public class ServiceMenu extends AppCompatActivity {
         // Return the styled background drawable
         return shapeDrawable;
     }
+
+
+    public void TextViewValue(View v){
+        TextView clickedTextView = (TextView) v;
+        String HandymanName = clickedTextView.getText().toString();
+
+        // Now, you can use the textViewValue as needed
+        Log.d("ServiceMenu", "Clicked TextView Value: " + HandymanName);
+    }
+
 
 }
 
