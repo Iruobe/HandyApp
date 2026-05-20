@@ -13,3 +13,13 @@
 .externalNativeBuild
 .cxx
 local.properties
+.claudeignore
+
+# Secret files - never commit these
+google-services.json
+local.properties
+*.keystore
+*.jks
+
+# Firebase
+app/google-services.json

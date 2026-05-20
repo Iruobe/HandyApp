@@ -1,165 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="#E8F5E9"
-    android:backgroundTint="#F0F0F0"
+    android:background="@color/colorBackground"
+    android:fillViewport="true"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/RegisterLinkTextView"
-        android:layout_width="155dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="85dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="Register as Handyman"
-        android:textColor="#3498DB"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/LoginButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/NotAUserTextView"
-        app:layout_constraintTop_toBottomOf="@+id/EditTextTextPassword"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/HandytextView"
-        android:layout_width="168dp"
-        android:layout_height="78dp"
-        android:layout_marginStart="121dp"
-        android:layout_marginTop="101dp"
-        android:layout_marginEnd="122dp"
-        android:layout_marginBottom="51dp"
-        android:text="HANDY"
-        android:textSize="48sp"
-        app:layout_constraintBottom_toTopOf="@+id/LoginTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/LoginTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginBottom="454dp"
-        android:gravity="center"
-        android:text="Login"
-        android:textSize="35sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/HandytextView" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_large">
 
-    <TextView
-        android:id="@+id/NameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="353dp"
-        android:layout_marginEnd="288dp"
-        android:layout_marginBottom="359dp"
-        android:text="Email:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif"
+            android:text="HANDY"
+            android:textColor="@color/colorPrimary"
+            android:textSize="48sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/PasswordTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="94dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="245dp"
-        android:text="Password:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/EditTextTextPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NameTextView" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="sans-serif"
+            android:text="Sign in to your account"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/text_size_body" />
 
-    <EditText
-        android:id="@+id/EditTextTextPassword"
-        android:layout_width="206dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="69dp"
-        android:layout_marginBottom="288dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NameTextText" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
+            style="@style/Widget.HandyProject.TextInputLayout"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:hint="Email">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/NameTextText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/NameTextText"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="67dp"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/NameTextView"
-        app:layout_constraintTop_toBottomOf="@+id/LoginTextView" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            style="@style/Widget.HandyProject.TextInputLayout"
+            android:layout_marginBottom="@dimen/padding_large"
+            android:hint="Password"
+            app:endIconMode="password_toggle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/EditTextTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/LoginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="63dp"
-        android:onClick="LoginButtonClicked"
-        android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/LoginButton"
+            style="@style/Widget.HandyProject.Button.Primary"
+            android:text="Login" />
 
-    <TextView
-        android:id="@+id/NotAUserTextView"
-        android:layout_width="76dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="285dp"
-        android:layout_marginBottom="195dp"
-        android:text="Not a user?"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordTextView" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_standard"
+            android:indeterminateTint="@color/colorPrimary"
+            android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/RegisterLinkTextView2"
-        android:layout_width="155dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="122dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="134dp"
-        android:layout_marginBottom="42dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="Register as a Customer"
-        android:textColor="#3498DB"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/LoginButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NotAUserTextView" />
+        <TextView
+            android:id="@+id/NotAUserTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="sans-serif"
+            android:text="Not a user?"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/text_size_body" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/RegisterLinkTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:text="Register as a Handyman"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_body" />
+
+        <TextView
+            android:id="@+id/RegisterLinkTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:text="Register as a Customer"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_body" />
+
+    </LinearLayout>
+</ScrollView>

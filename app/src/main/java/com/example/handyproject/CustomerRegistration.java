@@ -1,125 +1,158 @@
 package com.example.handyproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.util.Patterns;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerRegistration extends AppCompatActivity {
-    private FirebaseAuth mAuth;//shared instance of the FirebaseAuth object
-    FirebaseFirestore db = FirebaseFirestore.getInstance();// Intitialize firebase firestore database
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
+    private TextInputLayout tilFullName, tilEmail, tilPhone, tilLocation,
+            tilPassword, tilConfirmPassword;
+    private MaterialButton signupButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_registration);
-        mAuth= FirebaseAuth.getInstance();// Initialize FirebaseAuth instance to handle user authentication tasks
 
-//        //Spinner
-//        //Spinner ExperienceSpinner = findViewById(R.id.ExperienceSpinner); //Spinner for experience level
-//        String[] ExperienceOptions = new String[]{"Beginner", "Intermediate", "Experienced","Specialist", "Consultant"};// options for Experience Spinner
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ExperienceOptions);// Created an ArrayAdapter using the string array and a default spinner layout
-//        //Layout when list of options appears
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        //ExperienceSpinner.setAdapter(adapter);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
+        tilFullName        = findViewById(R.id.tilFullName);
+        tilEmail           = findViewById(R.id.tilEmail);
+        tilPhone           = findViewById(R.id.tilPhone);
+        tilLocation        = findViewById(R.id.tilLocation);
+        tilPassword        = findViewById(R.id.tilPassword);
+        tilConfirmPassword = findViewById(R.id.tilConfirmPassword);
+        signupButton       = findViewById(R.id.button);
 
-        Button signupButton = (Button) findViewById(R.id.button);//Signup Button
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {signupButtonClicked(view);}
-        });
+        signupButton.setOnClickListener(v -> signupButtonClicked());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            startActivity(new Intent(this, ServiceMenu.class));
+            finish();
         }
     }
 
-    public void signup(String email, String password,String fullName, String location){
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        //Log.d("CustomerRegistration","createUserWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(CustomerRegistration.this, "Authentication success. Use an intent to move to a new activity", Toast.LENGTH_SHORT).show(); ////////////ASK IN LAB
-                        //Handymen details to be added to database
-                        //Map Storing the retrieved data from UI and handyman input
-                        Map<String, Object> users = new HashMap<>();
-                        users.put("Email", email);
-                        users.put("Full Name", fullName);
-                        users.put("Location", location);
+    private boolean validate(String fullName, String email, String phone,
+                             String location, String password, String confirmPassword) {
+        boolean valid = true;
 
-                        //Add a document with a generated ID
-                        db.collection("users")
-                                .add(users)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        Log.d("CustomerRegistration", "DocumentSnapshot added with ID: " + documentReference.getId());
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@org.checkerframework.checker.nullness.qual.NonNull Exception e) {
-                                        Log.w("CustomerRegistration", "Error adding document", e);
-                                    }
-                                });
+        if (fullName.isEmpty()) {
+            tilFullName.setError("Full name is required");
+            valid = false;
+        } else { tilFullName.setError(null); }
 
-                        //user has been signed in, use an intent to move to the next activity
-                        Intent intent = new Intent(CustomerRegistration.this, ServiceMenu.class);
-                        startActivity(intent);
+        if (email.isEmpty()) {
+            tilEmail.setError("Email is required");
+            valid = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            tilEmail.setError("Enter a valid email address");
+            valid = false;
+        } else { tilEmail.setError(null); }
 
-                    } else {// If sign in fails, display a message to the user.
-                        Log.w("CustomerRegistration","createUserWithEmail:failure", task.getException());
-                        Toast.makeText(CustomerRegistration.this, "Authentication failed.",Toast.LENGTH_SHORT).show(); ////////////ASK IN LAB
-                    }
-                }
-            });
+        if (phone.isEmpty()) {
+            tilPhone.setError("Phone number is required");
+            valid = false;
+        } else { tilPhone.setError(null); }
+
+        if (location.isEmpty()) {
+            tilLocation.setError("Location is required");
+            valid = false;
+        } else { tilLocation.setError(null); }
+
+        if (password.isEmpty()) {
+            tilPassword.setError("Password is required");
+            valid = false;
+        } else if (password.length() < 8) {
+            tilPassword.setError("Password must be at least 8 characters");
+            valid = false;
+        } else { tilPassword.setError(null); }
+
+        if (confirmPassword.isEmpty()) {
+            tilConfirmPassword.setError("Please confirm your password");
+            valid = false;
+        } else if (!confirmPassword.equals(password)) {
+            tilConfirmPassword.setError("Passwords do not match");
+            valid = false;
+        } else { tilConfirmPassword.setError(null); }
+
+        return valid;
     }
 
-    //Method called when signup button clicked.
-    public void signupButtonClicked(View view){
-        EditText email = findViewById(R.id.editTextTextEmailAddress);
-        EditText password = findViewById(R.id.editTextTextPassword);
-        //User details
-        EditText FullName = findViewById(R.id.FullNameEditTextText);
-        EditText Location = findViewById(R.id.LocationEditTextText);
-        //Casting user input to string.Format to be added to database
-        String sEmail = email.getText().toString();
-        String sPassword = password.getText().toString();
-        String FullNameInString = FullName.getText().toString();
-        String LocationInString = Location.getText().toString();
+    private void signupButtonClicked() {
+        String fullName        = getTextFrom(tilFullName);
+        String email           = getTextFrom(tilEmail);
+        String phone           = getTextFrom(tilPhone);
+        String location        = getTextFrom(tilLocation);
+        String password        = getTextFrom(tilPassword);
+        String confirmPassword = getTextFrom(tilConfirmPassword);
 
-        signup(sEmail, sPassword, FullNameInString, LocationInString);
+        if (!validate(fullName, email, phone, location, password, confirmPassword)) return;
+
+        signupButton.setEnabled(false);
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String uid = user.getUid();
+
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("uid", uid);
+                        userData.put("role", "customer");
+                        userData.put("fullName", fullName);
+                        userData.put("email", email);
+                        userData.put("phoneNumber", phone);
+                        userData.put("location", location);
+                        userData.put("createdAt", Timestamp.now());
+
+                        db.collection("users").document(uid)
+                                .set(userData)
+                                .addOnSuccessListener(aVoid -> {
+                                    startActivity(new Intent(this, ServiceMenu.class));
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.w("CustomerRegistration", "Error writing document", e);
+                                    Toast.makeText(this, "Failed to save profile. Please try again.",
+                                            Toast.LENGTH_SHORT).show();
+                                    signupButton.setEnabled(true);
+                                });
+                    } else {
+                        Log.w("CustomerRegistration", "createUserWithEmail:failure", task.getException());
+                        String msg = task.getException() != null
+                                ? task.getException().getMessage() : "Registration failed.";
+                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                        signupButton.setEnabled(true);
+                    }
+                });
+    }
+
+    private String getTextFrom(TextInputLayout til) {
+        return til.getEditText() != null
+                ? til.getEditText().getText().toString().trim() : "";
     }
 }

@@ -1,102 +1,142 @@
 package com.example.handyproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth; // mAuth //shared instance of the FirebaseAuth object
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
+    private TextInputLayout tilEmail, tilPassword;
+    private MaterialButton loginButton;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); //main
-        mAuth= FirebaseAuth.getInstance();// Initialize FirebaseAuth instance to handle user authentication tasks
-        Button signupButton = (Button) findViewById(R.id.LoginButton);
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoginButtonClicked(view);
-            }
-        });
+        setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+        db    = FirebaseFirestore.getInstance();
 
-        //OnClickLister for handyman registration textview
-        TextView handyManRegistration = findViewById(R.id.RegisterLinkTextView);
-        handyManRegistration.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                //Intent intent = new Intent(MainActivity.this, CustomerRegistration.class);
-                Intent intent2 = new Intent(MainActivity.this, HandymanRegistration.class);
-                startActivity(intent2);
-            }
-        });
+        tilEmail    = findViewById(R.id.tilEmail);
+        tilPassword = findViewById(R.id.tilPassword);
+        loginButton = findViewById(R.id.LoginButton);
+        progressBar = findViewById(R.id.progressBar);
 
-        //OnClickLister for customer registration textview
-        TextView customerRegistration = findViewById(R.id.RegisterLinkTextView2);
-        customerRegistration.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, CustomerRegistration.class);
-                startActivity(intent);
-            }
-        });
+        loginButton.setOnClickListener(v -> loginButtonClicked());
+
+        findViewById(R.id.RegisterLinkTextView).setOnClickListener(v ->
+                startActivity(new Intent(this, HandymanRegistration.class)));
+
+        findViewById(R.id.RegisterLinkTextView2).setOnClickListener(v ->
+                startActivity(new Intent(this, CustomerRegistration.class)));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            //User is signed in use an intent to move to another activity
+        if (currentUser != null) {
+            fetchRoleAndNavigate(currentUser.getUid());
         }
     }
 
-    public void signin(String email, String password){//Checks user email and password and signs them in
-        Task<AuthResult> mainActivity = mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    Toast.makeText(MainActivity.this, "Authentication success.", Toast.LENGTH_SHORT).show();
-                    //user has been signed in, use an intent to move to the next activity
-                    Intent intent = new Intent(MainActivity.this, ServiceMenu.class);
-                    startActivity(intent);
+    private boolean validate(String email, String password) {
+        boolean valid = true;
 
-                } else {
-                    Log.w("MainActivity", "signInWithEmail:failure", task.getException());
-                    Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        if (email.isEmpty()) {
+            tilEmail.setError("Email is required");
+            valid = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            tilEmail.setError("Enter a valid email address");
+            valid = false;
+        } else { tilEmail.setError(null); }
+
+        if (password.isEmpty()) {
+            tilPassword.setError("Password is required");
+            valid = false;
+        } else { tilPassword.setError(null); }
+
+        return valid;
     }
 
+    private void loginButtonClicked() {
+        String email    = getTextFrom(tilEmail);
+        String password = getTextFrom(tilPassword);
 
-    public void LoginButtonClicked(View view){
-        EditText email = findViewById(R.id.NameTextText);
-        EditText password = findViewById(R.id.EditTextTextPassword);
+        if (!validate(email, password)) return;
 
-        String sEmail = email.getText().toString();
-        String sPassword = password.getText().toString();
+        setLoading(true);
 
-        signin(sEmail, sPassword);
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        fetchRoleAndNavigate(user.getUid());
+                    } else {
+                        setLoading(false);
+                        Log.w("MainActivity", "signInWithEmail:failure", task.getException());
+                        String msg = task.getException() != null
+                                ? task.getException().getMessage() : "Login failed.";
+                        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
+    private void fetchRoleAndNavigate(String uid) {
+        setLoading(true);
 
+        db.collection("users").document(uid).get()
+                .addOnSuccessListener(document -> {
+                    if (document.exists()) {
+                        String role = document.getString("role");
+                        if ("handyman".equals(role)) {
+                            // TODO: Replace with HandymanHomeActivity once created in Phase 2
+                            startActivity(new Intent(this, ServiceMenu.class));
+                        } else {
+                            // TODO: Replace with CustomerHomeActivity once created in Phase 2
+                            startActivity(new Intent(this, ServiceMenu.class));
+                        }
+                        finish();
+                    } else {
+                        mAuth.signOut();
+                        setLoading(false);
+                        Toast.makeText(this,
+                                "Account not found. Please register again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    setLoading(false);
+                    Log.w("MainActivity", "Error fetching user role", e);
+                    Toast.makeText(this,
+                            "Failed to load your account. Please try again.",
+                            Toast.LENGTH_LONG).show();
+                });
+    }
+
+    private void setLoading(boolean loading) {
+        progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+        loginButton.setEnabled(!loading);
+    }
+
+    private String getTextFrom(TextInputLayout til) {
+        return til.getEditText() != null
+                ? til.getEditText().getText().toString().trim() : "";
+    }
 }
