@@ -1,4 +1,4 @@
-package com.example.handyproject;
+package com.example.handyproject.ui.customer;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -19,9 +18,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.example.handyproject.R;
+import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.data.repository.HandymanRepository;
+import com.example.handyproject.ui.common.adapters.HandymanAdapter;
+import com.example.handyproject.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,8 @@ import java.util.List;
 public class ServiceMenu extends AppCompatActivity {
 
     private HandymanAdapter adapter;
-    private final List<HandymanAdapter.Handyman> handymen = new ArrayList<>();
-    private ListenerRegistration listenerRegistration;
+    private final List<Handyman> handymen = new ArrayList<>();
+    private final HandymanRepository handymanRepository = new HandymanRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,47 +43,23 @@ public class ServiceMenu extends AppCompatActivity {
         adapter = new HandymanAdapter(handymen, this::showPopup);
         recyclerView.setAdapter(adapter);
 
-        loadHandymen();
-    }
+        handymanRepository.startListening(new HandymanRepository.HandymanListCallback() {
+            @Override
+            public void onUpdate(List<Handyman> result) {
+                handymen.clear();
+                handymen.addAll(result);
+                adapter.notifyDataSetChanged();
+            }
 
-    private void loadHandymen() {
-        listenerRegistration = FirebaseFirestore.getInstance()
-                .collection("users")
-                .whereEqualTo("role", "handyman")
-                .limit(10)
-                .addSnapshotListener((snapshots, error) -> {
-                    if (error != null) {
-                        Log.w("ServiceMenu", "Listen failed", error);
-                        return;
-                    }
-                    if (snapshots == null) return;
-
-                    handymen.clear();
-                    for (QueryDocumentSnapshot doc : snapshots) {
-                        String fullName        = doc.getString("fullName");
-                        String email           = doc.getString("email");
-                        String serviceCategory = doc.getString("serviceCategory");
-                        String location        = doc.getString("location");
-                        Double hourlyRate      = doc.getDouble("hourlyRate");
-                        Double rating          = doc.getDouble("rating");
-
-                        handymen.add(new HandymanAdapter.Handyman(
-                                fullName        != null ? fullName        : "",
-                                email           != null ? email           : "",
-                                serviceCategory != null ? serviceCategory : "",
-                                hourlyRate      != null ? hourlyRate      : 0.0,
-                                location        != null ? location        : "",
-                                rating          != null ? rating          : 0.0
-                        ));
-                    }
-                    adapter.notifyDataSetChanged();
-                });
+            @Override
+            public void onError(String message) {}
+        });
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (listenerRegistration != null) listenerRegistration.remove();
+        handymanRepository.stopListening();
     }
 
     private void showPopup(String handymanName, String handymanEmail) {
@@ -137,7 +114,7 @@ public class ServiceMenu extends AppCompatActivity {
     }
 
     private void requestNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "app_channel")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.baseline_notifications_active_24)
                 .setContentTitle("Service Request")
                 .setContentText("Your request has been sent via Handy.")

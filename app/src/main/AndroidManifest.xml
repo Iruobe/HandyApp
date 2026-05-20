@@ -16,16 +16,16 @@
         android:theme="@style/Theme.HandyProject"
         tools:targetApi="31">
         <activity
-            android:name=".ServiceMenu"
+            android:name="com.example.handyproject.ui.customer.ServiceMenu"
             android:exported="false" />
         <activity
-            android:name=".HandymanRegistration"
+            android:name="com.example.handyproject.ui.auth.HandymanRegistration"
             android:exported="false" />
         <activity
-            android:name=".CustomerRegistration"
+            android:name="com.example.handyproject.ui.auth.CustomerRegistration"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.handyproject.ui.auth.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

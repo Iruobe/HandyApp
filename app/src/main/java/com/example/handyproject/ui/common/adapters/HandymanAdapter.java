@@ -1,4 +1,4 @@
-package com.example.handyproject;
+package com.example.handyproject.ui.common.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.handyproject.R;
+import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.utils.CurrencyUtils;
+
 import java.util.List;
+import java.util.Locale;
 
 public class HandymanAdapter extends RecyclerView.Adapter<HandymanAdapter.ViewHolder> {
 
@@ -16,25 +21,10 @@ public class HandymanAdapter extends RecyclerView.Adapter<HandymanAdapter.ViewHo
         void onHandymanClick(String fullName, String email);
     }
 
-    static class Handyman {
-        String fullName, email, serviceCategory, location;
-        double hourlyRate, rating;
-
-        Handyman(String fullName, String email, String serviceCategory,
-                 double hourlyRate, String location, double rating) {
-            this.fullName = fullName;
-            this.email = email;
-            this.serviceCategory = serviceCategory;
-            this.hourlyRate = hourlyRate;
-            this.location = location;
-            this.rating = rating;
-        }
-    }
-
     private final List<Handyman> handymen;
     private final OnHandymanClickListener listener;
 
-    HandymanAdapter(List<Handyman> handymen, OnHandymanClickListener listener) {
+    public HandymanAdapter(List<Handyman> handymen, OnHandymanClickListener listener) {
         this.handymen = handymen;
         this.listener = listener;
     }
@@ -50,18 +40,19 @@ public class HandymanAdapter extends RecyclerView.Adapter<HandymanAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Handyman h = handymen.get(position);
-        holder.nameText.setText(h.fullName);
-        holder.categoryText.setText(h.serviceCategory);
-        holder.rateText.setText(String.format("£%.2f/hr", h.hourlyRate));
-        holder.locationText.setText(h.location);
-        holder.ratingText.setText(String.format("★ %.1f", h.rating));
-        holder.itemView.setOnClickListener(v -> listener.onHandymanClick(h.fullName, h.email));
+        holder.nameText.setText(h.getFullName());
+        holder.categoryText.setText(h.getServiceCategory());
+        holder.rateText.setText(CurrencyUtils.formatRate(h.getHourlyRate()));
+        holder.locationText.setText(h.getLocation());
+        holder.ratingText.setText(String.format(Locale.UK, "★ %.1f", h.getRating()));
+        holder.itemView.setOnClickListener(v ->
+                listener.onHandymanClick(h.getFullName(), h.getEmail()));
     }
 
     @Override
     public int getItemCount() { return handymen.size(); }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameText, categoryText, rateText, locationText, ratingText;
 
         ViewHolder(@NonNull View itemView) {
