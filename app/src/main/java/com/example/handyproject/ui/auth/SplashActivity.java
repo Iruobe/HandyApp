@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.handyproject.R;
 import com.example.handyproject.data.remote.FirebaseService;
+import com.example.handyproject.ui.customer.CustomerHomeActivity;
 import com.example.handyproject.ui.customer.ServiceMenu;
 import com.example.handyproject.utils.Constants;
 import com.google.firebase.auth.FirebaseUser;
@@ -90,8 +91,7 @@ public class SplashActivity extends AppCompatActivity {
                         // TODO: Replace with HandymanHomeActivity in Phase 2
                         intent = new Intent(this, ServiceMenu.class);
                     } else {
-                        // TODO: Replace with CustomerHomeActivity in Phase 2
-                        intent = new Intent(this, ServiceMenu.class);
+                        intent = new Intent(this, CustomerHomeActivity.class);
                     }
                     startActivity(intent);
                     finish();

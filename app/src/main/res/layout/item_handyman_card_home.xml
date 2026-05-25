@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/card_width_handyman"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/padding_standard"
+    app:cardCornerRadius="@dimen/corner_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardBackgroundColor="@color/colorCardBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Photo + rating badge overlay -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_image_height">
+
+            <ImageView
+                android:id="@+id/ivHandymanPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/defaultprofile"
+                android:background="@color/colorUnselectedBackground"
+                android:contentDescription="Handyman photo" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="@dimen/padding_small"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_rating_badge"
+                android:padding="@dimen/padding_xsmall">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:src="@drawable/ic_star"
+                    android:contentDescription="Rating" />
+
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_xsmall"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextPrimary"
+                    android:fontFamily="sans-serif" />
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Card content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium">
+
+            <!-- Name + verified badge -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvHandymanName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/text_size_body_large"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextPrimary"
+                    android:fontFamily="sans-serif"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+
+                <ImageView
+                    android:id="@+id/ivVerified"
+                    android:layout_width="@dimen/icon_size_xs"
+                    android:layout_height="@dimen/icon_size_xs"
+                    android:layout_marginStart="@dimen/padding_xsmall"
+                    android:src="@drawable/ic_verified"
+                    android:contentDescription="Verified" />
+
+            </LinearLayout>
+
+            <!-- Service type -->
+            <TextView
+                android:id="@+id/tvServiceType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_xsmall"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/colorTextSecondary"
+                android:fontFamily="sans-serif"
+                android:ellipsize="end"
+                android:maxLines="1" />
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginTop="@dimen/padding_small"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:background="@color/colorUnselectedBackground" />
+
+            <!-- Location + rate row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_location"
+                        android:contentDescription="Location" />
+
+                    <TextView
+                        android:id="@+id/tvDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_xsmall"
+                        android:text="Nearby"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="sans-serif" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

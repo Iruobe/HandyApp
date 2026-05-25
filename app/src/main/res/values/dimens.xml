@@ -38,4 +38,20 @@
     <dimen name="padding_card_inner">20dp</dimen>
     <dimen name="radio_indicator_size">24dp</dimen>
     <dimen name="radio_inner_size">12dp</dimen>
+
+    <!-- Customer home screen -->
+    <dimen name="top_bar_height">64dp</dimen>
+    <dimen name="avatar_size">36dp</dimen>
+    <dimen name="bottom_nav_height">56dp</dimen>
+    <dimen name="corner_radius_pill">999dp</dimen>
+    <dimen name="corner_radius_small">4dp</dimen>
+    <dimen name="padding_xsmall">4dp</dimen>
+    <dimen name="padding_medium">12dp</dimen>
+    <dimen name="margin_xsmall">2dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_size_small">12dp</dimen>
+    <dimen name="icon_size_xs">14dp</dimen>
+    <dimen name="card_width_handyman">220dp</dimen>
+    <dimen name="card_image_height">120dp</dimen>
+    <dimen name="text_size_body_large">16sp</dimen>
 </resources>
