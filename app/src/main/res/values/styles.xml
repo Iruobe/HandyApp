@@ -43,6 +43,20 @@
         <item name="shapeAppearance">@style/ShapeAppearance.HandyProject.Rounded</item>
     </style>
 
+    <!-- Ghost button: light grey fill, dark grey text, 12dp corners, 48dp tall, full width -->
+    <style name="Widget.HandyProject.Button.Ghost" parent="Widget.Material3.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="backgroundTint">@color/colorBackground</item>
+        <item name="iconTint">@color/colorTextPrimary</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.HandyProject.Rounded</item>
+    </style>
+
     <!-- Card: white background, 12dp corners, 2dp elevation -->
     <style name="Widget.HandyProject.Card" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">@dimen/corner_radius</item>

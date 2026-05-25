@@ -43,6 +43,7 @@ public class CustomerRegistration extends AppCompatActivity {
         tilConfirmPassword = findViewById(R.id.tilConfirmPassword);
         signupButton       = findViewById(R.id.button);
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         signupButton.setOnClickListener(v -> signupButtonClicked());
     }
 

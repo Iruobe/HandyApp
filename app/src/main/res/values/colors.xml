@@ -13,4 +13,7 @@
     <color name="colorWarning">#FF9800</color>
     <color name="colorError">#F44336</color>
     <color name="colorGold">#FFC107</color>
+    <color name="colorUnselectedBorder">#BDBDBD</color>
+    <color name="colorUnselectedBackground">#EEEEEE</color>
+    <color name="colorUnselectedIcon">#9E9E9E</color>
 </resources>

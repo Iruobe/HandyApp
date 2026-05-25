@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".ui.auth.RoleSelectionActivity">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="@dimen/back_button_size"
+        android:layout_height="@dimen/back_button_size"
+        android:layout_marginStart="@dimen/padding_standard"
+        android:layout_marginTop="@dimen/padding_large"
+        android:background="@android:color/transparent"
+        android:contentDescription="Back"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_standard"
+        android:layout_marginTop="@dimen/padding_large"
+        android:fontFamily="sans-serif"
+        android:text="Join Handy as..."
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
+    <!-- Customer card (default selected) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardCustomer"
+        style="@style/Widget.HandyProject.Card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_standard"
+        android:layout_marginEnd="@dimen/padding_standard"
+        android:layout_marginTop="@dimen/padding_large"
+        app:cardElevation="@dimen/card_elevation"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_card_inner">
+
+            <FrameLayout
+                android:id="@+id/iconBgCustomer"
+                android:layout_width="@dimen/icon_container_size"
+                android:layout_height="@dimen/icon_container_size"
+                android:background="@drawable/circle_filled"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/iconCustomer"
+                    android:layout_width="@dimen/padding_large"
+                    android:layout_height="@dimen/padding_large"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_person" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_standard"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Customer"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="@dimen/text_size_subheading"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="I need a handyman"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/radio_indicator_size"
+                android:layout_height="@dimen/radio_indicator_size"
+                android:layout_gravity="center_vertical">
+
+                <View
+                    android:id="@+id/radioOuterCustomer"
+                    android:layout_width="@dimen/radio_indicator_size"
+                    android:layout_height="@dimen/radio_indicator_size"
+                    android:background="@drawable/circle_radio_outer" />
+
+                <View
+                    android:id="@+id/radioInnerCustomer"
+                    android:layout_width="@dimen/radio_inner_size"
+                    android:layout_height="@dimen/radio_inner_size"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_filled"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:visibility="visible" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Handyman card (default unselected) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardHandyman"
+        style="@style/Widget.HandyProject.Card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_standard"
+        android:layout_marginEnd="@dimen/padding_standard"
+        android:layout_marginTop="@dimen/padding_standard"
+        app:cardElevation="@dimen/card_elevation"
+        app:strokeColor="@color/colorUnselectedBorder"
+        app:strokeWidth="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardCustomer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_card_inner">
+
+            <FrameLayout
+                android:id="@+id/iconBgHandyman"
+                android:layout_width="@dimen/icon_container_size"
+                android:layout_height="@dimen/icon_container_size"
+                android:background="@drawable/circle_filled"
+                android:backgroundTint="@color/colorUnselectedBackground"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/iconHandyman"
+                    android:layout_width="@dimen/padding_large"
+                    android:layout_height="@dimen/padding_large"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_tools" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_standard"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Handyman"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="@dimen/text_size_subheading"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="I offer services"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="@dimen/text_size_body" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/radio_indicator_size"
+                android:layout_height="@dimen/radio_indicator_size"
+                android:layout_gravity="center_vertical">
+
+                <View
+                    android:id="@+id/radioOuterHandyman"
+                    android:layout_width="@dimen/radio_indicator_size"
+                    android:layout_height="@dimen/radio_indicator_size"
+                    android:background="@drawable/circle_radio_outer" />
+
+                <View
+                    android:id="@+id/radioInnerHandyman"
+                    android:layout_width="@dimen/radio_inner_size"
+                    android:layout_height="@dimen/radio_inner_size"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_filled"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Continue button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnContinue"
+        style="@style/Widget.HandyProject.Button.Primary"
+        android:layout_marginStart="@dimen/padding_standard"
+        android:layout_marginEnd="@dimen/padding_standard"
+        android:layout_marginBottom="@dimen/padding_standard"
+        android:text="Continue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

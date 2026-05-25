@@ -1,11 +1,14 @@
 package com.example.handyproject.ui.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.User;
@@ -14,7 +17,6 @@ import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.common.utils.ValidationUtils;
 import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.ui.customer.ServiceMenu;
-import com.example.handyproject.utils.Constants;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        applyGradient();
+
         tilEmail    = findViewById(R.id.tilEmail);
         tilPassword = findViewById(R.id.tilPassword);
         loginButton = findViewById(R.id.LoginButton);
@@ -40,11 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(v -> loginButtonClicked());
 
-        findViewById(R.id.RegisterLinkTextView).setOnClickListener(v ->
-                startActivity(new Intent(this, HandymanRegistration.class)));
+        findViewById(R.id.passkeyButton).setOnClickListener(v ->
+                Toast.makeText(this, "Passkey coming soon", Toast.LENGTH_SHORT).show());
 
-        findViewById(R.id.RegisterLinkTextView2).setOnClickListener(v ->
-                startActivity(new Intent(this, CustomerRegistration.class)));
+        findViewById(R.id.forgotPasswordText).setOnClickListener(v ->
+                Toast.makeText(this, "Forgot password coming soon", Toast.LENGTH_SHORT).show());
+
+        findViewById(R.id.RegisterLinkTextView).setOnClickListener(v ->
+                startActivity(new Intent(this, RoleSelectionActivity.class)));
     }
 
     @Override
@@ -54,6 +61,17 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser != null) {
             fetchRoleAndNavigate(currentUser.getUid());
         }
+    }
+
+    private void applyGradient() {
+        ConstraintLayout root = findViewById(R.id.mainRoot);
+        GradientDrawable gradient = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{
+                        ContextCompat.getColor(this, R.color.colorPrimary),
+                        ContextCompat.getColor(this, R.color.colorPrimaryDark)
+                });
+        root.setBackground(gradient);
     }
 
     private boolean validate(String email, String password) {
