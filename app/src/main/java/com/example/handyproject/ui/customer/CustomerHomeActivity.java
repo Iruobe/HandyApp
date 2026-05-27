@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
 import com.example.handyproject.data.remote.FirebaseService;
+import com.example.handyproject.ui.auth.MainActivity;
 import com.example.handyproject.ui.common.adapters.HandymanHomeAdapter;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -50,8 +51,12 @@ public class CustomerHomeActivity extends AppCompatActivity {
         setupHandymenCards();
         setupBottomNav();
 
-        findViewById(R.id.btnNotifications).setOnClickListener(v ->
-                Toast.makeText(this, "Notifications coming soon", Toast.LENGTH_SHORT).show());
+        // TEMP: remove before launch
+        findViewById(R.id.btnNotifications).setOnClickListener(v -> {
+            FirebaseService.getAuth().signOut();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
 
         findViewById(R.id.btnFindHandymen).setOnClickListener(v ->
                 Toast.makeText(this, "Searching for handymen...", Toast.LENGTH_SHORT).show());

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.handyproject.R;
@@ -98,15 +99,20 @@ public class CustomerRegistration extends AppCompatActivity {
                 userRepository.createUser(uid, userData, new UserRepository.SimpleCallback() {
                     @Override
                     public void onSuccess() {
+                        Log.d("Registration", "Firestore write successful");
+                        Toast.makeText(CustomerRegistration.this,
+                                "Profile saved successfully",
+                                Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(CustomerRegistration.this, ServiceMenu.class));
                         finish();
                     }
 
                     @Override
                     public void onFailure(String message) {
+                        Log.e("Registration", "Firestore write failed: " + message);
                         Toast.makeText(CustomerRegistration.this,
-                                "Failed to save profile. Please try again.",
-                                Toast.LENGTH_SHORT).show();
+                                "Failed to save profile: " + message,
+                                Toast.LENGTH_LONG).show();
                         signupButton.setEnabled(true);
                     }
                 });
