@@ -13,6 +13,7 @@ import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.common.utils.ValidationUtils;
 import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.ui.customer.ServiceMenu;
+import com.example.handyproject.ui.handyman.HandymanHomeActivity;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -131,7 +132,7 @@ public class HandymanRegistration extends AppCompatActivity {
                         Toast.makeText(HandymanRegistration.this,
                                 "Profile saved successfully",
                                 Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(HandymanRegistration.this, ServiceMenu.class));
+                        startActivity(new Intent(HandymanRegistration.this, HandymanHomeActivity.class));
                         finish();
                     }
 

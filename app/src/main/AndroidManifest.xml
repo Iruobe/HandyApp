@@ -19,6 +19,9 @@
             android:name="com.example.handyproject.ui.customer.CustomerHomeActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.handyproject.ui.handyman.HandymanHomeActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.handyproject.ui.customer.ServiceMenu"
             android:exported="false" />
         <activity

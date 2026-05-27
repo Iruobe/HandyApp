@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_standard"
+    android:background="@color/colorCardBackground">
+
+    <ImageView
+        android:id="@+id/ivEnquiryAvatar"
+        android:layout_width="@dimen/back_button_size"
+        android:layout_height="@dimen/back_button_size"
+        android:background="@drawable/circle_avatar_bg"
+        android:src="@drawable/defaultprofile"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="@dimen/padding_standard"
+        android:contentDescription="Customer avatar" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvEnquiryCustomerName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="@dimen/text_size_body"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
+                android:singleLine="true"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tvEnquiryTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_small"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="@dimen/text_size_caption"
+                android:fontFamily="sans-serif" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvEnquiryMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xsmall"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/text_size_body"
+            android:fontFamily="sans-serif"
+            android:singleLine="true"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/tvEnquiryStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textSize="@dimen/text_size_caption"
+            android:fontFamily="sans-serif"
+            android:paddingStart="@dimen/padding_xsmall"
+            android:paddingEnd="@dimen/padding_xsmall"
+            android:paddingTop="@dimen/margin_xsmall"
+            android:paddingBottom="@dimen/margin_xsmall" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -64,6 +64,21 @@
         <item name="cardBackgroundColor">@color/colorCardBackground</item>
     </style>
 
+    <!-- Pill button: teal fill, white text, 36dp tall, pill corners, wrap_content width -->
+    <style name="Widget.HandyProject.Button.Pill" parent="Widget.Material3.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:paddingStart">@dimen/padding_standard</item>
+        <item name="android:paddingEnd">@dimen/padding_standard</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="cornerRadius">@dimen/corner_radius_pill</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.HandyProject.Rounded</item>
+    </style>
+
     <!-- Agent banner button: white outline, white text, transparent background -->
     <style name="Widget.HandyProject.Button.Agent" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:layout_width">wrap_content</item>
