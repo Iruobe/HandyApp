@@ -15,11 +15,12 @@
 .claudeignore
 CLAUDE.md
 
-# Secret files - never commit these
+# Secret files - never commit
 google-services.json
 local.properties
 *.keystore
 *.jks
+SESSION.md
 
 # Firebase
 app/google-services.json
