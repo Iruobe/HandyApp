@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.HandyProject.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/padding_small"
+    android:layout_marginStart="@dimen/padding_standard"
+    android:layout_marginEnd="@dimen/padding_standard">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_standard">
+
+        <!-- Row 1: photo + info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="top">
+
+            <!-- Rounded photo -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="@dimen/search_photo_size"
+                android:layout_height="@dimen/search_photo_size"
+                android:layout_marginEnd="@dimen/padding_standard"
+                app:cardCornerRadius="@dimen/corner_radius"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/ivHandymanPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@color/colorUnselectedBackground"
+                    android:src="@drawable/defaultprofile"
+                    android:contentDescription="Profile photo"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Name, service, rating -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Name row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/text_size_body_large"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTextPrimary"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif"/>
+
+                    <ImageView
+                        android:id="@+id/ivVerified"
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_verified"
+                        app:tint="@color/colorPrimary"
+                        android:layout_marginEnd="@dimen/padding_small"
+                        android:contentDescription="Verified"/>
+
+                    <ImageView
+                        android:id="@+id/ivSave"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:src="@drawable/ic_favorite_border"
+                        app:tint="@color/colorTextSecondary"
+                        android:contentDescription="Save"/>
+
+                </LinearLayout>
+
+                <!-- Service title -->
+                <TextView
+                    android:id="@+id/tvServiceTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_xsmall"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textColor="@color/colorTextSecondary"
+                    android:fontFamily="sans-serif"/>
+
+                <!-- Rating row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/margin_xsmall">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_star"
+                        app:tint="@color/colorGold"
+                        android:layout_marginEnd="@dimen/padding_xsmall"
+                        android:contentDescription="Rating"/>
+
+                    <TextView
+                        android:id="@+id/tvRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTextPrimary"
+                        android:fontFamily="sans-serif"/>
+
+                    <TextView
+                        android:id="@+id/tvReviewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/padding_xsmall"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Row 2: skill tags -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_small"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvTag1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/padding_small"
+                    android:background="@color/colorUnselectedBackground"
+                    android:paddingStart="@dimen/padding_xsmall"
+                    android:paddingEnd="@dimen/padding_xsmall"
+                    android:paddingTop="@dimen/margin_xsmall"
+                    android:paddingBottom="@dimen/margin_xsmall"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textAllCaps="true"
+                    android:fontFamily="sans-serif"/>
+
+                <TextView
+                    android:id="@+id/tvTag2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorUnselectedBackground"
+                    android:paddingStart="@dimen/padding_xsmall"
+                    android:paddingEnd="@dimen/padding_xsmall"
+                    android:paddingTop="@dimen/margin_xsmall"
+                    android:paddingBottom="@dimen/margin_xsmall"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textAllCaps="true"
+                    android:fontFamily="sans-serif"/>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Row 3: description -->
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_small"
+            android:textSize="@dimen/text_size_body"
+            android:textColor="@color/colorTextSecondary"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"/>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/padding_small"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:background="@color/colorUnselectedBackground"/>
+
+        <!-- Row 4: rate + distance + button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_subheading"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="sans-serif"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_location"
+                        app:tint="@color/colorTextSecondary"
+                        android:layout_marginEnd="@dimen/padding_xsmall"
+                        android:contentDescription="Location"/>
+
+                    <TextView
+                        android:id="@+id/tvDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nearby"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewProfile"
+                style="@style/Widget.HandyProject.Button.Primary"
+                android:layout_width="wrap_content"
+                android:text="View Profile"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

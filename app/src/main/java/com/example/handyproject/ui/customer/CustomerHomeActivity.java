@@ -3,6 +3,7 @@ package com.example.handyproject.ui.customer;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,11 +59,26 @@ public class CustomerHomeActivity extends AppCompatActivity {
             finish();
         });
 
-        findViewById(R.id.btnFindHandymen).setOnClickListener(v ->
-                Toast.makeText(this, "Searching for handymen...", Toast.LENGTH_SHORT).show());
+        EditText etSearch = findViewById(R.id.etSearch);
+        etSearch.setOnEditorActionListener((v, actionId, event) -> {
+            String query = etSearch.getText().toString().trim();
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("search_query", query);
+            startActivity(intent);
+            return true;
+        });
 
-        findViewById(R.id.tvSeeAll).setOnClickListener(v ->
-                startActivity(new Intent(this, ServiceMenu.class)));
+        findViewById(R.id.btnFindHandymen).setOnClickListener(v -> {
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("search_query", "");
+            startActivity(intent);
+        });
+
+        findViewById(R.id.tvSeeAll).setOnClickListener(v -> {
+            Intent intent = new Intent(this, SearchActivity.class);
+            intent.putExtra("search_query", "");
+            startActivity(intent);
+        });
     }
 
     private void loadUserGreeting() {
