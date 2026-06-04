@@ -92,4 +92,10 @@
         <item name="shapeAppearance">@style/ShapeAppearance.HandyProject.Rounded</item>
     </style>
 
+
+    <!-- Circular shape overlay — used on ShapeableImageView for profile photo -->
+    <style name="ShapeAppearance.HandyProject.Circle" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

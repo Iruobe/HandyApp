@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <!-- Collapsing top section -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@color/colorPrimary">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <ImageView
+                android:id="@+id/ivCoverPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/colorUnselectedBackground"
+                android:src="@drawable/defaultprofile"
+                android:contentDescription="Cover photo"
+                app:layout_collapseMode="parallax"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#33000000"
+                app:layout_collapseMode="parallax"/>
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:navigationIconTint="@color/white"
+                app:layout_collapseMode="pin"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="@color/colorBackground"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_standard">
+
+            <!-- Profile Card -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.HandyProject.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_standard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_standard">
+
+                    <!-- Row 1: avatar + rate -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <!-- Avatar with verified badge -->
+                        <FrameLayout
+                            android:layout_width="96dp"
+                            android:layout_height="96dp">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/ivProfilePhoto"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/defaultprofile"
+                                android:contentDescription="Profile photo"
+                                app:shapeAppearanceOverlay="@style/ShapeAppearance.HandyProject.Circle"/>
+
+                            <ImageView
+                                android:layout_width="@dimen/icon_size"
+                                android:layout_height="@dimen/icon_size"
+                                android:src="@drawable/ic_verified"
+                                app:tint="@color/white"
+                                android:background="@drawable/circle_filled"
+                                android:contentDescription="Verified"
+                                android:layout_gravity="bottom|end"/>
+
+                        </FrameLayout>
+
+                        <!-- Hourly rate -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/padding_standard"
+                            android:orientation="vertical"
+                            android:gravity="end">
+
+                            <TextView
+                                android:id="@+id/tvHourlyRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="£65"
+                                android:textSize="@dimen/text_size_display"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorPrimary"
+                                android:gravity="end"
+                                android:fontFamily="sans-serif"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/ hour"
+                                android:textSize="@dimen/text_size_body"
+                                android:textColor="@color/colorTextSecondary"
+                                android:gravity="end"
+                                android:fontFamily="sans-serif"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Name -->
+                    <TextView
+                        android:id="@+id/tvHandymanName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:text="Marcus Johnson"
+                        android:textSize="@dimen/text_size_heading"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTextPrimary"
+                        android:fontFamily="sans-serif"/>
+
+                    <!-- Service category row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_xsmall">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:src="@drawable/ic_tools"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Service"
+                            android:layout_marginEnd="@dimen/padding_xsmall"/>
+
+                        <TextView
+                            android:id="@+id/tvServiceCategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Master Carpenter &amp; General Repair"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextSecondary"
+                            android:fontFamily="sans-serif"/>
+
+                    </LinearLayout>
+
+                    <!-- Location row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_xsmall">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:src="@drawable/ic_location"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Location"
+                            android:layout_marginEnd="@dimen/padding_xsmall"/>
+
+                        <TextView
+                            android:id="@+id/tvLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="London, UK (2.4 miles away)"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextSecondary"
+                            android:fontFamily="sans-serif"/>
+
+                    </LinearLayout>
+
+                    <!-- Rating row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_xsmall">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:src="@drawable/ic_star"
+                            app:tint="@color/colorGold"
+                            android:contentDescription="Rating"
+                            android:layout_marginEnd="@dimen/padding_xsmall"/>
+
+                        <TextView
+                            android:id="@+id/tvRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4.9 (128 reviews)"
+                            android:textSize="@dimen/text_size_body"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorTextSecondary"
+                            android:fontFamily="sans-serif"/>
+
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:background="@color/colorUnselectedBackground"
+                        android:layout_marginTop="@dimen/padding_standard"
+                        android:layout_marginBottom="@dimen/padding_standard"/>
+
+                    <!-- Message / Book Now buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnMessage"
+                            style="@style/Widget.HandyProject.Button.Secondary"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="@dimen/padding_small"
+                            android:text="Message"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnBookNow"
+                            style="@style/Widget.HandyProject.Button.Primary"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/padding_small"
+                            android:text="Book Now"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Tab Layout -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorCardBackground"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:elevation="@dimen/card_elevation"
+                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabTextColor="@color/colorTextSecondary"
+                app:tabMode="fixed"/>
+
+            <!-- ViewPager2 -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackground"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

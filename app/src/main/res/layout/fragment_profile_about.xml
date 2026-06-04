@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_standard">
+
+        <!-- Card 1: Bio -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.HandyProject.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_standard">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_standard">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_small"
+                    android:text="About"
+                    android:textSize="@dimen/text_size_subheading"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextPrimary"
+                    android:fontFamily="sans-serif"/>
+
+                <TextView
+                    android:id="@+id/tvBio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I\'m Marcus, a master carpenter and general repair specialist with a passion for quality craftsmanship. Whether you need custom shelving, a squeaky door fixed, or a complete room refresh, I bring precision and care to every job."
+                    android:textSize="@dimen/text_size_body"
+                    android:textColor="@color/colorTextSecondary"
+                    android:fontFamily="sans-serif"/>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Card 2: Stats -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.HandyProject.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_standard">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_standard">
+
+                <!-- Row 1: Experience + Response Time -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="YEARS OF EXPERIENCE"
+                            android:textSize="@dimen/text_size_caption"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textAllCaps="true"
+                            android:fontFamily="sans-serif"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_xsmall"
+                            android:text="15+ Years"
+                            android:textSize="@dimen/text_size_subheading"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="sans-serif"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="RESPONSE TIME"
+                            android:textSize="@dimen/text_size_caption"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textAllCaps="true"
+                            android:fontFamily="sans-serif"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_xsmall"
+                            android:text="Usually within 1 hour"
+                            android:textSize="@dimen/text_size_subheading"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="sans-serif"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Row 2: Service Area -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/padding_standard">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SERVICE AREA"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textAllCaps="true"
+                        android:fontFamily="sans-serif"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_xsmall"
+                        android:text="London, UK and surrounding boroughs"
+                        android:textSize="@dimen/text_size_subheading"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="sans-serif"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Card 3: Services Offered -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.HandyProject.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_standard">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_small"
+                    android:text="Services Offered"
+                    android:textSize="@dimen/text_size_subheading"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextPrimary"
+                    android:fontFamily="sans-serif"/>
+
+                <!-- Service row 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/padding_small">
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_check"
+                        android:layout_marginEnd="@dimen/padding_small"
+                        android:contentDescription="Check"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Custom Carpentry &amp; Woodworking"
+                        android:textSize="@dimen/text_size_body"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif"/>
+                </LinearLayout>
+
+                <!-- Service row 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/padding_small">
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_check"
+                        android:layout_marginEnd="@dimen/padding_small"
+                        android:contentDescription="Check"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Furniture Assembly &amp; Repair"
+                        android:textSize="@dimen/text_size_body"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif"/>
+                </LinearLayout>
+
+                <!-- Service row 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/padding_small">
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_check"
+                        android:layout_marginEnd="@dimen/padding_small"
+                        android:contentDescription="Check"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Drywall Repair &amp; Painting"
+                        android:textSize="@dimen/text_size_body"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif"/>
+                </LinearLayout>
+
+                <!-- Service row 4 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/padding_small">
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_check"
+                        android:layout_marginEnd="@dimen/padding_small"
+                        android:contentDescription="Check"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minor Plumbing &amp; Electrical"
+                        android:textSize="@dimen/text_size_body"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif"/>
+                </LinearLayout>
+
+                <!-- Service row 5 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/padding_small">
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_xs"
+                        android:layout_height="@dimen/icon_size_xs"
+                        android:src="@drawable/ic_check"
+                        android:layout_marginEnd="@dimen/padding_small"
+                        android:contentDescription="Check"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Door &amp; Window Installation"
+                        android:textSize="@dimen/text_size_body"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

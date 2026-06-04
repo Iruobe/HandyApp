@@ -1,18 +1,19 @@
 package com.example.handyproject.ui.common.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.ui.customer.HandymanProfileActivity;
 import com.example.handyproject.utils.CurrencyUtils;
 
 import java.util.List;
@@ -45,8 +46,10 @@ public class HandymanHomeAdapter extends RecyclerView.Adapter<HandymanHomeAdapte
         holder.tvRating.setText(String.valueOf(handyman.getRating()));
         holder.tvRate.setText(CurrencyUtils.formatRate(handyman.getHourlyRate()));
 
-        holder.itemView.setOnClickListener(v ->
-                Toast.makeText(context, handyman.getFullName(), Toast.LENGTH_SHORT).show());
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, HandymanProfileActivity.class);
+            context.startActivity(intent);
+        });
     }
 
     @Override

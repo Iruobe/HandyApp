@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_standard">
+
+        <!-- Row 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="@dimen/padding_small">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/card_height_portfolio"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/padding_small"
+                app:cardCornerRadius="@dimen/corner_radius"
+                app:cardElevation="@dimen/card_elevation">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@color/colorUnselectedBackground"
+                    android:src="@drawable/defaultprofile"
+                    android:contentDescription="Portfolio photo 1"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/card_height_portfolio"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/padding_small"
+                app:cardCornerRadius="@dimen/corner_radius"
+                app:cardElevation="@dimen/card_elevation">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@color/colorUnselectedBackground"
+                    android:src="@drawable/defaultprofile"
+                    android:contentDescription="Portfolio photo 2"/>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <!-- Row 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="@dimen/padding_small">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/card_height_portfolio"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/padding_small"
+                app:cardCornerRadius="@dimen/corner_radius"
+                app:cardElevation="@dimen/card_elevation">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@color/colorUnselectedBackground"
+                    android:src="@drawable/defaultprofile"
+                    android:contentDescription="Portfolio photo 3"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/card_height_portfolio"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/padding_small"
+                app:cardCornerRadius="@dimen/corner_radius"
+                app:cardElevation="@dimen/card_elevation">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@color/colorUnselectedBackground"
+                    android:src="@drawable/defaultprofile"
+                    android:contentDescription="Portfolio photo 4"/>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
