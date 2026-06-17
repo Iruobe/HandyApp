@@ -1,5 +1,6 @@
 package com.example.handyproject.ui.customer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +70,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         btnMessage.setOnClickListener(v ->
                 Toast.makeText(this, "Messaging coming soon", Toast.LENGTH_SHORT).show());
         btnBookNow.setOnClickListener(v ->
-                Toast.makeText(this, "Booking coming soon", Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(this, BookingActivity.class)));
     }
 
     private static class ProfilePagerAdapter extends FragmentStateAdapter {

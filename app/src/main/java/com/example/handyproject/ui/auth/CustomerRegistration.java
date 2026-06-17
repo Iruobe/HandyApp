@@ -12,7 +12,7 @@ import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.common.utils.ValidationUtils;
 import com.example.handyproject.ui.common.utils.ViewUtils;
-import com.example.handyproject.ui.customer.ServiceMenu;
+import com.example.handyproject.ui.customer.CustomerHomeActivity;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -53,7 +53,7 @@ public class CustomerRegistration extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = authRepository.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(this, ServiceMenu.class));
+            startActivity(new Intent(this, CustomerHomeActivity.class));
             finish();
         }
     }
@@ -103,7 +103,7 @@ public class CustomerRegistration extends AppCompatActivity {
                         Toast.makeText(CustomerRegistration.this,
                                 "Profile saved successfully",
                                 Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CustomerRegistration.this, ServiceMenu.class));
+                        startActivity(new Intent(CustomerRegistration.this, CustomerHomeActivity.class));
                         finish();
                     }
 

@@ -25,6 +25,9 @@
             android:name="com.example.handyproject.ui.customer.SearchActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.handyproject.ui.customer.BookingActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.handyproject.ui.handyman.HandymanHomeActivity"
             android:exported="false" />
         <activity

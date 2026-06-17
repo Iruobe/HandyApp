@@ -59,4 +59,10 @@
     <!-- Search results screen -->
     <dimen name="search_photo_size">80dp</dimen>
     <dimen name="height_chip">32dp</dimen>
+
+    <!-- Booking screen -->
+    <dimen name="bottom_bar_height">80dp</dimen>
+    <dimen name="date_chip_width">60dp</dimen>
+    <dimen name="date_chip_height">72dp</dimen>
+    <dimen name="height_input_multiline">96dp</dimen>
 </resources>
