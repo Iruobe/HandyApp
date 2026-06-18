@@ -153,6 +153,11 @@ public class CustomerHomeActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(R.id.nav_home);
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home) return true;
+            if (item.getItemId() == R.id.nav_messages) {
+                startActivity(new Intent(this, MessagesActivity.class));
+                finish();
+                return true;
+            }
             if (item.getItemId() == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
                 return true;

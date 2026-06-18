@@ -73,4 +73,8 @@
     <dimen name="avatar_size_large">96dp</dimen>
     <dimen name="avatar_edit_button_size">32dp</dimen>
     <dimen name="row_divider_inset">56dp</dimen>
+
+    <!-- Messages screen -->
+    <dimen name="conversation_avatar_size">56dp</dimen>
+    <dimen name="unread_badge_min_size">20dp</dimen>
 </resources>

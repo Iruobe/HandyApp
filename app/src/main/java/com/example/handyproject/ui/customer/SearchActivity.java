@@ -102,6 +102,11 @@ public class SearchActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
+            if (item.getItemId() == R.id.nav_messages) {
+                startActivity(new Intent(this, MessagesActivity.class));
+                finish();
+                return true;
+            }
             if (item.getItemId() == R.id.nav_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
                 return true;
