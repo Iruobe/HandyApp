@@ -3,9 +3,10 @@ package com.example.handyproject.utils;
 public class Constants {
 
     // Firestore collections
-    public static final String COLLECTION_USERS    = "users";
-    public static final String COLLECTION_BOOKINGS = "bookings";
-    public static final String COLLECTION_MESSAGES = "messages";
+    public static final String COLLECTION_USERS         = "users";
+    public static final String COLLECTION_BOOKINGS      = "bookings";
+    public static final String COLLECTION_MESSAGES      = "messages";
+    public static final String COLLECTION_NOTIFICATIONS = "notifications";
 
     // User roles
     public static final String ROLE_HANDYMAN = "handyman";
@@ -30,6 +31,19 @@ public class Constants {
     public static final String FIELD_PROFILE_VIEWS       = "profileViews";
     public static final String FIELD_AVAILABLE_FOR_HIRE  = "availableForHire";
     public static final String FIELD_PORTFOLIO_PHOTOS    = "portfolioPhotos";
+
+    // Firestore field names — notifications
+    public static final String FIELD_USER_ID   = "userId";
+    public static final String FIELD_TYPE      = "type";
+    public static final String FIELD_TITLE     = "title";
+    public static final String FIELD_BODY      = "body";
+    public static final String FIELD_READ      = "read";
+    public static final String FIELD_TIMESTAMP = "timestamp";
+
+    // Notification types
+    public static final String TYPE_BOOKING = "booking";
+    public static final String TYPE_MESSAGE = "message";
+    public static final String TYPE_SYSTEM  = "system";
 
     // Notification
     public static final String NOTIFICATION_CHANNEL_ID = "app_channel";

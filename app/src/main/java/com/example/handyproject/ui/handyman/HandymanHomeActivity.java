@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
-import com.example.handyproject.data.remote.FirebaseService;
-import com.example.handyproject.ui.auth.MainActivity;
 import com.example.handyproject.ui.common.adapters.EnquiryAdapter;
+import com.example.handyproject.ui.customer.NotificationsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -60,12 +59,8 @@ public class HandymanHomeActivity extends AppCompatActivity {
         setupBadge();
         setupBottomNav();
 
-        // TEMP: remove before launch
-        findViewById(R.id.btnNotifications).setOnClickListener(v -> {
-            FirebaseService.getAuth().signOut();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
+        findViewById(R.id.btnNotifications).setOnClickListener(v ->
+                startActivity(new Intent(this, NotificationsActivity.class)));
 
         findViewById(R.id.btnAddPhotos).setOnClickListener(v ->
                 Toast.makeText(this, "Portfolio upload coming soon",

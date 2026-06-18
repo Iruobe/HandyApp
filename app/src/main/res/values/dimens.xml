@@ -65,4 +65,7 @@
     <dimen name="date_chip_width">60dp</dimen>
     <dimen name="date_chip_height">72dp</dimen>
     <dimen name="height_input_multiline">96dp</dimen>
+
+    <!-- Notifications screen -->
+    <dimen name="notification_icon_size">48dp</dimen>
 </resources>
