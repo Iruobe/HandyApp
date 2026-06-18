@@ -14,7 +14,7 @@
 
 ## Design System
 - Always apply 12dp corner radius to all UI elements — buttons, inputs, cards, containers. No exceptions
-- Always reference colour values from colors.xml — never hardcode colours in layouts or Java files
+- Always reference color values from colors.xml — never hardcode colors in layouts or Java files
 - Always reference dimension values from dimens.xml — never hardcode sizes
 
 ## Firebase / Forms

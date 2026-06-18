@@ -21,6 +21,7 @@ local.properties
 *.keystore
 *.jks
 SESSION.md
+review.txt
 
 # Firebase
 app/google-services.json

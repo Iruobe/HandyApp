@@ -148,6 +148,10 @@ public class NotificationsActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
+            if (item.getItemId() == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            }
             Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
             return false;
         });

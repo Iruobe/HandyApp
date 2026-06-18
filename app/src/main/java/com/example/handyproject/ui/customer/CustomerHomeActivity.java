@@ -54,6 +54,9 @@ public class CustomerHomeActivity extends AppCompatActivity {
         findViewById(R.id.btnNotifications).setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
 
+        findViewById(R.id.ivUserAvatar).setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class)));
+
         EditText etSearch = findViewById(R.id.etSearch);
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             String query = etSearch.getText().toString().trim();
@@ -150,6 +153,10 @@ public class CustomerHomeActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(R.id.nav_home);
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home) return true;
+            if (item.getItemId() == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            }
             Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
             return false;
         });

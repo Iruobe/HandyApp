@@ -31,6 +31,12 @@
             android:name="com.example.handyproject.ui.customer.NotificationsActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.handyproject.ui.customer.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.handyproject.ui.customer.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.handyproject.ui.handyman.HandymanHomeActivity"
             android:exported="false" />
         <activity

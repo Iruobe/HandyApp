@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.handyproject.R;
 import com.example.handyproject.ui.common.adapters.EnquiryAdapter;
 import com.example.handyproject.ui.customer.NotificationsActivity;
+import com.example.handyproject.ui.customer.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -61,6 +62,9 @@ public class HandymanHomeActivity extends AppCompatActivity {
 
         findViewById(R.id.btnNotifications).setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
+
+        findViewById(R.id.ivUserAvatar).setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class)));
 
         findViewById(R.id.btnAddPhotos).setOnClickListener(v ->
                 Toast.makeText(this, "Portfolio upload coming soon",
@@ -121,6 +125,10 @@ public class HandymanHomeActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(R.id.nav_home);
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home) return true;
+            if (item.getItemId() == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            }
             Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
             return false;
         });

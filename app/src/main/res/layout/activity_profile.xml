@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <!-- Top bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorCardBackground"
+        app:elevation="@dimen/card_elevation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_bar_height"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/padding_standard"
+            android:paddingEnd="@dimen/padding_standard">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="@dimen/back_button_size"
+                android:layout_height="@dimen/back_button_size"
+                android:src="@drawable/ic_arrow_back"
+                android:background="@android:color/transparent"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Profile"
+                android:textSize="@dimen/text_size_subheading"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextPrimary"
+                android:fontFamily="sans-serif" />
+
+            <View
+                android:layout_width="@dimen/back_button_size"
+                android:layout_height="@dimen/back_button_size" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/bottom_nav_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_standard">
+
+            <!-- Header card -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.HandyProject.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_standard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/padding_large">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/padding_standard">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/ivAvatar"
+                            android:layout_width="@dimen/avatar_size_large"
+                            android:layout_height="@dimen/avatar_size_large"
+                            android:src="@drawable/defaultprofile"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.HandyProject.Circle"
+                            android:contentDescription="Profile photo" />
+
+                        <ImageButton
+                            android:id="@+id/btnEditAvatar"
+                            android:layout_width="@dimen/avatar_edit_button_size"
+                            android:layout_height="@dimen/avatar_edit_button_size"
+                            android:layout_gravity="bottom|end"
+                            android:background="@drawable/circle_filled"
+                            android:src="@drawable/ic_edit"
+                            app:tint="@color/white"
+                            android:padding="@dimen/padding_xsmall"
+                            android:contentDescription="Edit photo" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_heading"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTextPrimary"
+                        android:fontFamily="sans-serif" />
+
+                    <TextView
+                        android:id="@+id/tvEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_xsmall"
+                        android:textSize="@dimen/text_size_body"
+                        android:textColor="@color/colorTextSecondary"
+                        android:fontFamily="sans-serif" />
+
+                    <TextView
+                        android:id="@+id/tvRolePill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:background="@drawable/bg_role_pill"
+                        android:paddingStart="@dimen/padding_small"
+                        android:paddingEnd="@dimen/padding_small"
+                        android:paddingTop="@dimen/padding_xsmall"
+                        android:paddingBottom="@dimen/padding_xsmall"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="sans-serif" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Account section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:text="ACCOUNT"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/colorTextSecondary"
+                android:fontFamily="sans-serif" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.HandyProject.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/rowEditProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Edit profile" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Edit Profile"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:rotation="-90"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Open" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_marginStart="@dimen/row_divider_inset"
+                        android:background="@color/colorUnselectedBackground" />
+
+                    <LinearLayout
+                        android:id="@+id/rowChangePassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_lock"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Change password" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Change Password"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:rotation="-90"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Open" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_marginStart="@dimen/row_divider_inset"
+                        android:background="@color/colorUnselectedBackground" />
+
+                    <LinearLayout
+                        android:id="@+id/rowPaymentMethods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_credit_card"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Payment methods" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Payment Methods"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:rotation="-90"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Open" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_marginStart="@dimen/row_divider_inset"
+                        android:background="@color/colorUnselectedBackground" />
+
+                    <LinearLayout
+                        android:id="@+id/rowSavedAddresses"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_location"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Saved addresses" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Saved Addresses"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:rotation="-90"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Open" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Preferences section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:text="PREFERENCES"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/colorTextSecondary"
+                android:fontFamily="sans-serif" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.HandyProject.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_notifications"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Notifications" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Notifications"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchNotifications"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_marginStart="@dimen/row_divider_inset"
+                        android:background="@color/colorUnselectedBackground" />
+
+                    <LinearLayout
+                        android:id="@+id/rowLanguage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_language"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Language" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Language"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/padding_small"
+                            android:text="English"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextSecondary"
+                            android:fontFamily="sans-serif" />
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:rotation="-90"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Open" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_marginStart="@dimen/row_divider_inset"
+                        android:background="@color/colorUnselectedBackground" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_dark_mode"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Dark mode" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Dark Mode"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchDarkMode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Support section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:text="SUPPORT"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/colorTextSecondary"
+                android:fontFamily="sans-serif" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.HandyProject.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/rowHelp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_help"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Help" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Help"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:rotation="-90"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Open" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_marginStart="@dimen/row_divider_inset"
+                        android:background="@color/colorUnselectedBackground" />
+
+                    <LinearLayout
+                        android:id="@+id/rowTerms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_document"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="Terms" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Terms &amp; Conditions"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size_xs"
+                            android:layout_height="@dimen/icon_size_xs"
+                            android:rotation="-90"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            app:tint="@color/colorTextSecondary"
+                            android:contentDescription="Open" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_height"
+                        android:layout_marginStart="@dimen/row_divider_inset"
+                        android:background="@color/colorUnselectedBackground" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_standard">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginEnd="@dimen/padding_standard"
+                            android:src="@drawable/ic_info"
+                            app:tint="@color/colorPrimary"
+                            android:contentDescription="About" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="About"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextPrimary"
+                            android:fontFamily="sans-serif" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="v1.0"
+                            android:textSize="@dimen/text_size_body"
+                            android:textColor="@color/colorTextSecondary"
+                            android:fontFamily="sans-serif" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Sign out -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnSignOut"
+                style="@style/Widget.HandyProject.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_standard"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_standard">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_marginEnd="@dimen/padding_small"
+                        android:src="@drawable/ic_logout"
+                        app:tint="@color/colorError"
+                        android:contentDescription="Sign out" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sign Out"
+                        android:textSize="@dimen/text_size_body"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorError"
+                        android:fontFamily="sans-serif" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorCardBackground"
+        app:elevation="@dimen/card_elevation_large"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

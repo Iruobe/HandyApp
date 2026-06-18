@@ -10,6 +10,9 @@ public class User {
     private String phoneNumber;
     private String location;
     private Timestamp createdAt;
+    private String serviceCategory;
+    private String serviceDescription;
+    private double hourlyRate;
 
     public User() {}
 
@@ -31,6 +34,9 @@ public class User {
     public String getPhoneNumber() { return phoneNumber; }
     public String getLocation()    { return location; }
     public Timestamp getCreatedAt(){ return createdAt; }
+    public String getServiceCategory()    { return serviceCategory; }
+    public String getServiceDescription() { return serviceDescription; }
+    public double getHourlyRate()         { return hourlyRate; }
 
     public void setUid(String uid)                 { this.uid = uid; }
     public void setRole(String role)               { this.role = role; }
@@ -39,4 +45,7 @@ public class User {
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
     public void setLocation(String location)       { this.location = location; }
     public void setCreatedAt(Timestamp createdAt)  { this.createdAt = createdAt; }
+    public void setServiceCategory(String serviceCategory)       { this.serviceCategory = serviceCategory; }
+    public void setServiceDescription(String serviceDescription) { this.serviceDescription = serviceDescription; }
+    public void setHourlyRate(double hourlyRate)                 { this.hourlyRate = hourlyRate; }
 }

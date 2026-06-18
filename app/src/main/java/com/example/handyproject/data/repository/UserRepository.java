@@ -1,6 +1,7 @@
 package com.example.handyproject.data.repository;
 
 import com.example.handyproject.data.model.User;
+import com.example.handyproject.utils.Constants;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
@@ -39,5 +40,12 @@ public class UserRepository {
                 .addOnSuccessListener(v -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(
                         e.getMessage() != null ? e.getMessage() : "Failed to save user data."));
+    }
+
+    public void updateUser(String uid, Map<String, Object> updates, SimpleCallback callback) {
+        db.collection(Constants.COLLECTION_USERS).document(uid).update(updates)
+                .addOnSuccessListener(v -> callback.onSuccess())
+                .addOnFailureListener(e -> callback.onFailure(
+                        e.getMessage() != null ? e.getMessage() : "Failed to update profile."));
     }
 }
