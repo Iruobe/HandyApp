@@ -47,6 +47,7 @@ public class HandymanAdapter extends RecyclerView.Adapter<HandymanAdapter.ViewHo
         holder.ratingText.setText(String.format(Locale.UK, "★ %.1f", h.getRating()));
         holder.itemView.setOnClickListener(v ->
                 listener.onHandymanClick(h.getFullName(), h.getEmail()));
+
     }
 
     @Override

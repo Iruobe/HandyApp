@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.customer.HandymanProfileActivity;
 import com.example.handyproject.utils.CurrencyUtils;
 
@@ -40,7 +41,7 @@ public class HandymanHomeAdapter extends RecyclerView.Adapter<HandymanHomeAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Handyman handyman = handymen.get(position);
 
-        holder.ivHandymanPhoto.setImageResource(R.drawable.defaultprofile);
+        ImageUtils.loadImage(holder.ivHandymanPhoto, null);
         holder.tvHandymanName.setText(handyman.getFullName());
         holder.tvServiceType.setText(handyman.getServiceCategory());
         holder.tvRating.setText(String.valueOf(handyman.getRating()));

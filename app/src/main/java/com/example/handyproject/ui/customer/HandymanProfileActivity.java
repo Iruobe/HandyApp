@@ -2,6 +2,7 @@ package com.example.handyproject.ui.customer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.example.handyproject.R;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -19,6 +21,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class HandymanProfileActivity extends AppCompatActivity {
 
     private MaterialToolbar toolbar;
+    private ImageView ivCoverPhoto;
     private ShapeableImageView ivProfilePhoto;
     private TextView tvHandymanName;
     private TextView tvHourlyRate;
@@ -36,6 +39,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_handyman_profile);
 
         toolbar = findViewById(R.id.toolbar);
+        ivCoverPhoto = findViewById(R.id.ivCoverPhoto);
         ivProfilePhoto = findViewById(R.id.ivProfilePhoto);
         tvHandymanName = findViewById(R.id.tvHandymanName);
         tvHourlyRate = findViewById(R.id.tvHourlyRate);
@@ -52,6 +56,9 @@ public class HandymanProfileActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
         toolbar.setNavigationOnClickListener(v -> finish());
+
+        ImageUtils.loadImage(ivCoverPhoto, null);
+        ImageUtils.loadAvatar(ivProfilePhoto, null);
 
         tvHandymanName.setText("Marcus Johnson");
         tvHourlyRate.setText("£65");

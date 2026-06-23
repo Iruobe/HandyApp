@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.customer.HandymanProfileActivity;
 import com.example.handyproject.utils.CurrencyUtils;
 import com.google.android.material.button.MaterialButton;
@@ -42,6 +43,7 @@ public class SearchResultAdapter extends
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Handyman handyman = handymen.get(position);
 
+        ImageUtils.loadImage(holder.ivHandymanPhoto, null);
         holder.tvName.setText(handyman.getFullName());
         holder.tvServiceTitle.setText(handyman.getServiceCategory());
         holder.tvRating.setText(String.valueOf(handyman.getRating()));
@@ -77,6 +79,7 @@ public class SearchResultAdapter extends
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        final ImageView ivHandymanPhoto;
         final TextView tvName;
         final TextView tvServiceTitle;
         final TextView tvRating;
@@ -91,6 +94,7 @@ public class SearchResultAdapter extends
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivHandymanPhoto = itemView.findViewById(R.id.ivHandymanPhoto);
             tvName         = itemView.findViewById(R.id.tvName);
             tvServiceTitle = itemView.findViewById(R.id.tvServiceTitle);
             tvRating       = itemView.findViewById(R.id.tvRating);

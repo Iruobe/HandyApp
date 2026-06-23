@@ -3,6 +3,7 @@ package com.example.handyproject.ui.handyman;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
 import com.example.handyproject.ui.common.adapters.EnquiryAdapter;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.customer.MessagesActivity;
 import com.example.handyproject.ui.customer.NotificationsActivity;
 import com.example.handyproject.ui.customer.ProfileActivity;
@@ -64,7 +66,9 @@ public class HandymanHomeActivity extends AppCompatActivity {
         findViewById(R.id.btnNotifications).setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
 
-        findViewById(R.id.ivUserAvatar).setOnClickListener(v ->
+        ImageView ivUserAvatar = findViewById(R.id.ivUserAvatar);
+        ImageUtils.loadAvatar(ivUserAvatar, null);
+        ivUserAvatar.setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class)));
 
         findViewById(R.id.btnAddPhotos).setOnClickListener(v ->

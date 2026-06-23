@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.customer.MessagesActivity.Conversation;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -53,6 +54,7 @@ public class ConversationAdapter extends
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Conversation conversation = conversations.get(position);
 
+        ImageUtils.loadAvatar(holder.ivAvatar, null);
         holder.tvName.setText(conversation.contactName);
         holder.tvTime.setText(conversation.timeLabel);
         holder.tvPreview.setText(conversation.lastMessage);

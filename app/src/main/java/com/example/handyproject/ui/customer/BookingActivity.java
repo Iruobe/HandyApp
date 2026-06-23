@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.handyproject.R;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +41,8 @@ public class BookingActivity extends AppCompatActivity {
         layoutDateChips = findViewById(R.id.layoutDateChips);
         layoutTimeChips = findViewById(R.id.layoutTimeChips);
         tvMonthYear     = findViewById(R.id.tvMonthYear);
+
+        ImageUtils.loadAvatar(findViewById(R.id.ivProviderPhoto), null);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 

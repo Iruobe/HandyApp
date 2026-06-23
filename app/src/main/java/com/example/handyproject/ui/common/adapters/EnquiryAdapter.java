@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.handyman.HandymanHomeActivity.EnquiryItem;
 
 import java.util.List;
@@ -44,6 +46,7 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.ViewHold
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
+        private final ImageView ivAvatar;
         private final TextView tvCustomerName;
         private final TextView tvMessage;
         private final TextView tvTime;
@@ -51,6 +54,7 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.ViewHold
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivAvatar       = itemView.findViewById(R.id.ivEnquiryAvatar);
             tvCustomerName = itemView.findViewById(R.id.tvEnquiryCustomerName);
             tvMessage      = itemView.findViewById(R.id.tvEnquiryMessage);
             tvTime         = itemView.findViewById(R.id.tvEnquiryTime);
@@ -59,6 +63,7 @@ public class EnquiryAdapter extends RecyclerView.Adapter<EnquiryAdapter.ViewHold
 
         void bind(EnquiryItem item) {
             Context context = itemView.getContext();
+            ImageUtils.loadAvatar(ivAvatar, null);
             tvCustomerName.setText(item.customerName);
             tvMessage.setText(item.message);
             tvTime.setText(item.timestamp);

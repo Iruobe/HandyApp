@@ -13,9 +13,11 @@ import com.example.handyproject.data.model.User;
 import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.auth.MainActivity;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.common.utils.NavigationUtils;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -24,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
     private final AuthRepository authRepository = new AuthRepository();
     private final UserRepository userRepository = new UserRepository();
 
+    private ShapeableImageView ivAvatar;
     private TextView tvName;
     private TextView tvEmail;
     private TextView tvRolePill;
@@ -33,9 +36,12 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        ivAvatar   = findViewById(R.id.ivAvatar);
         tvName     = findViewById(R.id.tvName);
         tvEmail    = findViewById(R.id.tvEmail);
         tvRolePill = findViewById(R.id.tvRolePill);
+
+        ImageUtils.loadAvatar(ivAvatar, null);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 

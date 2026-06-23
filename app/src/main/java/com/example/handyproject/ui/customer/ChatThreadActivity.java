@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
 import com.example.handyproject.ui.common.adapters.ChatMessageAdapter;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class ChatThreadActivity extends AppCompatActivity {
         TextView tvOnlineStatus  = findViewById(R.id.tvOnlineStatus);
         View viewOnlineDot       = findViewById(R.id.viewOnlineDot);
         FrameLayout btnSend      = findViewById(R.id.btnSend);
+
+        ImageUtils.loadAvatar(findViewById(R.id.ivContactAvatar), null);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 

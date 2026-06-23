@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
 import com.example.handyproject.data.remote.FirebaseService;
 import com.example.handyproject.ui.common.adapters.HandymanHomeAdapter;
+import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
@@ -54,7 +56,9 @@ public class CustomerHomeActivity extends AppCompatActivity {
         findViewById(R.id.btnNotifications).setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
 
-        findViewById(R.id.ivUserAvatar).setOnClickListener(v ->
+        ImageView ivUserAvatar = findViewById(R.id.ivUserAvatar);
+        ImageUtils.loadAvatar(ivUserAvatar, null);
+        ivUserAvatar.setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class)));
 
         EditText etSearch = findViewById(R.id.etSearch);
