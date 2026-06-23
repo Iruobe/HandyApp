@@ -74,8 +74,11 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        adapter = new ConversationAdapter(this, conversation ->
-                Toast.makeText(this, "Chat coming soon", Toast.LENGTH_SHORT).show());
+        adapter = new ConversationAdapter(this, conversation -> {
+            Intent intent = new Intent(this, ChatThreadActivity.class);
+            intent.putExtra(ChatThreadActivity.EXTRA_CONTACT_NAME, conversation.contactName);
+            startActivity(intent);
+        });
         rvConversations.setLayoutManager(new LinearLayoutManager(this));
         rvConversations.setAdapter(adapter);
         adapter.updateData(conversations);

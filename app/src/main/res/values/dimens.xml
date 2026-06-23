@@ -77,4 +77,5 @@
     <!-- Messages screen -->
     <dimen name="conversation_avatar_size">56dp</dimen>
     <dimen name="unread_badge_min_size">20dp</dimen>
+    <dimen name="chat_bubble_max_width">260dp</dimen>
 </resources>

@@ -40,6 +40,9 @@
             android:name="com.example.handyproject.ui.customer.MessagesActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.handyproject.ui.customer.ChatThreadActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.handyproject.ui.handyman.HandymanHomeActivity"
             android:exported="false" />
         <activity
