@@ -15,6 +15,11 @@ public class HandymanRepository {
         void onError(String message);
     }
 
+    public interface HandymanCallback {
+        void onSuccess(Handyman handyman);
+        void onError(String message);
+    }
+
     private ListenerRegistration listenerRegistration;
 
     public void startListening(HandymanListCallback callback) {
@@ -38,6 +43,24 @@ public class HandymanRepository {
                     }
                     callback.onUpdate(handymen);
                 });
+    }
+
+    public void fetchHandyman(String uid, HandymanCallback callback) {
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        Handyman h = doc.toObject(Handyman.class);
+                        if (h != null) h.setUid(doc.getId());
+                        callback.onSuccess(h);
+                    } else {
+                        callback.onSuccess(null);
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError(
+                        e.getMessage() != null ? e.getMessage() : "Failed to load handyman."));
     }
 
     public void stopListening() {

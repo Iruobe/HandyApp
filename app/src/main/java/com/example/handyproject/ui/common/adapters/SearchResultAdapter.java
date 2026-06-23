@@ -64,11 +64,13 @@ public class SearchResultAdapter extends
 
         holder.btnViewProfile.setOnClickListener(v -> {
             Intent intent = new Intent(context, HandymanProfileActivity.class);
+            intent.putExtra(HandymanProfileActivity.EXTRA_HANDYMAN_UID, handyman.getUid());
             context.startActivity(intent);
         });
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, HandymanProfileActivity.class);
+            intent.putExtra(HandymanProfileActivity.EXTRA_HANDYMAN_UID, handyman.getUid());
             context.startActivity(intent);
         });
     }

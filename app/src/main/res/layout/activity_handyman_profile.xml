@@ -101,7 +101,8 @@
                                 app:tint="@color/white"
                                 android:background="@drawable/circle_filled"
                                 android:contentDescription="Verified"
-                                android:layout_gravity="bottom|end"/>
+                                android:layout_gravity="bottom|end"
+                                android:visibility="gone"/>
 
                         </FrameLayout>
 

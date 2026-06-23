@@ -11,14 +11,23 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.example.handyproject.R;
+import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.ui.common.utils.ImageUtils;
+import com.example.handyproject.utils.CurrencyUtils;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.Locale;
+
 public class HandymanProfileActivity extends AppCompatActivity {
+
+    public static final String EXTRA_HANDYMAN_UID = "handyman_uid";
+
+    private final HandymanRepository handymanRepository = new HandymanRepository();
 
     private MaterialToolbar toolbar;
     private ImageView ivCoverPhoto;
@@ -60,11 +69,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         ImageUtils.loadImage(ivCoverPhoto, null);
         ImageUtils.loadAvatar(ivProfilePhoto, null);
 
-        tvHandymanName.setText("Marcus Johnson");
-        tvHourlyRate.setText("£65");
-        tvServiceCategory.setText("Master Carpenter & General Repair");
-        tvLocation.setText("London, UK (2.4 miles away)");
-        tvRating.setText("4.9 (128 reviews)");
+        loadHandyman();
 
         viewPager.setAdapter(new ProfilePagerAdapter(this));
 
@@ -78,6 +83,45 @@ public class HandymanProfileActivity extends AppCompatActivity {
                 Toast.makeText(this, "Messaging coming soon", Toast.LENGTH_SHORT).show());
         btnBookNow.setOnClickListener(v ->
                 startActivity(new Intent(this, BookingActivity.class)));
+    }
+
+    private void loadHandyman() {
+        String uid = getIntent().getStringExtra(EXTRA_HANDYMAN_UID);
+        if (uid == null) {
+            failAndFinish();
+            return;
+        }
+
+        handymanRepository.fetchHandyman(uid, new HandymanRepository.HandymanCallback() {
+            @Override
+            public void onSuccess(Handyman handyman) {
+                if (handyman == null) {
+                    failAndFinish();
+                    return;
+                }
+                populateHeader(handyman);
+            }
+
+            @Override
+            public void onError(String message) {
+                failAndFinish();
+            }
+        });
+    }
+
+    private void populateHeader(Handyman handyman) {
+        tvHandymanName.setText(handyman.getFullName() != null ? handyman.getFullName() : "");
+        tvHourlyRate.setText(CurrencyUtils.formatAmount(handyman.getHourlyRate()));
+        tvServiceCategory.setText(handyman.getServiceCategory() != null ? handyman.getServiceCategory() : "");
+        tvLocation.setText(handyman.getLocation() != null ? handyman.getLocation() : "");
+        tvRating.setText(handyman.getRating() > 0
+                ? String.format(Locale.UK, "%.1f", handyman.getRating())
+                : "Not rated");
+    }
+
+    private void failAndFinish() {
+        Toast.makeText(this, "Unable to load profile", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private static class ProfilePagerAdapter extends FragmentStateAdapter {
