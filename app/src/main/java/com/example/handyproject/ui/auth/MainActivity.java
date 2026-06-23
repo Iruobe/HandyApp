@@ -119,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 String role = user.getRole();
+                getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                        .edit().putString(Constants.PREF_KEY_ROLE, role).apply();
                 Intent intent;
                 if (Constants.ROLE_CUSTOMER.equals(role)) {
                     intent = new Intent(MainActivity.this, CustomerHomeActivity.class);

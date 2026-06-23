@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
 import com.example.handyproject.ui.common.adapters.ConversationAdapter;
+import com.example.handyproject.ui.common.utils.NavigationUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -96,8 +97,7 @@ public class MessagesActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_messages) return true;
             if (item.getItemId() == R.id.nav_home) {
-                startActivity(new Intent(this, CustomerHomeActivity.class));
-                finish();
+                NavigationUtils.goHome(this);
                 return true;
             }
             if (item.getItemId() == R.id.nav_search) {

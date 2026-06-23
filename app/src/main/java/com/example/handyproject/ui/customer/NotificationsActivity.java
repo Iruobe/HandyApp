@@ -16,6 +16,7 @@ import com.example.handyproject.R;
 import com.example.handyproject.data.model.Notification;
 import com.example.handyproject.data.repository.NotificationRepository;
 import com.example.handyproject.ui.common.adapters.NotificationAdapter;
+import com.example.handyproject.ui.common.utils.NavigationUtils;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
@@ -139,8 +140,7 @@ public class NotificationsActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_home) {
-                startActivity(new Intent(this, CustomerHomeActivity.class));
-                finish();
+                NavigationUtils.goHome(this);
                 return true;
             }
             if (item.getItemId() == R.id.nav_search) {

@@ -50,4 +50,8 @@ public class Constants {
 
     // Query limits
     public static final int HANDYMAN_LIST_LIMIT = 10;
+
+    // SharedPreferences
+    public static final String PREFS_NAME    = "handy_prefs";
+    public static final String PREF_KEY_ROLE = "user_role";
 }

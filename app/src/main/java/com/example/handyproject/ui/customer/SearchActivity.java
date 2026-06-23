@@ -14,6 +14,7 @@ import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
 import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.ui.common.adapters.SearchResultAdapter;
+import com.example.handyproject.ui.common.utils.NavigationUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
@@ -98,8 +99,7 @@ public class SearchActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_search) return true;
             if (item.getItemId() == R.id.nav_home) {
-                startActivity(new Intent(this, CustomerHomeActivity.class));
-                finish();
+                NavigationUtils.goHome(this);
                 return true;
             }
             if (item.getItemId() == R.id.nav_messages) {

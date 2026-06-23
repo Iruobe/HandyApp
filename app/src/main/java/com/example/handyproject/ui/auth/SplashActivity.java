@@ -86,6 +86,8 @@ public class SplashActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(doc -> {
                     String role = doc.getString(Constants.FIELD_ROLE);
+                    getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                            .edit().putString(Constants.PREF_KEY_ROLE, role).apply();
                     Intent intent;
                     if (Constants.ROLE_HANDYMAN.equals(role)) {
                             intent = new Intent(this, HandymanHomeActivity.class);

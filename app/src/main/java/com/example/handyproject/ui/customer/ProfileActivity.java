@@ -13,6 +13,7 @@ import com.example.handyproject.data.model.User;
 import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.auth.MainActivity;
+import com.example.handyproject.ui.common.utils.NavigationUtils;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -136,8 +137,7 @@ public class ProfileActivity extends AppCompatActivity {
         bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_profile) return true;
             if (item.getItemId() == R.id.nav_home) {
-                startActivity(new Intent(this, CustomerHomeActivity.class));
-                finish();
+                NavigationUtils.goHome(this);
                 return true;
             }
             if (item.getItemId() == R.id.nav_search) {
