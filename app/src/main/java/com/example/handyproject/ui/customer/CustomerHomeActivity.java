@@ -3,6 +3,7 @@ package com.example.handyproject.ui.customer;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
 import com.example.handyproject.data.remote.FirebaseService;
+import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.ui.common.adapters.HandymanHomeAdapter;
 import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.utils.Constants;
@@ -36,6 +38,8 @@ public class CustomerHomeActivity extends AppCompatActivity {
     private RecyclerView rvHandymen;
     private LinearLayout layoutUpload;
     private ActivityResultLauncher<String> imagePicker;
+    private final List<Handyman> handymen = new ArrayList<>();
+    private HandymanRepository handymanRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,32 +128,39 @@ public class CustomerHomeActivity extends AppCompatActivity {
     }
 
     private void setupHandymenCards() {
-        List<Handyman> dummyHandymen = new ArrayList<>();
-
-        Handyman h1 = new Handyman();
-        h1.setFullName("Marcus T.");
-        h1.setServiceCategory("Plumbing & General");
-        h1.setHourlyRate(45.0);
-        h1.setRating(4.9);
-        dummyHandymen.add(h1);
-
-        Handyman h2 = new Handyman();
-        h2.setFullName("Sarah J.");
-        h2.setServiceCategory("Electrical & Smart Home");
-        h2.setHourlyRate(60.0);
-        h2.setRating(4.8);
-        dummyHandymen.add(h2);
-
-        Handyman h3 = new Handyman();
-        h3.setFullName("David L.");
-        h3.setServiceCategory("Carpentry & Assembly");
-        h3.setHourlyRate(50.0);
-        h3.setRating(5.0);
-        dummyHandymen.add(h3);
-
         rvHandymen.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rvHandymen.setAdapter(new HandymanHomeAdapter(this, dummyHandymen));
+        HandymanHomeAdapter adapter = new HandymanHomeAdapter(this, handymen);
+        rvHandymen.setAdapter(adapter);
+
+        handymanRepository = new HandymanRepository();
+        handymanRepository.startListening(new HandymanRepository.HandymanListCallback() {
+            @Override
+            public void onUpdate(List<Handyman> result) {
+                handymen.clear();
+                handymen.addAll(result);
+                adapter.notifyDataSetChanged();
+                toggleHandymenSection();
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(CustomerHomeActivity.this, message, Toast.LENGTH_SHORT).show();
+                toggleHandymenSection();
+            }
+        });
+    }
+
+    private void toggleHandymenSection() {
+        int visibility = handymen.isEmpty() ? View.GONE : View.VISIBLE;
+        findViewById(R.id.layoutAvailableHandymen).setVisibility(visibility);
+        rvHandymen.setVisibility(visibility);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (handymanRepository != null) handymanRepository.stopListening();
     }
 
     private void setupBottomNav() {
