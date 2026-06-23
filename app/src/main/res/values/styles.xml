@@ -43,6 +43,16 @@
         <item name="shapeAppearance">@style/ShapeAppearance.HandyProject.Rounded</item>
     </style>
 
+    <!-- Dropdown input field: same look as TextInputLayout, for ExposedDropdownMenu -->
+    <style name="Widget.HandyProject.TextInputLayout.ExposedDropdownMenu" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxBackgroundColor">@color/colorCardBackground</item>
+        <item name="boxStrokeColor">@color/input_stroke_color</item>
+        <item name="hintTextColor">@color/colorTextSecondary</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.HandyProject.Rounded</item>
+    </style>
+
     <!-- Ghost button: light grey fill, dark grey text, 12dp corners, 48dp tall, full width -->
     <style name="Widget.HandyProject.Button.Ghost" parent="Widget.Material3.Button">
         <item name="android:layout_width">match_parent</item>

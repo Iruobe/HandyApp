@@ -71,14 +71,6 @@ public class HandymanProfileActivity extends AppCompatActivity {
 
         loadHandyman();
 
-        viewPager.setAdapter(new ProfilePagerAdapter(this));
-
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            if (position == 0) tab.setText("About");
-            else if (position == 1) tab.setText("Portfolio");
-            else tab.setText("Reviews");
-        }).attach();
-
         btnMessage.setOnClickListener(v ->
                 Toast.makeText(this, "Messaging coming soon", Toast.LENGTH_SHORT).show());
         btnBookNow.setOnClickListener(v ->
@@ -117,6 +109,14 @@ public class HandymanProfileActivity extends AppCompatActivity {
         tvRating.setText(handyman.getRating() > 0
                 ? String.format(Locale.UK, "%.1f", handyman.getRating())
                 : "Not rated");
+
+        viewPager.setAdapter(new ProfilePagerAdapter(this, handyman));
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if (position == 0) tab.setText("About");
+            else if (position == 1) tab.setText("Portfolio");
+            else tab.setText("Reviews");
+        }).attach();
     }
 
     private void failAndFinish() {
@@ -126,8 +126,15 @@ public class HandymanProfileActivity extends AppCompatActivity {
 
     private static class ProfilePagerAdapter extends FragmentStateAdapter {
 
-        ProfilePagerAdapter(@NonNull AppCompatActivity activity) {
+        private final String bio;
+        private final String responseTime;
+        private final int yearsOfExperience;
+
+        ProfilePagerAdapter(@NonNull AppCompatActivity activity, @NonNull Handyman handyman) {
             super(activity);
+            this.bio = handyman.getBio();
+            this.responseTime = handyman.getResponseTime();
+            this.yearsOfExperience = handyman.getYearsOfExperience();
         }
 
         @Override
@@ -138,7 +145,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            if (position == 0) return new ProfileAboutFragment();
+            if (position == 0) return ProfileAboutFragment.newInstance(bio, responseTime, yearsOfExperience);
             if (position == 1) return new ProfilePortfolioFragment();
             return new ProfileReviewsFragment();
         }

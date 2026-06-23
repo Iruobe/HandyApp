@@ -153,6 +153,35 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilBio"
+            style="@style/Widget.HandyProject.TextInputLayout"
+            android:layout_marginStart="@dimen/padding_large"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:hint="Bio (Optional)">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/BioEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
+                android:minLines="2" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilResponseTime"
+            style="@style/Widget.HandyProject.TextInputLayout.ExposedDropdownMenu"
+            android:layout_marginStart="@dimen/padding_large"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:hint="Typical Response Time">
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/ResponseTimeAutoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
             style="@style/Widget.HandyProject.TextInputLayout"
             android:layout_marginStart="@dimen/padding_large"

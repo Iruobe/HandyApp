@@ -84,6 +84,7 @@
                             android:fontFamily="sans-serif"/>
 
                         <TextView
+                            android:id="@+id/tvYearsExperience"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_xsmall"
@@ -111,6 +112,7 @@
                             android:fontFamily="sans-serif"/>
 
                         <TextView
+                            android:id="@+id/tvResponseTime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_xsmall"
@@ -121,34 +123,6 @@
                             android:fontFamily="sans-serif"/>
 
                     </LinearLayout>
-                </LinearLayout>
-
-                <!-- Row 2: Service Area -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/padding_standard">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SERVICE AREA"
-                        android:textSize="@dimen/text_size_caption"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textAllCaps="true"
-                        android:fontFamily="sans-serif"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_xsmall"
-                        android:text="London, UK and surrounding boroughs"
-                        android:textSize="@dimen/text_size_subheading"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimary"
-                        android:fontFamily="sans-serif"/>
-
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

@@ -13,6 +13,8 @@ public class User {
     private String serviceCategory;
     private String serviceDescription;
     private double hourlyRate;
+    private String bio;
+    private String responseTime;
 
     public User() {}
 
@@ -37,6 +39,8 @@ public class User {
     public String getServiceCategory()    { return serviceCategory; }
     public String getServiceDescription() { return serviceDescription; }
     public double getHourlyRate()         { return hourlyRate; }
+    public String getBio()                { return bio; }
+    public String getResponseTime()       { return responseTime; }
 
     public void setUid(String uid)                 { this.uid = uid; }
     public void setRole(String role)               { this.role = role; }
@@ -48,4 +52,6 @@ public class User {
     public void setServiceCategory(String serviceCategory)       { this.serviceCategory = serviceCategory; }
     public void setServiceDescription(String serviceDescription) { this.serviceDescription = serviceDescription; }
     public void setHourlyRate(double hourlyRate)                 { this.hourlyRate = hourlyRate; }
+    public void setBio(String bio)                               { this.bio = bio; }
+    public void setResponseTime(String responseTime)             { this.responseTime = responseTime; }
 }

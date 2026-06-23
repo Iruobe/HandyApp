@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.handyproject.R;
@@ -15,6 +16,7 @@ import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.ui.handyman.HandymanHomeActivity;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +32,7 @@ public class HandymanRegistration extends AppCompatActivity {
 
     private TextInputLayout tilFullName, tilEmail, tilPhone, tilLocation,
             tilServiceCategory, tilServiceDescription, tilYearsExperience,
-            tilHourlyRate, tilPassword, tilConfirmPassword;
+            tilHourlyRate, tilBio, tilResponseTime, tilPassword, tilConfirmPassword;
     private MaterialButton signupButton;
 
     @Override
@@ -46,9 +48,16 @@ public class HandymanRegistration extends AppCompatActivity {
         tilServiceDescription = findViewById(R.id.tilServiceDescription);
         tilYearsExperience    = findViewById(R.id.tilYearsExperience);
         tilHourlyRate         = findViewById(R.id.tilHourlyRate);
+        tilBio                = findViewById(R.id.tilBio);
+        tilResponseTime       = findViewById(R.id.tilResponseTime);
         tilPassword           = findViewById(R.id.tilPassword);
         tilConfirmPassword    = findViewById(R.id.tilConfirmPassword);
         signupButton          = findViewById(R.id.button);
+
+        MaterialAutoCompleteTextView actvResponseTime = findViewById(R.id.ResponseTimeAutoCompleteTextView);
+        actvResponseTime.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, Constants.RESPONSE_TIME_OPTIONS));
+        actvResponseTime.setText(Constants.DEFAULT_RESPONSE_TIME, false);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         signupButton.setOnClickListener(v -> signupButtonClicked());
@@ -91,6 +100,8 @@ public class HandymanRegistration extends AppCompatActivity {
         String serviceDescription = ViewUtils.getTextFrom(tilServiceDescription);
         String yearsExp           = ViewUtils.getTextFrom(tilYearsExperience);
         String hourlyRateStr      = ViewUtils.getTextFrom(tilHourlyRate);
+        String bio                = ViewUtils.getTextFrom(tilBio);
+        String responseTime       = ViewUtils.getTextFrom(tilResponseTime);
         String password           = ViewUtils.getTextFrom(tilPassword);
         String confirmPassword    = ViewUtils.getTextFrom(tilConfirmPassword);
 
@@ -117,6 +128,9 @@ public class HandymanRegistration extends AppCompatActivity {
                 userData.put(Constants.FIELD_SERVICE_DESCRIPTION, serviceDescription);
                 userData.put(Constants.FIELD_YEARS_EXPERIENCE, yearsOfExperience);
                 userData.put(Constants.FIELD_HOURLY_RATE, hourlyRate);
+                userData.put(Constants.FIELD_BIO, bio);
+                userData.put(Constants.FIELD_RESPONSE_TIME,
+                        responseTime.isEmpty() ? Constants.DEFAULT_RESPONSE_TIME : responseTime);
                 userData.put(Constants.FIELD_AVAILABLE_FOR_HIRE, true);
                 userData.put(Constants.FIELD_PORTFOLIO_PHOTOS, new ArrayList<>());
                 userData.put(Constants.FIELD_RATING, 0);

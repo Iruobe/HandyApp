@@ -2,6 +2,7 @@ package com.example.handyproject.ui.customer;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.example.handyproject.ui.common.utils.ValidationUtils;
 import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,7 +28,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private final UserRepository userRepository = new UserRepository();
 
     private TextInputLayout tilFullName, tilPhone, tilLocation, tilEmail,
-            tilServiceCategory, tilServiceDescription, tilHourlyRate;
+            tilServiceCategory, tilServiceDescription, tilHourlyRate, tilBio, tilResponseTime;
+    private MaterialAutoCompleteTextView actvResponseTime;
     private MaterialButton btnSave;
 
     private String currentUid;
@@ -44,7 +47,13 @@ public class EditProfileActivity extends AppCompatActivity {
         tilServiceCategory       = findViewById(R.id.tilServiceCategory);
         tilServiceDescription    = findViewById(R.id.tilServiceDescription);
         tilHourlyRate            = findViewById(R.id.tilHourlyRate);
+        tilBio                   = findViewById(R.id.tilBio);
+        tilResponseTime          = findViewById(R.id.tilResponseTime);
         btnSave                  = findViewById(R.id.btnSave);
+
+        actvResponseTime = findViewById(R.id.etResponseTime);
+        actvResponseTime.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, Constants.RESPONSE_TIME_OPTIONS));
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         btnSave.setOnClickListener(v -> saveChanges());
@@ -93,6 +102,11 @@ public class EditProfileActivity extends AppCompatActivity {
         if (user.getHourlyRate() > 0) {
             setText(tilHourlyRate, String.valueOf(user.getHourlyRate()));
         }
+        setText(tilBio, user.getBio());
+        actvResponseTime.setText(
+                user.getResponseTime() != null && !user.getResponseTime().isEmpty()
+                        ? user.getResponseTime() : Constants.DEFAULT_RESPONSE_TIME,
+                false);
     }
 
     private void setText(TextInputLayout til, String value) {
@@ -106,6 +120,8 @@ public class EditProfileActivity extends AppCompatActivity {
         tilServiceCategory.setVisibility(visibility);
         tilServiceDescription.setVisibility(visibility);
         tilHourlyRate.setVisibility(visibility);
+        tilBio.setVisibility(visibility);
+        tilResponseTime.setVisibility(visibility);
     }
 
     private void saveChanges() {
@@ -122,11 +138,15 @@ public class EditProfileActivity extends AppCompatActivity {
         String serviceCategory = "";
         String serviceDescription = "";
         String hourlyRateStr = "";
+        String bio = "";
+        String responseTime = "";
 
         if (isHandyman) {
             serviceCategory    = ViewUtils.getTextFrom(tilServiceCategory);
             serviceDescription = ViewUtils.getTextFrom(tilServiceDescription);
             hourlyRateStr      = ViewUtils.getTextFrom(tilHourlyRate);
+            bio                = ViewUtils.getTextFrom(tilBio);
+            responseTime       = ViewUtils.getTextFrom(tilResponseTime);
 
             valid &= ValidationUtils.validateRequired(tilServiceCategory, serviceCategory, "Service category");
             valid &= ValidationUtils.validateRequired(tilServiceDescription, serviceDescription, "Service description");
@@ -144,6 +164,9 @@ public class EditProfileActivity extends AppCompatActivity {
             updates.put(Constants.FIELD_SERVICE_CATEGORY, serviceCategory);
             updates.put(Constants.FIELD_SERVICE_DESCRIPTION, serviceDescription);
             updates.put(Constants.FIELD_HOURLY_RATE, Double.parseDouble(hourlyRateStr));
+            updates.put(Constants.FIELD_BIO, bio);
+            updates.put(Constants.FIELD_RESPONSE_TIME,
+                    responseTime.isEmpty() ? Constants.DEFAULT_RESPONSE_TIME : responseTime);
         }
 
         btnSave.setEnabled(false);
