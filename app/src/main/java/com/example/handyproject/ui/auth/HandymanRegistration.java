@@ -12,7 +12,6 @@ import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.common.utils.ValidationUtils;
 import com.example.handyproject.ui.common.utils.ViewUtils;
-import com.example.handyproject.ui.customer.ServiceMenu;
 import com.example.handyproject.ui.handyman.HandymanHomeActivity;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.button.MaterialButton;
@@ -60,7 +59,7 @@ public class HandymanRegistration extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = authRepository.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(this, ServiceMenu.class));
+            startActivity(new Intent(this, HandymanHomeActivity.class));
             finish();
         }
     }
