@@ -2,6 +2,8 @@ package com.example.handyproject.data.model;
 
 import com.google.firebase.Timestamp;
 
+import java.util.List;
+
 public class User {
     private String uid;
     private String role;
@@ -15,6 +17,7 @@ public class User {
     private double hourlyRate;
     private String bio;
     private String responseTime;
+    private List<String> servicesOffered;
 
     public User() {}
 
@@ -41,6 +44,7 @@ public class User {
     public double getHourlyRate()         { return hourlyRate; }
     public String getBio()                { return bio; }
     public String getResponseTime()       { return responseTime; }
+    public List<String> getServicesOffered() { return servicesOffered; }
 
     public void setUid(String uid)                 { this.uid = uid; }
     public void setRole(String role)               { this.role = role; }
@@ -54,4 +58,5 @@ public class User {
     public void setHourlyRate(double hourlyRate)                 { this.hourlyRate = hourlyRate; }
     public void setBio(String bio)                               { this.bio = bio; }
     public void setResponseTime(String responseTime)             { this.responseTime = responseTime; }
+    public void setServicesOffered(List<String> servicesOffered) { this.servicesOffered = servicesOffered; }
 }

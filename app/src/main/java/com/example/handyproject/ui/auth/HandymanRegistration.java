@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.handyproject.R;
 import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.UserRepository;
+import com.example.handyproject.ui.common.utils.ServicesInputHelper;
 import com.example.handyproject.ui.common.utils.ValidationUtils;
 import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.ui.handyman.HandymanHomeActivity;
@@ -23,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HandymanRegistration extends AppCompatActivity {
@@ -34,6 +37,7 @@ public class HandymanRegistration extends AppCompatActivity {
             tilServiceCategory, tilServiceDescription, tilYearsExperience,
             tilHourlyRate, tilBio, tilResponseTime, tilPassword, tilConfirmPassword;
     private MaterialButton signupButton;
+    private ServicesInputHelper servicesInputHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,11 @@ public class HandymanRegistration extends AppCompatActivity {
         actvResponseTime.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, Constants.RESPONSE_TIME_OPTIONS));
         actvResponseTime.setText(Constants.DEFAULT_RESPONSE_TIME, false);
+
+        LinearLayout llServicesContainer = findViewById(R.id.llServicesContainer);
+        MaterialButton btnAddService = findViewById(R.id.btnAddService);
+        servicesInputHelper = new ServicesInputHelper(this, llServicesContainer, btnAddService);
+        servicesInputHelper.addRow(null);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         signupButton.setOnClickListener(v -> signupButtonClicked());
@@ -108,6 +117,12 @@ public class HandymanRegistration extends AppCompatActivity {
         if (!validate(fullName, email, phone, location, serviceCategory, serviceDescription,
                 yearsExp, hourlyRateStr, password, confirmPassword)) return;
 
+        List<String> servicesOffered = servicesInputHelper.getServices();
+        if (servicesOffered.isEmpty()) {
+            Toast.makeText(this, "Add at least one service", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         signupButton.setEnabled(false);
         double hourlyRate     = Double.parseDouble(hourlyRateStr);
         int yearsOfExperience = Integer.parseInt(yearsExp);
@@ -131,6 +146,7 @@ public class HandymanRegistration extends AppCompatActivity {
                 userData.put(Constants.FIELD_BIO, bio);
                 userData.put(Constants.FIELD_RESPONSE_TIME,
                         responseTime.isEmpty() ? Constants.DEFAULT_RESPONSE_TIME : responseTime);
+                userData.put(Constants.FIELD_SERVICES_OFFERED, servicesOffered);
                 userData.put(Constants.FIELD_AVAILABLE_FOR_HIRE, true);
                 userData.put(Constants.FIELD_PORTFOLIO_PHOTOS, new ArrayList<>());
                 userData.put(Constants.FIELD_RATING, 0);

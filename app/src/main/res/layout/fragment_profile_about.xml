@@ -129,6 +129,7 @@
 
         <!-- Card 3: Services Offered -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardServicesOffered"
             style="@style/Widget.HandyProject.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -149,115 +150,11 @@
                     android:textColor="@color/colorTextPrimary"
                     android:fontFamily="sans-serif"/>
 
-                <!-- Service row 1 -->
                 <LinearLayout
+                    android:id="@+id/llServicesOfferedContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/padding_small">
-                    <ImageView
-                        android:layout_width="@dimen/icon_size_xs"
-                        android:layout_height="@dimen/icon_size_xs"
-                        android:src="@drawable/ic_check"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Check"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Custom Carpentry &amp; Woodworking"
-                        android:textSize="@dimen/text_size_body"
-                        android:textColor="@color/colorTextSecondary"
-                        android:fontFamily="sans-serif"/>
-                </LinearLayout>
-
-                <!-- Service row 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/padding_small">
-                    <ImageView
-                        android:layout_width="@dimen/icon_size_xs"
-                        android:layout_height="@dimen/icon_size_xs"
-                        android:src="@drawable/ic_check"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Check"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Furniture Assembly &amp; Repair"
-                        android:textSize="@dimen/text_size_body"
-                        android:textColor="@color/colorTextSecondary"
-                        android:fontFamily="sans-serif"/>
-                </LinearLayout>
-
-                <!-- Service row 3 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/padding_small">
-                    <ImageView
-                        android:layout_width="@dimen/icon_size_xs"
-                        android:layout_height="@dimen/icon_size_xs"
-                        android:src="@drawable/ic_check"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Check"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Drywall Repair &amp; Painting"
-                        android:textSize="@dimen/text_size_body"
-                        android:textColor="@color/colorTextSecondary"
-                        android:fontFamily="sans-serif"/>
-                </LinearLayout>
-
-                <!-- Service row 4 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/padding_small">
-                    <ImageView
-                        android:layout_width="@dimen/icon_size_xs"
-                        android:layout_height="@dimen/icon_size_xs"
-                        android:src="@drawable/ic_check"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Check"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Minor Plumbing &amp; Electrical"
-                        android:textSize="@dimen/text_size_body"
-                        android:textColor="@color/colorTextSecondary"
-                        android:fontFamily="sans-serif"/>
-                </LinearLayout>
-
-                <!-- Service row 5 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/padding_small">
-                    <ImageView
-                        android:layout_width="@dimen/icon_size_xs"
-                        android:layout_height="@dimen/icon_size_xs"
-                        android:src="@drawable/ic_check"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Check"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Door &amp; Window Installation"
-                        android:textSize="@dimen/text_size_body"
-                        android:textColor="@color/colorTextSecondary"
-                        android:fontFamily="sans-serif"/>
-                </LinearLayout>
+                    android:orientation="vertical"/>
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

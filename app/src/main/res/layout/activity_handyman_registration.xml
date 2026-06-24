@@ -107,6 +107,34 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_large"
+            android:layout_marginBottom="@dimen/padding_xsmall"
+            android:text="Services Offered"
+            android:textSize="@dimen/text_size_body"
+            android:textColor="@color/colorTextSecondary"
+            android:fontFamily="sans-serif"/>
+
+        <LinearLayout
+            android:id="@+id/llServicesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_large"
+            android:orientation="vertical"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddService"
+            style="@style/Widget.HandyProject.Button.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginStart="@dimen/padding_large"
+            android:layout_marginBottom="@dimen/padding_standard"
+            android:text="+ Add Service"
+            app:icon="@drawable/ic_add"
+            app:iconTint="@color/colorPrimary"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilServiceDescription"
             style="@style/Widget.HandyProject.TextInputLayout"

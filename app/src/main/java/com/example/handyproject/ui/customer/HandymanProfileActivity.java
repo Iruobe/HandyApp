@@ -21,6 +21,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.List;
 import java.util.Locale;
 
 public class HandymanProfileActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
     public static final String EXTRA_HANDYMAN_UID = "handyman_uid";
 
     private final HandymanRepository handymanRepository = new HandymanRepository();
+    private String handymanUid;
 
     private MaterialToolbar toolbar;
     private ImageView ivCoverPhoto;
@@ -73,18 +75,21 @@ public class HandymanProfileActivity extends AppCompatActivity {
 
         btnMessage.setOnClickListener(v ->
                 Toast.makeText(this, "Messaging coming soon", Toast.LENGTH_SHORT).show());
-        btnBookNow.setOnClickListener(v ->
-                startActivity(new Intent(this, BookingActivity.class)));
+        btnBookNow.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BookingActivity.class);
+            intent.putExtra(EXTRA_HANDYMAN_UID, handymanUid);
+            startActivity(intent);
+        });
     }
 
     private void loadHandyman() {
-        String uid = getIntent().getStringExtra(EXTRA_HANDYMAN_UID);
-        if (uid == null) {
+        handymanUid = getIntent().getStringExtra(EXTRA_HANDYMAN_UID);
+        if (handymanUid == null) {
             failAndFinish();
             return;
         }
 
-        handymanRepository.fetchHandyman(uid, new HandymanRepository.HandymanCallback() {
+        handymanRepository.fetchHandyman(handymanUid, new HandymanRepository.HandymanCallback() {
             @Override
             public void onSuccess(Handyman handyman) {
                 if (handyman == null) {
@@ -129,12 +134,14 @@ public class HandymanProfileActivity extends AppCompatActivity {
         private final String bio;
         private final String responseTime;
         private final int yearsOfExperience;
+        private final List<String> servicesOffered;
 
         ProfilePagerAdapter(@NonNull AppCompatActivity activity, @NonNull Handyman handyman) {
             super(activity);
             this.bio = handyman.getBio();
             this.responseTime = handyman.getResponseTime();
             this.yearsOfExperience = handyman.getYearsOfExperience();
+            this.servicesOffered = handyman.getServicesOffered();
         }
 
         @Override
@@ -145,7 +152,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            if (position == 0) return ProfileAboutFragment.newInstance(bio, responseTime, yearsOfExperience);
+            if (position == 0) return ProfileAboutFragment.newInstance(bio, responseTime, yearsOfExperience, servicesOffered);
             if (position == 1) return new ProfilePortfolioFragment();
             return new ProfileReviewsFragment();
         }

@@ -19,12 +19,14 @@ public class Handyman {
     private int profileViews;
     private boolean availableForHire;
     private List<String> portfolioPhotos;
+    private List<String> servicesOffered;
     private String bio;
     private String responseTime;
     private Timestamp createdAt;
 
     public Handyman() {
         portfolioPhotos = new ArrayList<>();
+        servicesOffered = new ArrayList<>();
     }
 
     public String getUid()                      { return uid; }
@@ -41,6 +43,7 @@ public class Handyman {
     public int getProfileViews()                { return profileViews; }
     public boolean isAvailableForHire()         { return availableForHire; }
     public List<String> getPortfolioPhotos()    { return portfolioPhotos; }
+    public List<String> getServicesOffered()    { return servicesOffered; }
     public String getBio()                       { return bio; }
     public String getResponseTime()              { return responseTime; }
     public Timestamp getCreatedAt()             { return createdAt; }
@@ -59,6 +62,7 @@ public class Handyman {
     public void setProfileViews(int profileViews)               { this.profileViews = profileViews; }
     public void setAvailableForHire(boolean availableForHire)   { this.availableForHire = availableForHire; }
     public void setPortfolioPhotos(List<String> portfolioPhotos){ this.portfolioPhotos = portfolioPhotos; }
+    public void setServicesOffered(List<String> servicesOffered){ this.servicesOffered = servicesOffered; }
     public void setBio(String bio)                               { this.bio = bio; }
     public void setResponseTime(String responseTime)             { this.responseTime = responseTime; }
     public void setCreatedAt(Timestamp createdAt)               { this.createdAt = createdAt; }

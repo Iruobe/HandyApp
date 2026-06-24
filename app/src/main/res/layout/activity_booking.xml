@@ -97,7 +97,8 @@
                             android:src="@drawable/ic_verified"
                             app:tint="@color/white"
                             android:layout_gravity="bottom|end"
-                            android:contentDescription="Verified" />
+                            android:contentDescription="Verified"
+                            android:visibility="gone" />
 
                     </FrameLayout>
 
@@ -141,20 +142,13 @@
                                 android:contentDescription="Rating" />
 
                             <TextView
+                                android:id="@+id/tvProviderRating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="4.9"
                                 android:textSize="@dimen/text_size_body"
                                 android:textStyle="bold"
                                 android:textColor="@color/colorTextPrimary" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="(128 reviews)"
-                                android:textSize="@dimen/text_size_body"
-                                android:textColor="@color/colorTextSecondary"
-                                android:layout_marginStart="@dimen/padding_xsmall" />
 
                         </LinearLayout>
 
@@ -448,74 +442,29 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Service (Est. 1 hr)"
-                            android:textSize="@dimen/text_size_body"
-                            android:textColor="@color/colorTextSecondary" />
-
-                        <TextView
-                            android:id="@+id/tvServiceCost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="£65.00"
-                            android:textSize="@dimen/text_size_body"
-                            android:textColor="@color/colorTextSecondary" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/padding_small">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Service Fee"
-                            android:textSize="@dimen/text_size_body"
-                            android:textColor="@color/colorTextSecondary" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="£5.00"
-                            android:textSize="@dimen/text_size_body"
-                            android:textColor="@color/colorTextSecondary" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider_height"
-                        android:background="@color/colorUnselectedBackground"
-                        android:layout_marginTop="@dimen/padding_standard"
-                        android:layout_marginBottom="@dimen/padding_standard" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Estimated Total"
+                            android:text="Hourly Rate"
                             android:textSize="@dimen/text_size_subheading"
                             android:textStyle="bold"
                             android:textColor="@color/colorTextPrimary" />
 
                         <TextView
-                            android:id="@+id/tvTotal"
+                            android:id="@+id/tvHourlyRate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="£70.00"
+                            android:text="£65.00/hr"
                             android:textSize="@dimen/text_size_subheading"
                             android:textStyle="bold"
                             android:textColor="@color/colorPrimary" />
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_xsmall"
+                        android:text="Final price confirmed by handyman"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textColor="@color/colorTextSecondary" />
 
                     <View
                         android:layout_width="match_parent"

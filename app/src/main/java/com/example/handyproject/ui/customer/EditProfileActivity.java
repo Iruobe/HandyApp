@@ -3,6 +3,8 @@ package com.example.handyproject.ui.customer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import com.example.handyproject.R;
 import com.example.handyproject.data.model.User;
 import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.UserRepository;
+import com.example.handyproject.ui.common.utils.ServicesInputHelper;
 import com.example.handyproject.ui.common.utils.ValidationUtils;
 import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.utils.Constants;
@@ -19,7 +22,9 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -30,6 +35,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private TextInputLayout tilFullName, tilPhone, tilLocation, tilEmail,
             tilServiceCategory, tilServiceDescription, tilHourlyRate, tilBio, tilResponseTime;
     private MaterialAutoCompleteTextView actvResponseTime;
+    private TextView tvServicesOfferedLabel;
+    private LinearLayout llServicesContainer;
+    private MaterialButton btnAddService;
+    private ServicesInputHelper servicesInputHelper;
     private MaterialButton btnSave;
 
     private String currentUid;
@@ -49,11 +58,16 @@ public class EditProfileActivity extends AppCompatActivity {
         tilHourlyRate            = findViewById(R.id.tilHourlyRate);
         tilBio                   = findViewById(R.id.tilBio);
         tilResponseTime          = findViewById(R.id.tilResponseTime);
+        tvServicesOfferedLabel   = findViewById(R.id.tvServicesOfferedLabel);
+        llServicesContainer      = findViewById(R.id.llServicesContainer);
+        btnAddService            = findViewById(R.id.btnAddService);
         btnSave                  = findViewById(R.id.btnSave);
 
         actvResponseTime = findViewById(R.id.etResponseTime);
         actvResponseTime.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, Constants.RESPONSE_TIME_OPTIONS));
+
+        servicesInputHelper = new ServicesInputHelper(this, llServicesContainer, btnAddService);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         btnSave.setOnClickListener(v -> saveChanges());
@@ -107,6 +121,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 user.getResponseTime() != null && !user.getResponseTime().isEmpty()
                         ? user.getResponseTime() : Constants.DEFAULT_RESPONSE_TIME,
                 false);
+        servicesInputHelper.loadServices(user.getServicesOffered());
     }
 
     private void setText(TextInputLayout til, String value) {
@@ -122,6 +137,9 @@ public class EditProfileActivity extends AppCompatActivity {
         tilHourlyRate.setVisibility(visibility);
         tilBio.setVisibility(visibility);
         tilResponseTime.setVisibility(visibility);
+        tvServicesOfferedLabel.setVisibility(visibility);
+        llServicesContainer.setVisibility(visibility);
+        btnAddService.setVisibility(visibility);
     }
 
     private void saveChanges() {
@@ -155,6 +173,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
         if (!valid) return;
 
+        List<String> servicesOffered = new ArrayList<>();
+        if (isHandyman) {
+            servicesOffered = servicesInputHelper.getServices();
+            if (servicesOffered.isEmpty()) {
+                Toast.makeText(this, "Add at least one service", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
         Map<String, Object> updates = new HashMap<>();
         updates.put(Constants.FIELD_FULL_NAME, fullName);
         updates.put(Constants.FIELD_PHONE, phone);
@@ -167,6 +194,7 @@ public class EditProfileActivity extends AppCompatActivity {
             updates.put(Constants.FIELD_BIO, bio);
             updates.put(Constants.FIELD_RESPONSE_TIME,
                     responseTime.isEmpty() ? Constants.DEFAULT_RESPONSE_TIME : responseTime);
+            updates.put(Constants.FIELD_SERVICES_OFFERED, servicesOffered);
         }
 
         btnSave.setEnabled(false);

@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.handyproject.R;
+import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.ui.common.utils.ImageUtils;
+import com.example.handyproject.utils.CurrencyUtils;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
@@ -18,9 +21,15 @@ import java.util.Locale;
 
 public class BookingActivity extends AppCompatActivity {
 
+    private final HandymanRepository handymanRepository = new HandymanRepository();
+
     private LinearLayout layoutDateChips;
     private LinearLayout layoutTimeChips;
     private TextView tvMonthYear;
+    private TextView tvProviderName;
+    private TextView tvProviderService;
+    private TextView tvProviderRating;
+    private TextView tvHourlyRate;
 
     private int selectedDateIndex = 1;
     private int selectedTimeIndex = 1;
@@ -38,11 +47,17 @@ public class BookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
-        layoutDateChips = findViewById(R.id.layoutDateChips);
-        layoutTimeChips = findViewById(R.id.layoutTimeChips);
-        tvMonthYear     = findViewById(R.id.tvMonthYear);
+        layoutDateChips   = findViewById(R.id.layoutDateChips);
+        layoutTimeChips   = findViewById(R.id.layoutTimeChips);
+        tvMonthYear       = findViewById(R.id.tvMonthYear);
+        tvProviderName    = findViewById(R.id.tvProviderName);
+        tvProviderService = findViewById(R.id.tvProviderService);
+        tvProviderRating  = findViewById(R.id.tvProviderRating);
+        tvHourlyRate      = findViewById(R.id.tvHourlyRate);
 
         ImageUtils.loadAvatar(findViewById(R.id.ivProviderPhoto), null);
+
+        loadHandyman();
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
@@ -69,6 +84,44 @@ public class BookingActivity extends AppCompatActivity {
         updateMonthYear();
         buildDateChips();
         buildTimeChips();
+    }
+
+    private void loadHandyman() {
+        String uid = getIntent().getStringExtra(HandymanProfileActivity.EXTRA_HANDYMAN_UID);
+        if (uid == null) {
+            failAndFinish();
+            return;
+        }
+
+        handymanRepository.fetchHandyman(uid, new HandymanRepository.HandymanCallback() {
+            @Override
+            public void onSuccess(Handyman handyman) {
+                if (handyman == null) {
+                    failAndFinish();
+                    return;
+                }
+                populateProvider(handyman);
+            }
+
+            @Override
+            public void onError(String message) {
+                failAndFinish();
+            }
+        });
+    }
+
+    private void populateProvider(Handyman handyman) {
+        tvProviderName.setText(handyman.getFullName() != null ? handyman.getFullName() : "");
+        tvProviderService.setText(handyman.getServiceCategory() != null ? handyman.getServiceCategory() : "");
+        tvProviderRating.setText(handyman.getRating() > 0
+                ? String.format(Locale.UK, "%.1f", handyman.getRating())
+                : "Not rated");
+        tvHourlyRate.setText(CurrencyUtils.formatRate(handyman.getHourlyRate()));
+    }
+
+    private void failAndFinish() {
+        Toast.makeText(this, "Unable to load booking details", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void updateMonthYear() {

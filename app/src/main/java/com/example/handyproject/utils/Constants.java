@@ -31,6 +31,7 @@ public class Constants {
     public static final String FIELD_PROFILE_VIEWS       = "profileViews";
     public static final String FIELD_AVAILABLE_FOR_HIRE  = "availableForHire";
     public static final String FIELD_PORTFOLIO_PHOTOS    = "portfolioPhotos";
+    public static final String FIELD_SERVICES_OFFERED    = "servicesOffered";
     public static final String FIELD_BIO                 = "bio";
     public static final String FIELD_RESPONSE_TIME       = "responseTime";
 
@@ -38,6 +39,7 @@ public class Constants {
             "Within 1 hour", "Within a few hours", "Same day", "1-2 days"
     };
     public static final String DEFAULT_RESPONSE_TIME = "Within a few hours";
+    public static final int MAX_SERVICES = 5;
 
     // Firestore field names — notifications
     public static final String FIELD_USER_ID   = "userId";
