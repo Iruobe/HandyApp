@@ -1,6 +1,7 @@
 package com.example.handyproject.ui.customer;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +24,11 @@ public class BookingActivity extends AppCompatActivity {
 
     private final HandymanRepository handymanRepository = new HandymanRepository();
 
-    private static final int DATE_STRIP_DAYS = 30;
+    private static final int DATE_STRIP_DAYS = 60;
 
     private LinearLayout layoutDateChips;
     private LinearLayout layoutTimeChips;
+    private android.widget.HorizontalScrollView scrollDateChips;
     private TextView tvMonthYear;
     private TextView tvProviderName;
     private TextView tvProviderService;
@@ -39,6 +41,7 @@ public class BookingActivity extends AppCompatActivity {
     private final String[] timeSlots = buildTimeSlots();
 
     private final MaterialCardView[] dateCards = new MaterialCardView[DATE_STRIP_DAYS];
+    private final Calendar[] dateChipDates = new Calendar[DATE_STRIP_DAYS];
     private final MaterialCardView[] timeCards = new MaterialCardView[timeSlots.length];
 
     @Override
@@ -48,6 +51,7 @@ public class BookingActivity extends AppCompatActivity {
 
         layoutDateChips   = findViewById(R.id.layoutDateChips);
         layoutTimeChips   = findViewById(R.id.layoutTimeChips);
+        scrollDateChips   = findViewById(R.id.scrollDateChips);
         tvMonthYear       = findViewById(R.id.tvMonthYear);
         tvProviderName    = findViewById(R.id.tvProviderName);
         tvProviderService = findViewById(R.id.tvProviderService);
@@ -72,6 +76,20 @@ public class BookingActivity extends AppCompatActivity {
 
         buildDateChips();
         buildTimeChips();
+        setupDateScrollListener();
+    }
+
+    private void setupDateScrollListener() {
+        int chipWidthPx = getResources().getDimensionPixelSize(R.dimen.date_chip_width);
+        int marginEndPx = getResources().getDimensionPixelSize(R.dimen.padding_small);
+        int stepPx = chipWidthPx + marginEndPx;
+
+        scrollDateChips.setOnScrollChangeListener((View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
+            int index = scrollX / stepPx;
+            if (index < 0) index = 0;
+            if (index > DATE_STRIP_DAYS - 1) index = DATE_STRIP_DAYS - 1;
+            updateMonthYearLabel(dateChipDates[index]);
+        });
     }
 
     private void loadHandyman() {
@@ -148,20 +166,29 @@ public class BookingActivity extends AppCompatActivity {
             LinearLayout inner = new LinearLayout(this);
             inner.setOrientation(LinearLayout.VERTICAL);
             inner.setGravity(android.view.Gravity.CENTER);
-            inner.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT));
+            inner.setLayoutParams(new android.widget.FrameLayout.LayoutParams(
+                    android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                    android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                    android.view.Gravity.CENTER));
 
             TextView tvDayName = new TextView(this);
             tvDayName.setText(dayNameFmt.format(cal.getTime()).toUpperCase(Locale.getDefault()));
             tvDayName.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(R.dimen.text_size_caption));
+            tvDayName.setGravity(android.view.Gravity.CENTER);
+            tvDayName.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
 
             TextView tvDayNumber = new TextView(this);
             tvDayNumber.setText(dayNumberFmt.format(cal.getTime()));
             tvDayNumber.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(R.dimen.text_size_subheading));
             tvDayNumber.setTypeface(null, android.graphics.Typeface.BOLD);
+            tvDayNumber.setGravity(android.view.Gravity.CENTER);
+            tvDayNumber.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
 
             inner.addView(tvDayName);
             inner.addView(tvDayNumber);
@@ -184,6 +211,7 @@ public class BookingActivity extends AppCompatActivity {
             });
 
             dateCards[i] = card;
+            dateChipDates[i] = chipDate;
             layoutDateChips.addView(card);
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }

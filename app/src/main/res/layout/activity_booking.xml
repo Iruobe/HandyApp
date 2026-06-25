@@ -280,6 +280,7 @@
 
                     <!-- Date chips (populated programmatically) -->
                     <HorizontalScrollView
+                        android:id="@+id/scrollDateChips"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scrollbars="none">
