@@ -1,11 +1,24 @@
 package com.example.handyproject.ui.customer;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -16,8 +29,10 @@ import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.utils.CurrencyUtils;
 import com.google.android.material.card.MaterialCardView;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class BookingActivity extends AppCompatActivity {
@@ -34,6 +49,11 @@ public class BookingActivity extends AppCompatActivity {
     private TextView tvProviderService;
     private TextView tvProviderRating;
     private TextView tvHourlyRate;
+    private EditText etAddress;
+
+    private static final long LOCATION_TIMEOUT_MS = 10000L;
+
+    private ActivityResultLauncher<String> locationPermissionLauncher;
 
     private int selectedDateIndex = 0;
     private int selectedTimeIndex = 0;
@@ -57,15 +77,25 @@ public class BookingActivity extends AppCompatActivity {
         tvProviderService = findViewById(R.id.tvProviderService);
         tvProviderRating  = findViewById(R.id.tvProviderRating);
         tvHourlyRate      = findViewById(R.id.tvHourlyRate);
+        etAddress         = findViewById(R.id.etAddress);
 
         ImageUtils.loadAvatar(findViewById(R.id.ivProviderPhoto), null);
 
         loadHandyman();
 
+        locationPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                granted -> {
+                    if (granted) {
+                        fetchCurrentLocation();
+                    } else {
+                        showLocationFailure("Location permission needed — please type your address");
+                    }
+                });
+
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
-        findViewById(R.id.tvUseCurrentLocation).setOnClickListener(v ->
-                Toast.makeText(this, "Location detection coming soon", Toast.LENGTH_SHORT).show());
+        findViewById(R.id.tvUseCurrentLocation).setOnClickListener(v -> requestCurrentLocation());
 
         findViewById(R.id.btnConfirmBooking).setOnClickListener(v -> {
             Toast.makeText(this,
@@ -128,6 +158,120 @@ public class BookingActivity extends AppCompatActivity {
     private void failAndFinish() {
         Toast.makeText(this, "Unable to load booking details", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    private void requestCurrentLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            fetchCurrentLocation();
+        } else {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+    private void fetchCurrentLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            showLocationFailure("Location permission needed — please type your address");
+            return;
+        }
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        String provider;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            provider = LocationManager.GPS_PROVIDER;
+        } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            provider = LocationManager.NETWORK_PROVIDER;
+        } else {
+            showLocationFailure("Couldn't get your location — please type your address");
+            return;
+        }
+
+        Handler timeoutHandler = new Handler(Looper.getMainLooper());
+        LocationListener[] listenerHolder = new LocationListener[1];
+
+        Runnable onTimeout = () -> {
+            locationManager.removeUpdates(listenerHolder[0]);
+            showLocationFailure("Couldn't get your location — please type your address");
+        };
+
+        listenerHolder[0] = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                timeoutHandler.removeCallbacks(onTimeout);
+                locationManager.removeUpdates(this);
+                reverseGeocodeAndFill(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+        locationManager.requestSingleUpdate(provider, listenerHolder[0], Looper.getMainLooper());
+        timeoutHandler.postDelayed(onTimeout, LOCATION_TIMEOUT_MS);
+    }
+
+    private void reverseGeocodeAndFill(Location location) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1,
+                    new Geocoder.GeocodeListener() {
+                        @Override
+                        public void onGeocode(List<Address> addresses) {
+                            runOnUiThread(() -> applyGeocodedAddress(addresses));
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            runOnUiThread(() -> showLocationFailure(
+                                    "Couldn't get your location — please type your address"));
+                        }
+                    });
+        } else {
+            try {
+                @SuppressWarnings("deprecation")
+                List<Address> addresses = geocoder.getFromLocation(
+                        location.getLatitude(), location.getLongitude(), 1);
+                applyGeocodedAddress(addresses);
+            } catch (IOException e) {
+                showLocationFailure("Couldn't get your location — please type your address");
+            }
+        }
+    }
+
+    private void applyGeocodedAddress(List<Address> addresses) {
+        if (addresses == null || addresses.isEmpty()) {
+            showLocationFailure("Couldn't get your location — please type your address");
+            return;
+        }
+
+        Address address = addresses.get(0);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+            if (sb.length() > 0) sb.append(", ");
+            sb.append(address.getAddressLine(i));
+        }
+
+        if (sb.length() == 0) {
+            showLocationFailure("Couldn't get your location — please type your address");
+            return;
+        }
+
+        etAddress.setText(sb.toString());
+    }
+
+    private void showLocationFailure(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void updateMonthYearLabel(Calendar date) {
