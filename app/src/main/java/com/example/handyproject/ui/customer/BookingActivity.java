@@ -23,6 +23,8 @@ public class BookingActivity extends AppCompatActivity {
 
     private final HandymanRepository handymanRepository = new HandymanRepository();
 
+    private static final int DATE_STRIP_DAYS = 30;
+
     private LinearLayout layoutDateChips;
     private LinearLayout layoutTimeChips;
     private TextView tvMonthYear;
@@ -31,16 +33,13 @@ public class BookingActivity extends AppCompatActivity {
     private TextView tvProviderRating;
     private TextView tvHourlyRate;
 
-    private int selectedDateIndex = 1;
-    private int selectedTimeIndex = 1;
+    private int selectedDateIndex = 0;
+    private int selectedTimeIndex = 0;
 
-    private final String[] timeSlots = {"09:00 AM", "10:30 AM", "01:00 PM", "03:30 PM"};
-    private final boolean[] timeDisabled = {false, false, false, true};
+    private final String[] timeSlots = buildTimeSlots();
 
-    private final MaterialCardView[] dateCards = new MaterialCardView[5];
-    private final MaterialCardView[] timeCards = new MaterialCardView[4];
-
-    private final Calendar baseCalendar = Calendar.getInstance();
+    private final MaterialCardView[] dateCards = new MaterialCardView[DATE_STRIP_DAYS];
+    private final MaterialCardView[] timeCards = new MaterialCardView[timeSlots.length];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +63,6 @@ public class BookingActivity extends AppCompatActivity {
         findViewById(R.id.tvUseCurrentLocation).setOnClickListener(v ->
                 Toast.makeText(this, "Location detection coming soon", Toast.LENGTH_SHORT).show());
 
-        findViewById(R.id.btnPrevMonth).setOnClickListener(v -> {
-            baseCalendar.add(Calendar.MONTH, -1);
-            updateMonthYear();
-        });
-
-        findViewById(R.id.btnNextMonth).setOnClickListener(v -> {
-            baseCalendar.add(Calendar.MONTH, 1);
-            updateMonthYear();
-        });
-
         findViewById(R.id.btnConfirmBooking).setOnClickListener(v -> {
             Toast.makeText(this,
                     "Booking confirmed! A confirmation will be sent shortly.",
@@ -81,7 +70,6 @@ public class BookingActivity extends AppCompatActivity {
             finish();
         });
 
-        updateMonthYear();
         buildDateChips();
         buildTimeChips();
     }
@@ -124,9 +112,9 @@ public class BookingActivity extends AppCompatActivity {
         finish();
     }
 
-    private void updateMonthYear() {
+    private void updateMonthYearLabel(Calendar date) {
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
-        tvMonthYear.setText(sdf.format(baseCalendar.getTime()));
+        tvMonthYear.setText(sdf.format(date.getTime()));
     }
 
     private void buildDateChips() {
@@ -138,11 +126,15 @@ public class BookingActivity extends AppCompatActivity {
         int marginEndPx  = getResources().getDimensionPixelSize(R.dimen.padding_small);
 
         Calendar cal = Calendar.getInstance();
+
         SimpleDateFormat dayNameFmt   = new SimpleDateFormat("EEE", Locale.getDefault());
         SimpleDateFormat dayNumberFmt = new SimpleDateFormat("d",   Locale.getDefault());
 
-        for (int i = 0; i < 5; i++) {
+        updateMonthYearLabel(cal);
+
+        for (int i = 0; i < DATE_STRIP_DAYS; i++) {
             final int index = i;
+            final Calendar chipDate = (Calendar) cal.clone();
 
             MaterialCardView card = new MaterialCardView(this);
             LinearLayout.LayoutParams cardParams =
@@ -179,6 +171,7 @@ public class BookingActivity extends AppCompatActivity {
 
             card.setOnClickListener(v -> {
                 selectedDateIndex = index;
+                updateMonthYearLabel(chipDate);
                 for (int j = 0; j < dateCards.length; j++) {
                     if (dateCards[j] == null) continue;
                     LinearLayout innerLayout = (LinearLayout) dateCards[j].getChildAt(0);
@@ -248,27 +241,38 @@ public class BookingActivity extends AppCompatActivity {
             tv.setPadding(padHPx, padVPx, padHPx, padVPx);
             card.addView(tv);
 
-            if (timeDisabled[i]) {
-                card.setAlpha(0.4f);
-                card.setClickable(false);
-                applyTimeChipStyle(card, tv, false);
-            } else {
-                applyTimeChipStyle(card, tv, index == selectedTimeIndex);
-                card.setOnClickListener(v -> {
-                    selectedTimeIndex = index;
-                    for (int j = 0; j < timeCards.length; j++) {
-                        if (timeCards[j] == null || timeDisabled[j]) continue;
-                        applyTimeChipStyle(
-                                timeCards[j],
-                                (TextView) timeCards[j].getChildAt(0),
-                                j == selectedTimeIndex);
-                    }
-                });
-            }
+            applyTimeChipStyle(card, tv, index == selectedTimeIndex);
+            card.setOnClickListener(v -> {
+                selectedTimeIndex = index;
+                for (int j = 0; j < timeCards.length; j++) {
+                    if (timeCards[j] == null) continue;
+                    applyTimeChipStyle(
+                            timeCards[j],
+                            (TextView) timeCards[j].getChildAt(0),
+                            j == selectedTimeIndex);
+                }
+            });
 
             timeCards[i] = card;
             layoutTimeChips.addView(card);
         }
+    }
+
+    // Fixed 8:00 AM-6:00 PM range. TODO: drive from real per-handyman
+    // availability (set at registration/edit) in a future round.
+    private static String[] buildTimeSlots() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 8);
+        cal.set(Calendar.MINUTE, 0);
+
+        SimpleDateFormat timeFmt = new SimpleDateFormat("h:mm a", Locale.getDefault());
+        int slotCount = ((18 - 8) * 60 / 30) + 1;
+        String[] slots = new String[slotCount];
+        for (int i = 0; i < slotCount; i++) {
+            slots[i] = timeFmt.format(cal.getTime());
+            cal.add(Calendar.MINUTE, 30);
+        }
+        return slots;
     }
 
     private void applyTimeChipStyle(MaterialCardView card, TextView tv, boolean selected) {
