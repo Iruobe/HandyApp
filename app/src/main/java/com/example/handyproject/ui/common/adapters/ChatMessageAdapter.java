@@ -9,20 +9,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
-import com.example.handyproject.ui.customer.ChatThreadActivity.ChatMessage;
+import com.example.handyproject.data.model.Message;
+import com.google.firebase.Timestamp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatMessageAdapter extends
         RecyclerView.Adapter<ChatMessageAdapter.ViewHolder> {
 
-    private static final int VIEW_TYPE_SENT = 0;
+    private static final int VIEW_TYPE_SENT     = 0;
     private static final int VIEW_TYPE_RECEIVED = 1;
 
-    private final List<ChatMessage> messages = new ArrayList<>();
+    private final String currentUid;
+    private final List<Message> messages = new ArrayList<>();
 
-    public void updateData(List<ChatMessage> newData) {
+    public ChatMessageAdapter(String currentUid) {
+        this.currentUid = currentUid;
+    }
+
+    public void updateData(List<Message> newData) {
         messages.clear();
         messages.addAll(newData);
         notifyDataSetChanged();
@@ -30,7 +38,8 @@ public class ChatMessageAdapter extends
 
     @Override
     public int getItemViewType(int position) {
-        return messages.get(position).isSent ? VIEW_TYPE_SENT : VIEW_TYPE_RECEIVED;
+        Message msg = messages.get(position);
+        return currentUid.equals(msg.getSenderId()) ? VIEW_TYPE_SENT : VIEW_TYPE_RECEIVED;
     }
 
     @NonNull
@@ -46,14 +55,19 @@ public class ChatMessageAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ChatMessage message = messages.get(position);
-        holder.tvMessageText.setText(message.text);
-        holder.tvMessageTime.setText(message.timeLabel);
+        Message msg = messages.get(position);
+        holder.tvMessageText.setText(msg.getBody());
+        holder.tvMessageTime.setText(formatTime(msg.getSentAt()));
     }
 
     @Override
     public int getItemCount() {
         return messages.size();
+    }
+
+    private static String formatTime(Timestamp sentAt) {
+        if (sentAt == null) return "";
+        return new SimpleDateFormat("h:mm a", Locale.UK).format(sentAt.toDate());
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

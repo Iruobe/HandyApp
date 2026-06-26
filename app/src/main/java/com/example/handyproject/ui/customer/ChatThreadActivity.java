@@ -1,61 +1,60 @@
 package com.example.handyproject.ui.customer;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
+import com.example.handyproject.data.repository.AuthRepository;
+import com.example.handyproject.data.repository.MessageRepository;
 import com.example.handyproject.ui.common.adapters.ChatMessageAdapter;
 import com.example.handyproject.ui.common.utils.ImageUtils;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import android.widget.TextView;
 
 public class ChatThreadActivity extends AppCompatActivity {
 
-    public static final String EXTRA_CONTACT_NAME = "contact_name";
+    public static final String EXTRA_CONTACT_NAME   = "contact_name";
     public static final String EXTRA_CONVERSATION_ID = "conversation_id";
-
-    public static class ChatMessage {
-        public String text;
-        public String timeLabel;
-        public boolean isSent;
-
-        public ChatMessage(String text, String timeLabel, boolean isSent) {
-            this.text      = text;
-            this.timeLabel = timeLabel;
-            this.isSent    = isSent;
-        }
-    }
 
     private RecyclerView rvMessages;
     private EditText etMessageInput;
     private ChatMessageAdapter adapter;
-    private final List<ChatMessage> messages = new ArrayList<>();
+
+    private MessageRepository messageRepository;
+    private String conversationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_thread);
 
+        conversationId = getIntent().getStringExtra(EXTRA_CONVERSATION_ID);
+        if (conversationId == null) {
+            finish();
+            return;
+        }
+
+        AuthRepository authRepository = new AuthRepository();
+        FirebaseUser currentUser = authRepository.getCurrentUser();
+        if (currentUser == null) {
+            finish();
+            return;
+        }
+
+        messageRepository = new MessageRepository();
+
         rvMessages     = findViewById(R.id.rvMessages);
         etMessageInput = findViewById(R.id.etMessageInput);
-        TextView tvContactName   = findViewById(R.id.tvContactName);
-        TextView tvOnlineStatus  = findViewById(R.id.tvOnlineStatus);
-        View viewOnlineDot       = findViewById(R.id.viewOnlineDot);
-        FrameLayout btnSend      = findViewById(R.id.btnSend);
+        TextView tvContactName = findViewById(R.id.tvContactName);
+        View tvOnlineStatus    = findViewById(R.id.tvOnlineStatus);
+        View viewOnlineDot     = findViewById(R.id.viewOnlineDot);
 
         ImageUtils.loadAvatar(findViewById(R.id.ivContactAvatar), null);
 
@@ -64,53 +63,64 @@ public class ChatThreadActivity extends AppCompatActivity {
         String contactName = getIntent().getStringExtra(EXTRA_CONTACT_NAME);
         tvContactName.setText(contactName != null ? contactName : "Chat");
 
-        tvOnlineStatus.setText("Online");
-        viewOnlineDot.setVisibility(View.VISIBLE);
-        ViewCompat.setBackgroundTintList(viewOnlineDot,
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorSuccess)));
+        tvOnlineStatus.setVisibility(View.GONE);
+        viewOnlineDot.setVisibility(View.GONE);
 
-        buildDummyThread();
-        setupRecyclerView();
+        setupRecyclerView(currentUser.getUid());
 
-        btnSend.setOnClickListener(v -> sendMessage());
+        findViewById(R.id.btnSend).setOnClickListener(v -> sendMessage());
     }
 
-    private void buildDummyThread() {
-        messages.add(new ChatMessage(
-                "Hi! I saw your job posting for a leaky faucet repair.", "9:01 AM", false));
-        messages.add(new ChatMessage(
-                "Hi! Yes, it's been dripping in the kitchen for about a week now.", "9:03 AM", true));
-        messages.add(new ChatMessage(
-                "No problem, I can take a look. Are you available tomorrow afternoon?", "9:05 AM", false));
-        messages.add(new ChatMessage(
-                "That works for me. Around 2pm?", "9:06 AM", true));
-        messages.add(new ChatMessage(
-                "Perfect, 2pm it is. I'll bring the parts I think I'll need.", "9:08 AM", false));
-        messages.add(new ChatMessage(
-                "Great, thank you! Should I do anything to prepare?", "9:10 AM", true));
-        messages.add(new ChatMessage(
-                "Just make sure the area under the sink is accessible. See you tomorrow!", "9:12 AM", false));
-        messages.add(new ChatMessage(
-                "Will do, see you then!", "9:13 AM", true));
+    @Override
+    protected void onStart() {
+        super.onStart();
+        messageRepository.startThreadListening(conversationId, new MessageRepository.ThreadMessageCallback() {
+            @Override
+            public void onUpdate(java.util.List<com.example.handyproject.data.model.Message> messages) {
+                adapter.updateData(messages);
+                if (!messages.isEmpty()) {
+                    rvMessages.scrollToPosition(adapter.getItemCount() - 1);
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(ChatThreadActivity.this,
+                        "Failed to load messages", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void setupRecyclerView() {
+    @Override
+    protected void onStop() {
+        super.onStop();
+        messageRepository.stopThreadListening();
+    }
+
+    private void setupRecyclerView(String currentUid) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
         rvMessages.setLayoutManager(layoutManager);
-        adapter = new ChatMessageAdapter();
+        adapter = new ChatMessageAdapter(currentUid);
         rvMessages.setAdapter(adapter);
-        adapter.updateData(messages);
     }
 
     private void sendMessage() {
         String text = etMessageInput.getText().toString().trim();
         if (text.isEmpty()) return;
 
-        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.UK);
-        messages.add(new ChatMessage(text, sdf.format(new Date()), true));
-        adapter.updateData(messages);
-        etMessageInput.setText("");
-        rvMessages.scrollToPosition(messages.size() - 1);
+        messageRepository.sendMessage(conversationId, text, new MessageRepository.MessageSendCallback() {
+            @Override
+            public void onSuccess() {
+                etMessageInput.setText("");
+                // Snapshot listener echoes the new message back — no manual list update needed
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(ChatThreadActivity.this,
+                        "Failed to send message", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

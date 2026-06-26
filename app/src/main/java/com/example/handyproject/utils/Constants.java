@@ -64,6 +64,10 @@ public class Constants {
     public static final String FIELD_LAST_MESSAGE            = "lastMessage";
     public static final String FIELD_LAST_MESSAGE_TIMESTAMP  = "lastMessageTimestamp";
 
+    // Firestore field names — messages subcollection
+    public static final String FIELD_SENDER_ID = "senderId";
+    public static final String FIELD_SENT_AT   = "sentAt";
+
     // Query limits
     public static final int HANDYMAN_LIST_LIMIT = 10;
 
