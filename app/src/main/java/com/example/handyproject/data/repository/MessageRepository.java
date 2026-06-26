@@ -218,6 +218,7 @@ public class MessageRepository {
         message.setBookingScheduledAt(booking.getScheduledAt());
         message.setBookingAddress(booking.getAddress());
         message.setBookingNotes(booking.getNotes());
+        message.setBookingStatus(Constants.BOOKING_STATUS_PENDING);
 
         FirebaseService.getFirestore()
                 .collection(Constants.COLLECTION_CONVERSATIONS)
@@ -241,5 +242,27 @@ public class MessageRepository {
                 .addOnFailureListener(e -> callback.onError(
                         e.getMessage() != null ? e.getMessage()
                                 : "Failed to post booking message."));
+    }
+
+    // ── Booking status update ─────────────────────────────────────────────────
+
+    public void updateBookingStatus(String conversationId, String messageId,
+                                    String status, Double quoteAmount,
+                                    MessageSendCallback callback) {
+        Map<String, Object> update = new HashMap<>();
+        update.put(Constants.FIELD_BOOKING_STATUS, status);
+        if (quoteAmount != null) {
+            update.put(Constants.FIELD_BOOKING_QUOTE_AMOUNT, quoteAmount);
+        }
+
+        FirebaseService.getFirestore()
+                .collection(Constants.COLLECTION_CONVERSATIONS)
+                .document(conversationId)
+                .collection(Constants.COLLECTION_MESSAGES)
+                .document(messageId)
+                .update(update)
+                .addOnSuccessListener(unused -> callback.onSuccess())
+                .addOnFailureListener(e -> callback.onError(
+                        e.getMessage() != null ? e.getMessage() : "Failed to update booking."));
     }
 }

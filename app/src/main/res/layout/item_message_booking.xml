@@ -104,7 +104,78 @@
                 android:fontFamily="sans-serif"
                 android:visibility="gone" />
 
-            <!-- TODO Sub-round D: confirm / deny / quote buttons -->
+            <!-- Status badge: "Pending" / "Confirmed" / "Denied" -->
+            <TextView
+                android:id="@+id/tvBookingStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:textSize="@dimen/text_size_caption"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
+                android:visibility="gone" />
+
+            <!-- Quote display: shown only when confirmed -->
+            <TextView
+                android:id="@+id/tvBookingQuoteDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_xsmall"
+                android:textSize="@dimen/text_size_body"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="sans-serif"
+                android:visibility="gone" />
+
+            <!-- Handyman action controls: shown only for handyman when status is pending -->
+            <LinearLayout
+                android:id="@+id/layoutHandymanActions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/padding_small"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.HandyProject.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Quote amount"
+                    app:prefixText="£">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etBookingQuote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/padding_small">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnConfirmBooking"
+                        style="@style/Widget.HandyProject.Button.Primary"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="Confirm" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnDenyBooking"
+                        style="@style/Widget.HandyProject.Button.Secondary"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/padding_small"
+                        android:text="Deny" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <!-- Sent time -->
             <TextView

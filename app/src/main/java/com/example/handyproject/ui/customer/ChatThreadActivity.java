@@ -14,11 +14,14 @@ import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.MessageRepository;
 import com.example.handyproject.ui.common.adapters.ChatMessageAdapter;
 import com.example.handyproject.ui.common.utils.ImageUtils;
+import com.example.handyproject.utils.Constants;
+import com.example.handyproject.utils.CurrencyUtils;
 import com.google.firebase.auth.FirebaseUser;
 
 import android.widget.TextView;
 
-public class ChatThreadActivity extends AppCompatActivity {
+public class ChatThreadActivity extends AppCompatActivity
+        implements ChatMessageAdapter.BookingActionListener {
 
     public static final String EXTRA_CONTACT_NAME   = "contact_name";
     public static final String EXTRA_CONVERSATION_ID = "conversation_id";
@@ -101,7 +104,7 @@ public class ChatThreadActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
         rvMessages.setLayoutManager(layoutManager);
-        adapter = new ChatMessageAdapter(currentUid);
+        adapter = new ChatMessageAdapter(currentUid, this);
         rvMessages.setAdapter(adapter);
     }
 
@@ -122,5 +125,59 @@ public class ChatThreadActivity extends AppCompatActivity {
                         "Failed to send message", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onConfirm(String messageId, double quoteAmount) {
+        messageRepository.updateBookingStatus(
+                conversationId, messageId, Constants.BOOKING_STATUS_CONFIRMED, quoteAmount,
+                new MessageRepository.MessageSendCallback() {
+                    @Override
+                    public void onSuccess() {
+                        String outcomeText = "Booking confirmed — "
+                                + CurrencyUtils.formatAmount(quoteAmount);
+                        messageRepository.sendMessage(conversationId, outcomeText,
+                                new MessageRepository.MessageSendCallback() {
+                                    @Override public void onSuccess() {}
+                                    @Override public void onError(String msg) {
+                                        Toast.makeText(ChatThreadActivity.this,
+                                                "Booking confirmed but failed to notify",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        Toast.makeText(ChatThreadActivity.this,
+                                "Failed to confirm booking", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @Override
+    public void onDeny(String messageId) {
+        messageRepository.updateBookingStatus(
+                conversationId, messageId, Constants.BOOKING_STATUS_DENIED, null,
+                new MessageRepository.MessageSendCallback() {
+                    @Override
+                    public void onSuccess() {
+                        messageRepository.sendMessage(conversationId, "Booking denied",
+                                new MessageRepository.MessageSendCallback() {
+                                    @Override public void onSuccess() {}
+                                    @Override public void onError(String msg) {
+                                        Toast.makeText(ChatThreadActivity.this,
+                                                "Booking denied but failed to notify",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        Toast.makeText(ChatThreadActivity.this,
+                                "Failed to deny booking", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

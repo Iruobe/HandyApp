@@ -69,9 +69,16 @@ public class Constants {
     public static final String FIELD_SENT_AT   = "sentAt";
 
     // Firestore field names — booking-type messages
-    public static final String FIELD_BOOKING_SCHEDULED_AT = "bookingScheduledAt";
-    public static final String FIELD_BOOKING_ADDRESS      = "bookingAddress";
-    public static final String FIELD_BOOKING_NOTES        = "bookingNotes";
+    public static final String FIELD_BOOKING_SCHEDULED_AT  = "bookingScheduledAt";
+    public static final String FIELD_BOOKING_ADDRESS       = "bookingAddress";
+    public static final String FIELD_BOOKING_NOTES         = "bookingNotes";
+    public static final String FIELD_BOOKING_STATUS        = "bookingStatus";
+    public static final String FIELD_BOOKING_QUOTE_AMOUNT  = "bookingQuoteAmount";
+
+    // Booking status values
+    public static final String BOOKING_STATUS_PENDING    = "pending";
+    public static final String BOOKING_STATUS_CONFIRMED  = "confirmed";
+    public static final String BOOKING_STATUS_DENIED     = "denied";
 
     // Message body types (distinct from the notification TYPE_* constants above)
     public static final String TYPE_TEXT = "text";

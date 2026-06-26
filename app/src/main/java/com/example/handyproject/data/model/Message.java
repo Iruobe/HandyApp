@@ -13,6 +13,8 @@ public class Message {
     private Timestamp bookingScheduledAt;
     private String bookingAddress;
     private String bookingNotes;
+    private String bookingStatus;
+    private Double bookingQuoteAmount;
 
     public Message() {}
 
@@ -26,6 +28,8 @@ public class Message {
     public Timestamp getBookingScheduledAt()  { return bookingScheduledAt; }
     public String getBookingAddress()         { return bookingAddress; }
     public String getBookingNotes()           { return bookingNotes; }
+    public String getBookingStatus()          { return bookingStatus; }
+    public Double getBookingQuoteAmount()     { return bookingQuoteAmount; }
 
     public void setMessageId(String messageId)                      { this.messageId = messageId; }
     public void setSenderId(String senderId)                        { this.senderId = senderId; }
@@ -37,4 +41,6 @@ public class Message {
     public void setBookingScheduledAt(Timestamp bookingScheduledAt) { this.bookingScheduledAt = bookingScheduledAt; }
     public void setBookingAddress(String bookingAddress)            { this.bookingAddress = bookingAddress; }
     public void setBookingNotes(String bookingNotes)                { this.bookingNotes = bookingNotes; }
+    public void setBookingStatus(String bookingStatus)              { this.bookingStatus = bookingStatus; }
+    public void setBookingQuoteAmount(Double bookingQuoteAmount)    { this.bookingQuoteAmount = bookingQuoteAmount; }
 }
