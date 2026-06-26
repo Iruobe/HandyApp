@@ -26,6 +26,7 @@ import java.util.Locale;
 public class ChatThreadActivity extends AppCompatActivity {
 
     public static final String EXTRA_CONTACT_NAME = "contact_name";
+    public static final String EXTRA_CONVERSATION_ID = "conversation_id";
 
     public static class ChatMessage {
         public String text;

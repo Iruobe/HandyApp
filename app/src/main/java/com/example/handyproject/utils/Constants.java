@@ -7,6 +7,7 @@ public class Constants {
     public static final String COLLECTION_BOOKINGS      = "bookings";
     public static final String COLLECTION_MESSAGES      = "messages";
     public static final String COLLECTION_NOTIFICATIONS = "notifications";
+    public static final String COLLECTION_CONVERSATIONS = "conversations";
 
     // User roles
     public static final String ROLE_HANDYMAN = "handyman";
@@ -56,6 +57,12 @@ public class Constants {
 
     // Notification
     public static final String NOTIFICATION_CHANNEL_ID = "app_channel";
+
+    // Firestore field names — conversations
+    public static final String FIELD_PARTICIPANT_IDS         = "participantIds";
+    public static final String FIELD_PARTICIPANT_NAMES       = "participantNames";
+    public static final String FIELD_LAST_MESSAGE            = "lastMessage";
+    public static final String FIELD_LAST_MESSAGE_TIMESTAMP  = "lastMessageTimestamp";
 
     // Query limits
     public static final int HANDYMAN_LIST_LIMIT = 10;
