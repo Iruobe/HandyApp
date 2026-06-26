@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/padding_standard"
+    android:paddingEnd="@dimen/padding_standard"
+    android:layout_marginBottom="@dimen/padding_small">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.HandyProject.Card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="@dimen/divider_height">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_standard">
+
+            <!-- Header: calendar icon + label -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/padding_small">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:src="@drawable/ic_calendar"
+                    app:tint="@color/colorPrimary"
+                    android:contentDescription="Booking" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_small"
+                    android:text="Booking Request"
+                    android:textSize="@dimen/text_size_body_large"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="sans-serif" />
+
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:background="@color/colorUnselectedBorder"
+                android:layout_marginBottom="@dimen/padding_small" />
+
+            <!-- Date and time -->
+            <TextView
+                android:id="@+id/tvBookingDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_body"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextPrimary"
+                android:fontFamily="sans-serif" />
+
+            <!-- Address row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/padding_xsmall">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_small"
+                    android:layout_height="@dimen/icon_size_small"
+                    android:src="@drawable/ic_location"
+                    app:tint="@color/colorTextSecondary"
+                    android:contentDescription="Address" />
+
+                <TextView
+                    android:id="@+id/tvBookingAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/padding_xsmall"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textColor="@color/colorTextSecondary"
+                    android:fontFamily="sans-serif" />
+
+            </LinearLayout>
+
+            <!-- Notes — hidden when empty, shown in adapter -->
+            <TextView
+                android:id="@+id/tvBookingNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_xsmall"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/colorTextSecondary"
+                android:fontFamily="sans-serif"
+                android:visibility="gone" />
+
+            <!-- TODO Sub-round D: confirm / deny / quote buttons -->
+
+            <!-- Sent time -->
+            <TextView
+                android:id="@+id/tvBookingTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:gravity="end"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/colorTextSecondary"
+                android:fontFamily="sans-serif" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

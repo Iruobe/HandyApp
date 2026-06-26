@@ -1,6 +1,7 @@
 package com.example.handyproject.ui.customer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,10 +26,12 @@ import androidx.core.content.ContextCompat;
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.Booking;
 import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.data.model.User;
 import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.HandymanRepository;
+import com.example.handyproject.data.repository.MessageRepository;
+import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.common.utils.ImageUtils;
-import com.example.handyproject.ui.common.utils.NavigationUtils;
 import com.example.handyproject.utils.CurrencyUtils;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.Timestamp;
@@ -46,7 +48,9 @@ import java.util.Locale;
 public class BookingActivity extends AppCompatActivity {
 
     private final HandymanRepository handymanRepository = new HandymanRepository();
-    private final AuthRepository authRepository = new AuthRepository();
+    private final AuthRepository     authRepository     = new AuthRepository();
+    private final UserRepository     userRepository     = new UserRepository();
+    private final MessageRepository  messageRepository  = new MessageRepository();
 
     private static final int DATE_STRIP_DAYS = 60;
 
@@ -61,7 +65,9 @@ public class BookingActivity extends AppCompatActivity {
     private EditText etAddress;
     private EditText etDescription;
 
-    private String handymanUid;
+    private String handymanUid  = "";
+    private String handymanName = "";
+    private String customerName = "";
 
     private static final long LOCATION_TIMEOUT_MS = 10000L;
 
@@ -72,9 +78,9 @@ public class BookingActivity extends AppCompatActivity {
 
     private final String[] timeSlots = buildTimeSlots();
 
-    private final MaterialCardView[] dateCards = new MaterialCardView[DATE_STRIP_DAYS];
-    private final Calendar[] dateChipDates = new Calendar[DATE_STRIP_DAYS];
-    private final MaterialCardView[] timeCards = new MaterialCardView[timeSlots.length];
+    private final MaterialCardView[] dateCards    = new MaterialCardView[DATE_STRIP_DAYS];
+    private final Calendar[]         dateChipDates = new Calendar[DATE_STRIP_DAYS];
+    private final MaterialCardView[] timeCards    = new MaterialCardView[timeSlots.length];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +101,7 @@ public class BookingActivity extends AppCompatActivity {
         ImageUtils.loadAvatar(findViewById(R.id.ivProviderPhoto), null);
 
         loadHandyman();
+        fetchCustomerName();
 
         locationPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
@@ -107,14 +114,27 @@ public class BookingActivity extends AppCompatActivity {
                 });
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
-
         findViewById(R.id.tvUseCurrentLocation).setOnClickListener(v -> requestCurrentLocation());
-
         findViewById(R.id.btnConfirmBooking).setOnClickListener(v -> confirmBooking());
 
         buildDateChips();
         buildTimeChips();
         setupDateScrollListener();
+    }
+
+    private void fetchCustomerName() {
+        FirebaseUser cu = authRepository.getCurrentUser();
+        if (cu == null) return;
+        userRepository.fetchUser(cu.getUid(), new UserRepository.UserCallback() {
+            @Override
+            public void onSuccess(User user) {
+                if (user != null && user.getFullName() != null) {
+                    customerName = user.getFullName();
+                }
+            }
+            @Override
+            public void onFailure(String message) {}
+        });
     }
 
     private void setupDateScrollListener() {
@@ -155,7 +175,8 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     private void populateProvider(Handyman handyman) {
-        tvProviderName.setText(handyman.getFullName() != null ? handyman.getFullName() : "");
+        handymanName = handyman.getFullName() != null ? handyman.getFullName() : "";
+        tvProviderName.setText(handymanName);
         tvProviderService.setText(handyman.getServiceCategory() != null ? handyman.getServiceCategory() : "");
         tvProviderRating.setText(handyman.getRating() > 0
                 ? String.format(Locale.UK, "%.1f", handyman.getRating())
@@ -191,7 +212,7 @@ public class BookingActivity extends AppCompatActivity {
             scheduled.set(Calendar.SECOND, 0);
             scheduled.set(Calendar.MILLISECOND, 0);
         } catch (ParseException e) {
-            // timeSlots are generated by the same "h:mm a" formatter, so this should never happen
+            // timeSlots are generated by the same "h:mm a" formatter — this never fires
         }
 
         String description = etDescription.getText().toString().trim();
@@ -204,15 +225,44 @@ public class BookingActivity extends AppCompatActivity {
         booking.setScheduledAt(new Timestamp(scheduled.getTime()));
         booking.setCreatedAt(new Timestamp(new Date()));
 
-        Log.d("BookingData", "handymanUid=" + booking.getHandymanId()
-                + " customerUid=" + booking.getCustomerId()
-                + " scheduledAt=" + booking.getScheduledAt().toDate()
-                + " address=" + booking.getAddress()
-                + " description=" + booking.getNotes()
-                + " createdAt=" + booking.getCreatedAt().toDate());
+        messageRepository.findOrCreateConversation(
+                booking.getCustomerId(), customerName,
+                booking.getHandymanId(), handymanName,
+                new MessageRepository.FindOrCreateConversationCallback() {
+                    @Override
+                    public void onSuccess(String conversationId) {
+                        messageRepository.postBookingMessage(conversationId, booking,
+                                new MessageRepository.MessageSendCallback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Intent intent = new Intent(
+                                                BookingActivity.this, ChatThreadActivity.class);
+                                        intent.putExtra(
+                                                ChatThreadActivity.EXTRA_CONVERSATION_ID,
+                                                conversationId);
+                                        intent.putExtra(
+                                                ChatThreadActivity.EXTRA_CONTACT_NAME,
+                                                handymanName.isEmpty() ? "Handyman" : handymanName);
+                                        startActivity(intent);
+                                        finish();
+                                    }
 
-        Toast.makeText(this, "Booking request sent", Toast.LENGTH_LONG).show();
-        NavigationUtils.goHome(this);
+                                    @Override
+                                    public void onError(String message) {
+                                        Toast.makeText(BookingActivity.this,
+                                                "Failed to send booking request",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(BookingActivity.this,
+                                "Failed to create conversation",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void requestCurrentLocation() {
@@ -259,16 +309,13 @@ public class BookingActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
 
             @Override
-            public void onProviderEnabled(String provider) {
-            }
+            public void onProviderEnabled(String provider) {}
 
             @Override
-            public void onProviderDisabled(String provider) {
-            }
+            public void onProviderDisabled(String provider) {}
         };
 
         locationManager.requestSingleUpdate(provider, listenerHolder[0], Looper.getMainLooper());
@@ -409,7 +456,7 @@ public class BookingActivity extends AppCompatActivity {
                 }
             });
 
-            dateCards[i] = card;
+            dateCards[i]    = card;
             dateChipDates[i] = chipDate;
             layoutDateChips.addView(card);
             cal.add(Calendar.DAY_OF_MONTH, 1);

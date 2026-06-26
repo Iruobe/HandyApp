@@ -68,6 +68,14 @@ public class Constants {
     public static final String FIELD_SENDER_ID = "senderId";
     public static final String FIELD_SENT_AT   = "sentAt";
 
+    // Firestore field names — booking-type messages
+    public static final String FIELD_BOOKING_SCHEDULED_AT = "bookingScheduledAt";
+    public static final String FIELD_BOOKING_ADDRESS      = "bookingAddress";
+    public static final String FIELD_BOOKING_NOTES        = "bookingNotes";
+
+    // Message body types (distinct from the notification TYPE_* constants above)
+    public static final String TYPE_TEXT = "text";
+
     // Query limits
     public static final int HANDYMAN_LIST_LIMIT = 10;
 
