@@ -127,11 +127,13 @@ public class ProfileActivity extends AppCompatActivity {
                 .setTitle("Sign out?")
                 .setMessage("You will need to log in again to access your account.")
                 .setPositiveButton("Sign Out", (dialog, which) -> {
+                    dialog.dismiss();
+                    getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                            .edit().remove(Constants.PREF_KEY_ROLE).apply();
                     authRepository.signOut();
                     Intent intent = new Intent(this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
