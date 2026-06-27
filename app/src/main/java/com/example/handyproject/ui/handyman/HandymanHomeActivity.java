@@ -18,6 +18,7 @@ import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.customer.MessagesActivity;
 import com.example.handyproject.ui.customer.NotificationsActivity;
 import com.example.handyproject.ui.customer.ProfileActivity;
+import com.example.handyproject.ui.customer.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -132,6 +133,11 @@ public class HandymanHomeActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.nav_home) return true;
             if (item.getItemId() == R.id.nav_messages) {
                 startActivity(new Intent(this, MessagesActivity.class));
+                finish();
+                return true;
+            }
+            if (item.getItemId() == R.id.nav_search) {
+                startActivity(new Intent(this, SearchActivity.class).putExtra("search_query", ""));
                 finish();
                 return true;
             }

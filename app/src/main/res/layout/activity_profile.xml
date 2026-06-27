@@ -54,7 +54,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         android:fillViewport="true"
-        android:clipToPadding="true"
+        android:clipToPadding="false"
         android:paddingBottom="@dimen/bottom_nav_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
