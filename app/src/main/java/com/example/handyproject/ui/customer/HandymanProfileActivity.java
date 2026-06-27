@@ -12,7 +12,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.HandymanRepository;
+import com.google.firebase.auth.FirebaseUser;
 import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.utils.CurrencyUtils;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -115,7 +117,10 @@ public class HandymanProfileActivity extends AppCompatActivity {
                 ? String.format(Locale.UK, "%.1f", handyman.getRating())
                 : "Not rated");
 
-        viewPager.setAdapter(new ProfilePagerAdapter(this, handyman));
+        AuthRepository authRepository = new AuthRepository();
+        FirebaseUser currentUser = authRepository.getCurrentUser();
+        String currentUid = currentUser != null ? currentUser.getUid() : "";
+        viewPager.setAdapter(new ProfilePagerAdapter(this, handyman, currentUid));
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if (position == 0) tab.setText("About");
@@ -135,13 +140,18 @@ public class HandymanProfileActivity extends AppCompatActivity {
         private final String responseTime;
         private final int yearsOfExperience;
         private final List<String> servicesOffered;
+        private final String handymanUid;
+        private final String currentUid;
 
-        ProfilePagerAdapter(@NonNull AppCompatActivity activity, @NonNull Handyman handyman) {
+        ProfilePagerAdapter(@NonNull AppCompatActivity activity, @NonNull Handyman handyman,
+                            String currentUid) {
             super(activity);
             this.bio = handyman.getBio();
             this.responseTime = handyman.getResponseTime();
             this.yearsOfExperience = handyman.getYearsOfExperience();
             this.servicesOffered = handyman.getServicesOffered();
+            this.handymanUid = handyman.getUid();
+            this.currentUid = currentUid;
         }
 
         @Override
@@ -154,7 +164,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         public Fragment createFragment(int position) {
             if (position == 0) return ProfileAboutFragment.newInstance(bio, responseTime, yearsOfExperience, servicesOffered);
             if (position == 1) return new ProfilePortfolioFragment();
-            return new ProfileReviewsFragment();
+            return ProfileReviewsFragment.newInstance(handymanUid, currentUid);
         }
     }
 }

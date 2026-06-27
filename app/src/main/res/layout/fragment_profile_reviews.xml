@@ -1,306 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:orientation="vertical"
+    android:background="@color/colorBackground"
+    android:padding="@dimen/padding_standard">
 
-    <LinearLayout
+    <!-- Shown only to eligible customers (role=customer + confirmed booking) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLeaveReview"
+        style="@style/Widget.HandyProject.Button.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/padding_standard">
+        android:layout_marginBottom="@dimen/padding_standard"
+        android:text="Leave a Review"
+        android:visibility="gone" />
 
-        <!-- Overall rating card -->
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.HandyProject.Card"
+    <!-- Average rating summary card -->
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.HandyProject.Card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_standard">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_standard">
+            android:orientation="vertical"
+            android:padding="@dimen/padding_standard"
+            android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvAverageRating"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_standard"
-                android:gravity="center_vertical">
+                android:text="–"
+                android:textSize="@dimen/text_size_display"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="sans-serif" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="4.9"
-                        android:textSize="@dimen/text_size_display"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimary"
-                        android:gravity="center"
-                        android:fontFamily="sans-serif"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageView android:layout_width="@dimen/icon_size_small" android:layout_height="@dimen/icon_size_small" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                        <ImageView android:layout_width="@dimen/icon_size_small" android:layout_height="@dimen/icon_size_small" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                        <ImageView android:layout_width="@dimen/icon_size_small" android:layout_height="@dimen/icon_size_small" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                        <ImageView android:layout_width="@dimen/icon_size_small" android:layout_height="@dimen/icon_size_small" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                        <ImageView android:layout_width="@dimen/icon_size_small" android:layout_height="@dimen/icon_size_small" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_xsmall"
-                        android:text="128 reviews"
-                        android:textSize="@dimen/text_size_caption"
-                        android:textColor="@color/colorTextSecondary"
-                        android:gravity="center"
-                        android:fontFamily="sans-serif"/>
-
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Review 1: James K. -->
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.HandyProject.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_small">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RatingBar
+                android:id="@+id/ratingBarSummary"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_standard">
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:rating="0"
+                android:progressTint="@color/colorGold"
+                android:layout_marginTop="@dimen/margin_xsmall" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/back_button_size"
-                        android:layout_height="@dimen/back_button_size"
-                        android:background="@drawable/circle_avatar_bg"
-                        android:src="@drawable/defaultprofile"
-                        android:scaleType="centerCrop"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Reviewer avatar"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="James K."
-                            android:textSize="@dimen/text_size_body"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorTextPrimary"
-                            android:fontFamily="sans-serif"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Oct 2023"
-                        android:textSize="@dimen/text_size_caption"
-                        android:textColor="@color/colorTextSecondary"
-                        android:fontFamily="sans-serif"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_small"
-                    android:text="Marcus did an excellent job fixing our kitchen cabinets. Very professional and tidy."
-                    android:textSize="@dimen/text_size_body"
-                    android:textColor="@color/colorTextSecondary"
-                    android:fontFamily="sans-serif"/>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Review 2: Lisa M. -->
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.HandyProject.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_small">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvReviewCount"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_standard">
+                android:layout_marginTop="@dimen/margin_xsmall"
+                android:text="No reviews yet"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/colorTextSecondary"
+                android:fontFamily="sans-serif" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+        </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="@dimen/back_button_size"
-                        android:layout_height="@dimen/back_button_size"
-                        android:background="@drawable/circle_avatar_bg"
-                        android:src="@drawable/defaultprofile"
-                        android:scaleType="centerCrop"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Reviewer avatar"/>
+    </com.google.android.material.card.MaterialCardView>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+    <!-- Real reviews list (fills remaining space) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvReviews"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lisa M."
-                            android:textSize="@dimen/text_size_body"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorTextPrimary"
-                            android:fontFamily="sans-serif"/>
+    <!-- Empty state (same weight slot — only one is visible at a time) -->
+    <TextView
+        android:id="@+id/tvEmptyReviews"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="No reviews yet"
+        android:textSize="@dimen/text_size_body"
+        android:textColor="@color/colorTextSecondary"
+        android:fontFamily="sans-serif"
+        android:visibility="visible" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sep 2023"
-                        android:textSize="@dimen/text_size_caption"
-                        android:textColor="@color/colorTextSecondary"
-                        android:fontFamily="sans-serif"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_small"
-                    android:text="Highly recommend! Fixed our squeaky floors and installed new shelving. Great value."
-                    android:textSize="@dimen/text_size_body"
-                    android:textColor="@color/colorTextSecondary"
-                    android:fontFamily="sans-serif"/>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Review 3: Tom H. -->
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.HandyProject.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_small">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_standard">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="@dimen/back_button_size"
-                        android:layout_height="@dimen/back_button_size"
-                        android:background="@drawable/circle_avatar_bg"
-                        android:src="@drawable/defaultprofile"
-                        android:scaleType="centerCrop"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Reviewer avatar"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tom H."
-                            android:textSize="@dimen/text_size_body"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorTextPrimary"
-                            android:fontFamily="sans-serif"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star"/>
-                            <ImageView android:layout_width="@dimen/icon_size_xs" android:layout_height="@dimen/icon_size_xs" android:src="@drawable/ic_star" app:tint="@color/colorGold" android:contentDescription="Star" android:alpha="0.3"/>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Aug 2023"
-                        android:textSize="@dimen/text_size_caption"
-                        android:textColor="@color/colorTextSecondary"
-                        android:fontFamily="sans-serif"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_small"
-                    android:text="Good work overall. Arrived on time and completed the job efficiently."
-                    android:textSize="@dimen/text_size_body"
-                    android:textColor="@color/colorTextSecondary"
-                    android:fontFamily="sans-serif"/>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

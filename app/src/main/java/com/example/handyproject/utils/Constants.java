@@ -80,6 +80,16 @@ public class Constants {
     public static final String BOOKING_STATUS_CONFIRMED  = "confirmed";
     public static final String BOOKING_STATUS_DENIED     = "denied";
 
+    // Firestore collections — reviews
+    public static final String COLLECTION_REVIEWS    = "reviews";
+
+    // Firestore field names — reviews
+    public static final String FIELD_HANDYMAN_ID     = "handymanId";
+    public static final String FIELD_CUSTOMER_ID     = "customerId";
+    public static final String FIELD_CUSTOMER_NAME   = "customerName";
+    public static final String FIELD_REVIEW_TEXT     = "text";
+    // FIELD_RATING = "rating" and FIELD_CREATED_AT = "createdAt" already defined above
+
     // Message body types (distinct from the notification TYPE_* constants above)
     public static final String TYPE_TEXT = "text";
 
