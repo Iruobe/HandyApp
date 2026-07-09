@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.HandyProject.Card"
+    android:layout_width="@dimen/card_height_portfolio"
+    android:layout_height="@dimen/card_height_portfolio"
+    android:layout_marginEnd="@dimen/padding_small">
+
+    <ImageView
+        android:id="@+id/ivPortfolioImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@color/colorUnselectedBackground"
+        android:contentDescription="Portfolio photo" />
+
+</com.google.android.material.card.MaterialCardView>

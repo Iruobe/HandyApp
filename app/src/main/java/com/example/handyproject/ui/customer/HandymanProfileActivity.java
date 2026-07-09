@@ -172,6 +172,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         private final String responseTime;
         private final int yearsOfExperience;
         private final List<String> servicesOffered;
+        private final List<String> portfolioPhotos;
         private final String handymanUid;
         private final String currentUid;
 
@@ -182,6 +183,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
             this.responseTime = handyman.getResponseTime();
             this.yearsOfExperience = handyman.getYearsOfExperience();
             this.servicesOffered = handyman.getServicesOffered();
+            this.portfolioPhotos = handyman.getPortfolioPhotos();
             this.handymanUid = handyman.getUid();
             this.currentUid = currentUid;
         }
@@ -195,7 +197,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         @Override
         public Fragment createFragment(int position) {
             if (position == 0) return ProfileAboutFragment.newInstance(bio, responseTime, yearsOfExperience, servicesOffered);
-            if (position == 1) return new ProfilePortfolioFragment();
+            if (position == 1) return ProfilePortfolioFragment.newInstance(portfolioPhotos);
             return ProfileReviewsFragment.newInstance(handymanUid, currentUid);
         }
     }
