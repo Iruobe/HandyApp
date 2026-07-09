@@ -42,6 +42,7 @@ public class Constants {
     };
     public static final String DEFAULT_RESPONSE_TIME = "Within a few hours";
     public static final int MAX_SERVICES = 5;
+    public static final int MAX_PORTFOLIO_PHOTOS = 4;
 
     // Firestore field names — notifications
     public static final String FIELD_USER_ID   = "userId";

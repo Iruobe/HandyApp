@@ -18,6 +18,7 @@ public class User {
     private String bio;
     private String responseTime;
     private List<String> servicesOffered;
+    private List<String> portfolioPhotos;
 
     public User() {}
 
@@ -45,6 +46,7 @@ public class User {
     public String getBio()                { return bio; }
     public String getResponseTime()       { return responseTime; }
     public List<String> getServicesOffered() { return servicesOffered; }
+    public List<String> getPortfolioPhotos() { return portfolioPhotos; }
 
     public void setUid(String uid)                 { this.uid = uid; }
     public void setRole(String role)               { this.role = role; }
@@ -59,4 +61,5 @@ public class User {
     public void setBio(String bio)                               { this.bio = bio; }
     public void setResponseTime(String responseTime)             { this.responseTime = responseTime; }
     public void setServicesOffered(List<String> servicesOffered) { this.servicesOffered = servicesOffered; }
+    public void setPortfolioPhotos(List<String> portfolioPhotos) { this.portfolioPhotos = portfolioPhotos; }
 }
