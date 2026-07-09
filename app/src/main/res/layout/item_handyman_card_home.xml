@@ -83,13 +83,6 @@
                     android:ellipsize="end"
                     android:maxLines="1" />
 
-                <ImageView
-                    android:id="@+id/ivVerified"
-                    android:layout_width="@dimen/icon_size_xs"
-                    android:layout_height="@dimen/icon_size_xs"
-                    android:layout_marginStart="@dimen/padding_xsmall"
-                    android:src="@drawable/ic_verified"
-                    android:contentDescription="Verified" />
 
             </LinearLayout>
 

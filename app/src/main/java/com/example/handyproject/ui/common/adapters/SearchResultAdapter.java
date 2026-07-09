@@ -47,7 +47,8 @@ public class SearchResultAdapter extends
         holder.tvName.setText(handyman.getFullName());
         holder.tvServiceTitle.setText(handyman.getServiceCategory());
         holder.tvRating.setText(String.valueOf(handyman.getRating()));
-        holder.tvReviewCount.setText("(0 reviews)");
+        int rc = handyman.getReviewCount();
+        holder.tvReviewCount.setText("(" + rc + (rc == 1 ? " review)" : " reviews)"));
         holder.tvTag1.setText(handyman.getServiceCategory());
         holder.tvTag2.setText("Available");
         holder.tvRate.setText(CurrencyUtils.formatRate(handyman.getHourlyRate()));
@@ -58,9 +59,6 @@ public class SearchResultAdapter extends
             description = "Experienced professional ready to help with your needs.";
         }
         holder.tvDescription.setText(description);
-
-        holder.ivVerified.setVisibility(
-                handyman.isAvailableForHire() ? View.VISIBLE : View.GONE);
 
         holder.btnViewProfile.setOnClickListener(v -> {
             Intent intent = new Intent(context, HandymanProfileActivity.class);
@@ -91,7 +89,6 @@ public class SearchResultAdapter extends
         final TextView tvDescription;
         final TextView tvRate;
         final TextView tvDistance;
-        final ImageView ivVerified;
         final MaterialButton btnViewProfile;
 
         ViewHolder(@NonNull View itemView) {
@@ -106,7 +103,6 @@ public class SearchResultAdapter extends
             tvDescription  = itemView.findViewById(R.id.tvDescription);
             tvRate         = itemView.findViewById(R.id.tvRate);
             tvDistance     = itemView.findViewById(R.id.tvDistance);
-            ivVerified     = itemView.findViewById(R.id.ivVerified);
             btnViewProfile = itemView.findViewById(R.id.btnViewProfile);
         }
     }

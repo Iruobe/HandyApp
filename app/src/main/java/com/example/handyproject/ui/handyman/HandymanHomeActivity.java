@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.handyproject.R;
 import com.example.handyproject.ui.common.adapters.EnquiryAdapter;
 import com.example.handyproject.ui.common.utils.ImageUtils;
+import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.ui.customer.MessagesActivity;
 import com.example.handyproject.ui.customer.NotificationsActivity;
 import com.example.handyproject.ui.customer.ProfileActivity;
@@ -53,6 +54,7 @@ public class HandymanHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_handyman_home);
+        ViewUtils.fixNavOverlap(findViewById(R.id.scrollContent), findViewById(R.id.bottomNav));
 
         switchAvailability   = findViewById(R.id.switchAvailability);
         tvAvailabilityStatus = findViewById(R.id.tvAvailabilityStatus);

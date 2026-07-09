@@ -17,6 +17,7 @@ import com.example.handyproject.data.model.Notification;
 import com.example.handyproject.data.repository.NotificationRepository;
 import com.example.handyproject.ui.common.adapters.NotificationAdapter;
 import com.example.handyproject.ui.common.utils.NavigationUtils;
+import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
@@ -42,6 +43,7 @@ public class NotificationsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
+        ViewUtils.fixNavOverlap(findViewById(R.id.rvNotifications), findViewById(R.id.bottomNav));
 
         layoutFilterChips = findViewById(R.id.layoutFilterChips);
         rvNotifications   = findViewById(R.id.rvNotifications);

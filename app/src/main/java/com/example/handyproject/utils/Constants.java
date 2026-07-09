@@ -28,6 +28,7 @@ public class Constants {
     public static final String FIELD_YEARS_EXPERIENCE    = "yearsOfExperience";
     public static final String FIELD_HOURLY_RATE         = "hourlyRate";
     public static final String FIELD_RATING              = "rating";
+    public static final String FIELD_REVIEW_COUNT        = "reviewCount";
     public static final String FIELD_TOTAL_JOBS          = "totalJobs";
     public static final String FIELD_PROFILE_VIEWS       = "profileViews";
     public static final String FIELD_AVAILABLE_FOR_HIRE  = "availableForHire";

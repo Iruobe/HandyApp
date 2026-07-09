@@ -23,6 +23,7 @@ import com.example.handyproject.data.remote.FirebaseService;
 import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.ui.common.adapters.HandymanHomeAdapter;
 import com.example.handyproject.ui.common.utils.ImageUtils;
+import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
@@ -45,6 +46,7 @@ public class CustomerHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_home);
+        ViewUtils.fixNavOverlap(findViewById(R.id.scrollContent), findViewById(R.id.bottomNav));
 
         tvGreeting      = findViewById(R.id.tvGreeting);
         cardAgentBanner = findViewById(R.id.cardAgentBanner);

@@ -2,7 +2,7 @@ package com.example.handyproject.ui.customer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -12,12 +12,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.example.handyproject.R;
 import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.data.model.User;
 import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.HandymanRepository;
+import com.example.handyproject.data.repository.MessageRepository;
+import com.example.handyproject.data.repository.UserRepository;
 import com.google.firebase.auth.FirebaseUser;
 import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.utils.CurrencyUtils;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
@@ -31,10 +33,13 @@ public class HandymanProfileActivity extends AppCompatActivity {
     public static final String EXTRA_HANDYMAN_UID = "handyman_uid";
 
     private final HandymanRepository handymanRepository = new HandymanRepository();
+    private final MessageRepository messageRepository = new MessageRepository();
+    private final UserRepository userRepository = new UserRepository();
     private String handymanUid;
+    private String currentUid;
+    private String customerName;
+    private String handymanName;
 
-    private MaterialToolbar toolbar;
-    private ImageView ivCoverPhoto;
     private ShapeableImageView ivProfilePhoto;
     private TextView tvHandymanName;
     private TextView tvHourlyRate;
@@ -51,8 +56,7 @@ public class HandymanProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_handyman_profile);
 
-        toolbar = findViewById(R.id.toolbar);
-        ivCoverPhoto = findViewById(R.id.ivCoverPhoto);
+        ImageButton btnBack = findViewById(R.id.btnBack);
         ivProfilePhoto = findViewById(R.id.ivProfilePhoto);
         tvHandymanName = findViewById(R.id.tvHandymanName);
         tvHourlyRate = findViewById(R.id.tvHourlyRate);
@@ -64,19 +68,49 @@ public class HandymanProfileActivity extends AppCompatActivity {
         btnMessage = findViewById(R.id.btnMessage);
         btnBookNow = findViewById(R.id.btnBookNow);
 
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> finish());
 
-        ImageUtils.loadImage(ivCoverPhoto, null);
         ImageUtils.loadAvatar(ivProfilePhoto, null);
+
+        AuthRepository authRepository = new AuthRepository();
+        FirebaseUser firebaseUser = authRepository.getCurrentUser();
+        currentUid = firebaseUser != null ? firebaseUser.getUid() : "";
+        if (!currentUid.isEmpty()) {
+            userRepository.fetchUser(currentUid, new UserRepository.UserCallback() {
+                @Override
+                public void onSuccess(User user) {
+                    if (user != null) customerName = user.getFullName();
+                }
+                @Override
+                public void onFailure(String message) { /* silent — fallback used on click */ }
+            });
+        }
 
         loadHandyman();
 
-        btnMessage.setOnClickListener(v ->
-                Toast.makeText(this, "Messaging coming soon", Toast.LENGTH_SHORT).show());
+        btnMessage.setOnClickListener(v -> {
+            if (currentUid.isEmpty()) {
+                Toast.makeText(this, "Please sign in to message", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String cn = customerName != null ? customerName : "Customer";
+            String hn = handymanName != null ? handymanName : "";
+            messageRepository.findOrCreateConversation(
+                currentUid, cn, handymanUid, hn,
+                new MessageRepository.FindOrCreateConversationCallback() {
+                    @Override
+                    public void onSuccess(String conversationId) {
+                        Intent intent = new Intent(HandymanProfileActivity.this, ChatThreadActivity.class);
+                        intent.putExtra(ChatThreadActivity.EXTRA_CONVERSATION_ID, conversationId);
+                        intent.putExtra(ChatThreadActivity.EXTRA_CONTACT_NAME, hn);
+                        startActivity(intent);
+                    }
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(HandymanProfileActivity.this, "Could not open chat", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        });
         btnBookNow.setOnClickListener(v -> {
             Intent intent = new Intent(this, BookingActivity.class);
             intent.putExtra(EXTRA_HANDYMAN_UID, handymanUid);
@@ -109,7 +143,8 @@ public class HandymanProfileActivity extends AppCompatActivity {
     }
 
     private void populateHeader(Handyman handyman) {
-        tvHandymanName.setText(handyman.getFullName() != null ? handyman.getFullName() : "");
+        handymanName = handyman.getFullName();
+        tvHandymanName.setText(handymanName != null ? handymanName : "");
         tvHourlyRate.setText(CurrencyUtils.formatAmount(handyman.getHourlyRate()));
         tvServiceCategory.setText(handyman.getServiceCategory() != null ? handyman.getServiceCategory() : "");
         tvLocation.setText(handyman.getLocation() != null ? handyman.getLocation() : "");
@@ -117,9 +152,6 @@ public class HandymanProfileActivity extends AppCompatActivity {
                 ? String.format(Locale.UK, "%.1f", handyman.getRating())
                 : "Not rated");
 
-        AuthRepository authRepository = new AuthRepository();
-        FirebaseUser currentUser = authRepository.getCurrentUser();
-        String currentUid = currentUser != null ? currentUser.getUid() : "";
         viewPager.setAdapter(new ProfilePagerAdapter(this, handyman, currentUid));
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {

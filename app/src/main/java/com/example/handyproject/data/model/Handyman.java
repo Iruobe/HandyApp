@@ -15,6 +15,7 @@ public class Handyman {
     private int yearsOfExperience;
     private double hourlyRate;
     private double rating;
+    private int reviewCount;
     private int totalJobs;
     private int profileViews;
     private boolean availableForHire;
@@ -39,6 +40,7 @@ public class Handyman {
     public int getYearsOfExperience()           { return yearsOfExperience; }
     public double getHourlyRate()               { return hourlyRate; }
     public double getRating()                   { return rating; }
+    public int getReviewCount()                 { return reviewCount; }
     public int getTotalJobs()                   { return totalJobs; }
     public int getProfileViews()                { return profileViews; }
     public boolean isAvailableForHire()         { return availableForHire; }
@@ -58,6 +60,7 @@ public class Handyman {
     public void setYearsOfExperience(int yearsOfExperience)    { this.yearsOfExperience = yearsOfExperience; }
     public void setHourlyRate(double hourlyRate)                { this.hourlyRate = hourlyRate; }
     public void setRating(double rating)                        { this.rating = rating; }
+    public void setReviewCount(int reviewCount)                 { this.reviewCount = reviewCount; }
     public void setTotalJobs(int totalJobs)                     { this.totalJobs = totalJobs; }
     public void setProfileViews(int profileViews)               { this.profileViews = profileViews; }
     public void setAvailableForHire(boolean availableForHire)   { this.availableForHire = availableForHire; }

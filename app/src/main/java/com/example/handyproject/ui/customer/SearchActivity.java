@@ -15,6 +15,7 @@ import com.example.handyproject.data.model.Handyman;
 import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.ui.common.adapters.SearchResultAdapter;
 import com.example.handyproject.ui.common.utils.NavigationUtils;
+import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
@@ -35,6 +36,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        ViewUtils.fixNavOverlap(findViewById(R.id.scrollContent), findViewById(R.id.bottomNav));
 
         rvSearchResults = findViewById(R.id.rvSearchResults);
         tvResultsCount  = findViewById(R.id.tvResultsCount);
@@ -78,11 +80,8 @@ public class SearchActivity extends AppCompatActivity {
                     handymen.addAll(result);
                 }
                 adapter.notifyDataSetChanged();
-                int count = handymen.size();
-                String label = count + " handyman" + (count == 1 ? "" : "s") + " found"
-                        + (searchQuery.isEmpty() ? "" : " for \"" + searchQuery + "\"");
-                tvResultsCount.setText(label);
-                btnLoadMore.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+                tvResultsCount.setText("Available Handymen");
+                btnLoadMore.setVisibility(handymen.size() > 0 ? View.VISIBLE : View.GONE);
             }
 
             @Override

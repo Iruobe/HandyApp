@@ -91,7 +91,8 @@ public class ReviewRepository {
                     FirebaseService.getFirestore()
                             .collection(Constants.COLLECTION_USERS)
                             .document(handymanId)
-                            .update(Constants.FIELD_RATING, average)
+                            .update(Constants.FIELD_RATING, average,
+                                    Constants.FIELD_REVIEW_COUNT, snapshots.size())
                             .addOnSuccessListener(v -> callback.onSuccess())
                             .addOnFailureListener(e -> callback.onSuccess()); // review written; rating sync is non-critical
                 })

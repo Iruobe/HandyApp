@@ -46,6 +46,8 @@ public class HandymanHomeAdapter extends RecyclerView.Adapter<HandymanHomeAdapte
         holder.tvServiceType.setText(handyman.getServiceCategory());
         holder.tvRating.setText(String.valueOf(handyman.getRating()));
         holder.tvRate.setText(CurrencyUtils.formatRate(handyman.getHourlyRate()));
+        String location = handyman.getLocation();
+        holder.tvDistance.setText(location != null && !location.isEmpty() ? location : "Location not set");
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, HandymanProfileActivity.class);
@@ -65,6 +67,7 @@ public class HandymanHomeAdapter extends RecyclerView.Adapter<HandymanHomeAdapte
         final TextView tvServiceType;
         final TextView tvRating;
         final TextView tvRate;
+        final TextView tvDistance;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +76,7 @@ public class HandymanHomeAdapter extends RecyclerView.Adapter<HandymanHomeAdapte
             tvServiceType   = itemView.findViewById(R.id.tvServiceType);
             tvRating        = itemView.findViewById(R.id.tvRating);
             tvRate          = itemView.findViewById(R.id.tvRate);
+            tvDistance      = itemView.findViewById(R.id.tvDistance);
         }
     }
 }

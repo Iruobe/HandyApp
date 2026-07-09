@@ -31,15 +31,6 @@
                 android:textColor="@color/colorTextPrimary"
                 android:fontFamily="sans-serif" />
 
-            <ImageButton
-                android:id="@+id/btnSearch"
-                android:layout_width="@dimen/back_button_size"
-                android:layout_height="@dimen/back_button_size"
-                android:src="@drawable/ic_search"
-                android:background="@android:color/transparent"
-                app:tint="@color/colorTextSecondary"
-                android:contentDescription="Search conversations" />
-
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

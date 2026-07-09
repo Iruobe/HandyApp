@@ -15,6 +15,7 @@ import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.auth.MainActivity;
 import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.common.utils.NavigationUtils;
+import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -35,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        ViewUtils.fixNavOverlap(findViewById(R.id.scrollContent), findViewById(R.id.bottomNav));
 
         ivAvatar   = findViewById(R.id.ivAvatar);
         tvName     = findViewById(R.id.tvName);

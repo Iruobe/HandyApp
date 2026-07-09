@@ -15,6 +15,7 @@ import com.example.handyproject.data.repository.AuthRepository;
 import com.example.handyproject.data.repository.MessageRepository;
 import com.example.handyproject.ui.common.adapters.ConversationAdapter;
 import com.example.handyproject.ui.common.utils.NavigationUtils;
+import com.example.handyproject.ui.common.utils.ViewUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -34,12 +35,10 @@ public class MessagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
+        ViewUtils.fixNavOverlap(findViewById(R.id.rvConversations), findViewById(R.id.bottomNav));
 
         rvConversations  = findViewById(R.id.rvConversations);
         layoutEmptyState = findViewById(R.id.layoutEmptyState);
-
-        findViewById(R.id.btnSearch).setOnClickListener(v ->
-                Toast.makeText(this, "Search coming soon", Toast.LENGTH_SHORT).show());
 
         setupRecyclerView();
         setupBottomNav();

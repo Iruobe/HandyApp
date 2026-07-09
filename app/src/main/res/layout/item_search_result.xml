@@ -67,23 +67,6 @@
                         android:ellipsize="end"
                         android:fontFamily="sans-serif"/>
 
-                    <ImageView
-                        android:id="@+id/ivVerified"
-                        android:layout_width="@dimen/icon_size_xs"
-                        android:layout_height="@dimen/icon_size_xs"
-                        android:src="@drawable/ic_verified"
-                        app:tint="@color/colorPrimary"
-                        android:layout_marginEnd="@dimen/padding_small"
-                        android:contentDescription="Verified"/>
-
-                    <ImageView
-                        android:id="@+id/ivSave"
-                        android:layout_width="@dimen/icon_size"
-                        android:layout_height="@dimen/icon_size"
-                        android:src="@drawable/ic_favorite_border"
-                        app:tint="@color/colorTextSecondary"
-                        android:contentDescription="Save"/>
-
                 </LinearLayout>
 
                 <!-- Service title -->
