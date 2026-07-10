@@ -51,7 +51,7 @@ public class ProfilePortfolioFragment extends Fragment implements PortfolioImage
         TextView tvEmptyPortfolio = view.findViewById(R.id.tvEmptyPortfolio);
 
         PortfolioImageAdapter adapter = new PortfolioImageAdapter(this);
-        rvPortfolio.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        rvPortfolio.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvPortfolio.setAdapter(adapter);
         adapter.updateData(portfolioPhotos);
 

@@ -46,6 +46,7 @@ public class PortfolioImageViewerDialog extends DialogFragment {
         ImageUtils.loadImage(ivFullScreenImage, imageUrl);
 
         view.findViewById(R.id.rootViewer).setOnClickListener(v -> dismiss());
+        view.findViewById(R.id.btnCloseViewer).setOnClickListener(v -> dismiss());
     }
 
     @Override

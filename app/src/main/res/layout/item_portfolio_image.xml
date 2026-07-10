@@ -2,9 +2,9 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Widget.HandyProject.Card"
-    android:layout_width="@dimen/card_height_portfolio"
-    android:layout_height="@dimen/card_height_portfolio"
-    android:layout_marginEnd="@dimen/padding_small">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_image_height"
+    android:layout_marginBottom="@dimen/padding_small">
 
     <ImageView
         android:id="@+id/ivPortfolioImage"

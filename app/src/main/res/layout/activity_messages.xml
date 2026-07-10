@@ -49,6 +49,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
+            android:paddingStart="@dimen/padding_standard"
+            android:paddingEnd="@dimen/padding_standard"
             android:paddingTop="@dimen/padding_small"
             android:paddingBottom="@dimen/bottom_nav_height" />
 

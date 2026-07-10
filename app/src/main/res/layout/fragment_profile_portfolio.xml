@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorBackground"
-    android:padding="@dimen/padding_standard">
+    android:fillViewport="true"
+    android:background="@color/colorBackground">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPortfolio"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/card_height_portfolio"
-        android:clipToPadding="false"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    <TextView
-        android:id="@+id/tvEmptyPortfolio"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_standard"
-        android:gravity="center"
-        android:text="No portfolio images yet."
-        android:textSize="@dimen/text_size_body"
-        android:textColor="@color/colorTextSecondary"
-        android:fontFamily="sans-serif"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:padding="@dimen/padding_standard">
 
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPortfolio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <TextView
+            android:id="@+id/tvEmptyPortfolio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_standard"
+            android:gravity="center"
+            android:text="No portfolio images yet."
+            android:textSize="@dimen/text_size_body"
+            android:textColor="@color/colorTextSecondary"
+            android:fontFamily="sans-serif"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</ScrollView>
