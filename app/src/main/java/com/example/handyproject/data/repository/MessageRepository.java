@@ -91,7 +91,7 @@ public class MessageRepository {
                 .collection(Constants.COLLECTION_CONVERSATIONS)
                 .document(conversationId)
                 .collection(Constants.COLLECTION_MESSAGES)
-                .orderBy(Constants.FIELD_SENT_AT, Query.Direction.ASCENDING)
+                .orderBy(Constants.FIELD_SENT_AT, Query.Direction.DESCENDING)
                 .limit(THREAD_MESSAGE_LIMIT)
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) {
@@ -107,6 +107,10 @@ public class MessageRepository {
                         message.setMessageId(doc.getId());
                         messages.add(message);
                     }
+                    // Query is newest-first (DESCENDING) to keep the most recent
+                    // THREAD_MESSAGE_LIMIT messages in the window; reverse here so
+                    // the adapter still receives oldest→newest for top-to-bottom display.
+                    Collections.reverse(messages);
                     callback.onUpdate(messages);
                 });
     }
