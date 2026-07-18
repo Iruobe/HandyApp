@@ -1,12 +1,17 @@
 package com.example.handyproject.ui.handyman;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +53,7 @@ public class HandymanHomeActivity extends AppCompatActivity {
     private TextView tvNewBadge;
     private RecyclerView rvEnquiries;
     private EnquiryAdapter enquiryAdapter;
+    private ActivityResultLauncher<String> notificationPermissionLauncher;
     private final List<EnquiryItem> enquiries = new ArrayList<>();
 
     @Override
@@ -65,6 +71,7 @@ public class HandymanHomeActivity extends AppCompatActivity {
         setupEnquiries();
         setupBadge();
         setupBottomNav();
+        requestNotificationPermission();
 
         findViewById(R.id.btnNotifications).setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
@@ -150,5 +157,16 @@ public class HandymanHomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
             return false;
         });
+    }
+
+    private void requestNotificationPermission() {
+        notificationPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(), granted -> { });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
     }
 }

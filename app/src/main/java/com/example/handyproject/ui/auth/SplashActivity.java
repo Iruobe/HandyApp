@@ -16,12 +16,16 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.handyproject.R;
 import com.example.handyproject.data.remote.FirebaseService;
+import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.customer.CustomerHomeActivity;
 import com.example.handyproject.ui.handyman.HandymanHomeActivity;
 import com.example.handyproject.utils.Constants;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SplashActivity extends AppCompatActivity {
+
+    private final UserRepository userRepository = new UserRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,7 @@ public class SplashActivity extends AppCompatActivity {
                     String role = doc.getString(Constants.FIELD_ROLE);
                     getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
                             .edit().putString(Constants.PREF_KEY_ROLE, role).apply();
+                    saveFcmToken(user.getUid());
                     Intent intent;
                     if (Constants.ROLE_HANDYMAN.equals(role)) {
                             intent = new Intent(this, HandymanHomeActivity.class);
@@ -101,5 +106,13 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
                 });
+    }
+
+    private void saveFcmToken(String uid) {
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token ->
+                userRepository.updateFcmToken(uid, token, new UserRepository.SimpleCallback() {
+                    @Override public void onSuccess() {}
+                    @Override public void onFailure(String message) {}
+                }));
     }
 }

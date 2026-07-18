@@ -48,4 +48,12 @@ public class UserRepository {
                 .addOnFailureListener(e -> callback.onFailure(
                         e.getMessage() != null ? e.getMessage() : "Failed to update profile."));
     }
+
+    public void updateFcmToken(String uid, String token, SimpleCallback callback) {
+        db.collection(Constants.COLLECTION_USERS).document(uid)
+                .update(Constants.FIELD_FCM_TOKEN, token)
+                .addOnSuccessListener(v -> callback.onSuccess())
+                .addOnFailureListener(e -> callback.onFailure(
+                        e.getMessage() != null ? e.getMessage() : "Failed to update device token."));
+    }
 }

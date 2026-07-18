@@ -60,6 +60,9 @@ public class Constants {
     // Notification
     public static final String NOTIFICATION_CHANNEL_ID = "app_channel";
 
+    // Firestore field names — push notifications (device token)
+    public static final String FIELD_FCM_TOKEN = "fcmToken";
+
     // Firestore field names — conversations
     public static final String FIELD_PARTICIPANT_IDS         = "participantIds";
     public static final String FIELD_PARTICIPANT_NAMES       = "participantNames";

@@ -19,6 +19,7 @@ public class User {
     private String responseTime;
     private List<String> servicesOffered;
     private List<String> portfolioPhotos;
+    private String fcmToken;
 
     public User() {}
 
@@ -47,6 +48,7 @@ public class User {
     public String getResponseTime()       { return responseTime; }
     public List<String> getServicesOffered() { return servicesOffered; }
     public List<String> getPortfolioPhotos() { return portfolioPhotos; }
+    public String getFcmToken()              { return fcmToken; }
 
     public void setUid(String uid)                 { this.uid = uid; }
     public void setRole(String role)               { this.role = role; }
@@ -62,4 +64,5 @@ public class User {
     public void setResponseTime(String responseTime)             { this.responseTime = responseTime; }
     public void setServicesOffered(List<String> servicesOffered) { this.servicesOffered = servicesOffered; }
     public void setPortfolioPhotos(List<String> portfolioPhotos) { this.portfolioPhotos = portfolioPhotos; }
+    public void setFcmToken(String fcmToken)                     { this.fcmToken = fcmToken; }
 }

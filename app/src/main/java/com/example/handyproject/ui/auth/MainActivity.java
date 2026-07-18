@@ -22,6 +22,7 @@ import com.example.handyproject.utils.Constants;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 String role = user.getRole();
                 getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
                         .edit().putString(Constants.PREF_KEY_ROLE, role).apply();
+                saveFcmToken(uid);
                 Intent intent;
                 if (Constants.ROLE_CUSTOMER.equals(role)) {
                     intent = new Intent(MainActivity.this, CustomerHomeActivity.class);
@@ -139,5 +141,13 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void saveFcmToken(String uid) {
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token ->
+                userRepository.updateFcmToken(uid, token, new UserRepository.SimpleCallback() {
+                    @Override public void onSuccess() {}
+                    @Override public void onFailure(String message) {}
+                }));
     }
 }

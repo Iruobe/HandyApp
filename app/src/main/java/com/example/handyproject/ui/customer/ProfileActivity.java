@@ -21,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -130,6 +131,14 @@ public class ProfileActivity extends AppCompatActivity {
                 .setMessage("You will need to log in again to access your account.")
                 .setPositiveButton("Sign Out", (dialog, which) -> {
                     dialog.dismiss();
+                    FirebaseUser currentUser = authRepository.getCurrentUser();
+                    if (currentUser != null) {
+                        userRepository.updateFcmToken(currentUser.getUid(), null, new UserRepository.SimpleCallback() {
+                            @Override public void onSuccess() {}
+                            @Override public void onFailure(String message) {}
+                        });
+                        FirebaseMessaging.getInstance().deleteToken();
+                    }
                     getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
                             .edit().remove(Constants.PREF_KEY_ROLE).apply();
                     authRepository.signOut();

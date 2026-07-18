@@ -1,7 +1,10 @@
 package com.example.handyproject.ui.customer;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -39,6 +42,7 @@ public class CustomerHomeActivity extends AppCompatActivity {
     private RecyclerView rvHandymen;
     private LinearLayout layoutUpload;
     private ActivityResultLauncher<String> imagePicker;
+    private ActivityResultLauncher<String> notificationPermissionLauncher;
     private final List<Handyman> handymen = new ArrayList<>();
     private HandymanRepository handymanRepository;
 
@@ -58,6 +62,7 @@ public class CustomerHomeActivity extends AppCompatActivity {
         applyAgentBannerGradient();
         setupHandymenCards();
         setupBottomNav();
+        requestNotificationPermission();
 
         findViewById(R.id.btnNotifications).setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
@@ -127,6 +132,17 @@ public class CustomerHomeActivity extends AppCompatActivity {
                     }
                 });
         layoutUpload.setOnClickListener(v -> imagePicker.launch("image/*"));
+    }
+
+    private void requestNotificationPermission() {
+        notificationPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(), granted -> { });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
     }
 
     private void setupHandymenCards() {
