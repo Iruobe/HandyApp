@@ -79,86 +79,15 @@
             android:orientation="vertical"
             android:padding="@dimen/padding_standard">
 
-            <!-- SECTION 1: Profile Completion Banner -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardProfileCompletion"
-                style="@style/Widget.HandyProject.Card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_standard">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_standard">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Complete your profile"
-                            android:textColor="@color/colorTextPrimary"
-                            android:textSize="@dimen/text_size_subheading"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif" />
-
-                        <TextView
-                            android:id="@+id/tvProfileCompletionPercent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="75%"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/text_size_body"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/padding_small"
-                        android:text="Add portfolio photos to attract more customers."
-                        android:textColor="@color/colorTextSecondary"
-                        android:textSize="@dimen/text_size_body"
-                        android:fontFamily="sans-serif" />
-
-                    <ProgressBar
-                        android:id="@+id/progressProfileCompletion"
-                        style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/padding_small"
-                        android:layout_marginTop="@dimen/padding_small"
-                        android:max="100"
-                        android:progress="75"
-                        android:progressTint="@color/colorPrimary"
-                        android:progressBackgroundTint="@color/colorUnselectedBackground" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAddPhotos"
-                        style="@style/Widget.HandyProject.Button.Pill"
-                        android:layout_marginTop="@dimen/padding_standard"
-                        android:text="Add Photos" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- SECTION 2: Stats Grid — Row 1 -->
+            <!-- Stats grid: Rating (visible, full-width) + Total Jobs (hidden until Round 2) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2"
-                android:layout_marginBottom="@dimen/padding_small">
+                android:layout_marginBottom="@dimen/padding_standard">
 
-                <!-- Card 1: Availability -->
+                <!-- Rating -->
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.HandyProject.Card"
                     android:layout_width="0dp"
@@ -172,60 +101,43 @@
                         android:orientation="vertical"
                         android:padding="@dimen/padding_standard">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <ImageView
-                                android:layout_width="@dimen/icon_size"
-                                android:layout_height="@dimen/icon_size"
-                                android:layout_weight="1"
-                                android:src="@drawable/ic_calendar"
-                                android:contentDescription="Availability" />
-
-                            <com.google.android.material.switchmaterial.SwitchMaterial
-                                android:id="@+id/switchAvailability"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:checked="true"
-                                app:trackTint="@drawable/switch_track_color"
-                                app:thumbTint="@color/white" />
-
-                        </LinearLayout>
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:src="@drawable/ic_star"
+                            android:tint="@color/colorGold"
+                            android:contentDescription="Rating" />
 
                         <TextView
+                            android:id="@+id/tvRating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/padding_standard"
-                            android:text="STATUS"
-                            android:textColor="@color/colorTextSecondary"
-                            android:textSize="@dimen/text_size_caption"
-                            android:textAllCaps="true"
+                            android:layout_marginTop="@dimen/padding_small"
+                            android:text="Not rated"
+                            android:textColor="@color/colorTextPrimary"
+                            android:textSize="@dimen/text_size_heading"
+                            android:textStyle="bold"
                             android:fontFamily="sans-serif" />
 
                         <TextView
-                            android:id="@+id/tvAvailabilityStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_xsmall"
-                            android:text="Available"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/text_size_subheading"
-                            android:textStyle="bold"
+                            android:text="Rating"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="@dimen/text_size_caption"
                             android:fontFamily="sans-serif" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Card 2: Total Jobs -->
+                <!-- Total Jobs — hidden this round; Round 2 un-hides for a 50/50 row with Rating -->
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.HandyProject.Card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="@dimen/padding_small">
+                    android:layout_marginStart="@dimen/padding_small"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -263,178 +175,7 @@
 
             </LinearLayout>
 
-            <!-- Stats Grid — Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginBottom="@dimen/padding_standard">
-
-                <!-- Card 3: Rating -->
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.HandyProject.Card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/padding_small">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/padding_standard">
-
-                        <ImageView
-                            android:layout_width="@dimen/icon_size"
-                            android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/ic_star"
-                            android:tint="@color/colorGold"
-                            android:contentDescription="Rating" />
-
-                        <TextView
-                            android:id="@+id/tvRating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/padding_small"
-                            android:text="4.9"
-                            android:textColor="@color/colorTextPrimary"
-                            android:textSize="@dimen/text_size_heading"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rating"
-                            android:textColor="@color/colorTextSecondary"
-                            android:textSize="@dimen/text_size_caption"
-                            android:fontFamily="sans-serif" />
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Card 4: Views -->
-                <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.HandyProject.Card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/padding_small">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/padding_standard">
-
-                        <ImageView
-                            android:layout_width="@dimen/icon_size"
-                            android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/ic_visibility"
-                            android:contentDescription="Profile views" />
-
-                        <TextView
-                            android:id="@+id/tvProfileViews"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/padding_small"
-                            android:text="1.2k"
-                            android:textColor="@color/colorTextPrimary"
-                            android:textSize="@dimen/text_size_heading"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Views"
-                            android:textColor="@color/colorTextSecondary"
-                            android:textSize="@dimen/text_size_caption"
-                            android:fontFamily="sans-serif" />
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <!-- SECTION 3: Recent Portfolio -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="@dimen/padding_small">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Recent Portfolio"
-                    android:textColor="@color/colorTextPrimary"
-                    android:textSize="@dimen/text_size_subheading"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif" />
-
-                <TextView
-                    android:id="@+id/tvViewAllPortfolio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="View All"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_body"
-                    android:fontFamily="sans-serif"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginBottom="@dimen/padding_standard">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/card_height_portfolio"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/padding_small"
-                    app:cardCornerRadius="@dimen/corner_radius"
-                    app:cardElevation="@dimen/card_elevation">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:background="@color/colorUnselectedBackground"
-                        android:src="@drawable/defaultprofile"
-                        android:contentDescription="Portfolio photo 1" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/card_height_portfolio"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/padding_small"
-                    app:cardCornerRadius="@dimen/corner_radius"
-                    app:cardElevation="@dimen/card_elevation">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:background="@color/colorUnselectedBackground"
-                        android:src="@drawable/defaultprofile"
-                        android:contentDescription="Portfolio photo 2" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <!-- SECTION 4: Recent Enquiries -->
+            <!-- Recent Enquiries — list hidden this round (B1); card shell + button kept -->
             <com.google.android.material.card.MaterialCardView
                 style="@style/Widget.HandyProject.Card"
                 android:layout_width="match_parent"
@@ -466,6 +207,7 @@
                             android:textStyle="bold"
                             android:fontFamily="sans-serif" />
 
+                        <!-- "New" badge hidden until Round 2 restores the enquiry list -->
                         <TextView
                             android:id="@+id/tvNewBadge"
                             android:layout_width="wrap_content"
@@ -477,7 +219,8 @@
                             android:paddingStart="@dimen/padding_xsmall"
                             android:paddingEnd="@dimen/padding_xsmall"
                             android:paddingTop="@dimen/margin_xsmall"
-                            android:paddingBottom="@dimen/margin_xsmall" />
+                            android:paddingBottom="@dimen/margin_xsmall"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -486,11 +229,13 @@
                         android:layout_height="@dimen/divider_height"
                         android:background="@color/colorUnselectedBackground" />
 
+                    <!-- Enquiry list hidden until Round 2 (real bookings data) -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvEnquiries"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnViewAllEnquiries"

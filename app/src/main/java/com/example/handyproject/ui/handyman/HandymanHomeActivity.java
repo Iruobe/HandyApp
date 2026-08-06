@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
+import com.example.handyproject.data.model.Handyman;
+import com.example.handyproject.data.repository.AuthRepository;
+import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.ui.common.adapters.EnquiryAdapter;
 import com.example.handyproject.ui.common.utils.ImageUtils;
 import com.example.handyproject.ui.common.utils.ViewUtils;
@@ -26,10 +29,11 @@ import com.example.handyproject.ui.customer.NotificationsActivity;
 import com.example.handyproject.ui.customer.ProfileActivity;
 import com.example.handyproject.ui.customer.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HandymanHomeActivity extends AppCompatActivity {
 
@@ -48,8 +52,8 @@ public class HandymanHomeActivity extends AppCompatActivity {
         }
     }
 
-    private SwitchMaterial switchAvailability;
-    private TextView tvAvailabilityStatus;
+    private final HandymanRepository handymanRepository = new HandymanRepository();
+    private TextView tvRating;
     private TextView tvNewBadge;
     private RecyclerView rvEnquiries;
     private EnquiryAdapter enquiryAdapter;
@@ -62,12 +66,11 @@ public class HandymanHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_handyman_home);
         ViewUtils.fixNavOverlap(findViewById(R.id.scrollContent), findViewById(R.id.bottomNav));
 
-        switchAvailability   = findViewById(R.id.switchAvailability);
-        tvAvailabilityStatus = findViewById(R.id.tvAvailabilityStatus);
-        tvNewBadge           = findViewById(R.id.tvNewBadge);
-        rvEnquiries          = findViewById(R.id.rvEnquiries);
+        tvRating    = findViewById(R.id.tvRating);
+        tvNewBadge  = findViewById(R.id.tvNewBadge);
+        rvEnquiries = findViewById(R.id.rvEnquiries);
 
-        setupAvailabilityToggle();
+        loadRating();
         setupEnquiries();
         setupBadge();
         setupBottomNav();
@@ -81,29 +84,29 @@ public class HandymanHomeActivity extends AppCompatActivity {
         ivUserAvatar.setOnClickListener(v ->
                 startActivity(new Intent(this, ProfileActivity.class)));
 
-        findViewById(R.id.btnAddPhotos).setOnClickListener(v ->
-                Toast.makeText(this, "Portfolio upload coming soon",
-                        Toast.LENGTH_SHORT).show());
-
         findViewById(R.id.btnViewAllEnquiries).setOnClickListener(v ->
-                Toast.makeText(this, "Enquiries coming soon",
-                        Toast.LENGTH_SHORT).show());
-
-        findViewById(R.id.tvViewAllPortfolio).setOnClickListener(v ->
-                Toast.makeText(this, "Portfolio coming soon",
-                        Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(this, NotificationsActivity.class)));
     }
 
-    private void setupAvailabilityToggle() {
-        switchAvailability.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                tvAvailabilityStatus.setText("Available");
-                tvAvailabilityStatus.setTextColor(
-                        ContextCompat.getColor(this, R.color.colorPrimary));
-            } else {
-                tvAvailabilityStatus.setText("Unavailable");
-                tvAvailabilityStatus.setTextColor(
-                        ContextCompat.getColor(this, R.color.colorTextSecondary));
+    /** Mirrors HandymanProfileActivity's header: real synced handyman.rating, same formatting. */
+    private void loadRating() {
+        AuthRepository authRepository = new AuthRepository();
+        FirebaseUser firebaseUser = authRepository.getCurrentUser();
+        String uid = firebaseUser != null ? firebaseUser.getUid() : "";
+        if (uid.isEmpty()) return;
+
+        handymanRepository.fetchHandyman(uid, new HandymanRepository.HandymanCallback() {
+            @Override
+            public void onSuccess(Handyman handyman) {
+                if (handyman == null) return;
+                tvRating.setText(handyman.getRating() > 0
+                        ? String.format(Locale.UK, "%.1f", handyman.getRating())
+                        : "Not rated");
+            }
+
+            @Override
+            public void onError(String message) {
+                /* silent — keeps the "Not rated" placeholder from the layout */
             }
         });
     }
