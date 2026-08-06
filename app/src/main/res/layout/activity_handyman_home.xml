@@ -130,14 +130,13 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Total Jobs — hidden this round; Round 2 un-hides for a 50/50 row with Rating -->
+                <!-- Total Jobs — wired to the count of confirmed bookings (Round 2) -->
                 <com.google.android.material.card.MaterialCardView
                     style="@style/Widget.HandyProject.Card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="@dimen/padding_small"
-                    android:visibility="gone">
+                    android:layout_marginStart="@dimen/padding_small">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -156,7 +155,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/padding_small"
-                            android:text="42"
+                            android:text="0"
                             android:textColor="@color/colorTextPrimary"
                             android:textSize="@dimen/text_size_heading"
                             android:textStyle="bold"
@@ -207,12 +206,12 @@
                             android:textStyle="bold"
                             android:fontFamily="sans-serif" />
 
-                        <!-- "New" badge hidden until Round 2 restores the enquiry list -->
+                        <!-- Count of pending bookings among the recent 3; GONE when zero (set in code) -->
                         <TextView
                             android:id="@+id/tvNewBadge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="3 New"
+                            android:text="0 New"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_caption"
                             android:fontFamily="sans-serif"
@@ -229,13 +228,12 @@
                         android:layout_height="@dimen/divider_height"
                         android:background="@color/colorUnselectedBackground" />
 
-                    <!-- Enquiry list hidden until Round 2 (real bookings data) -->
+                    <!-- Recent Enquiries — this handyman's last 3 bookings (Round 2) -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvEnquiries"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        android:visibility="gone" />
+                        android:nestedScrollingEnabled="false" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnViewAllEnquiries"

@@ -40,6 +40,14 @@ public class MessageRepository {
         void onError(String message);
     }
 
+    /** Like MessageSendCallback, but surfaces the created message's doc ID so the
+     *  caller can key a parallel bookings record on it. The message write itself
+     *  is unchanged. */
+    public interface BookingPostCallback {
+        void onSuccess(String messageId);
+        void onError(String message);
+    }
+
     private static final int THREAD_MESSAGE_LIMIT = 30;
 
     private ListenerRegistration listenerRegistration;
@@ -211,7 +219,7 @@ public class MessageRepository {
     // ── Booking message ───────────────────────────────────────────────────────
 
     public void postBookingMessage(String conversationId, Booking booking,
-                                   MessageSendCallback callback) {
+                                   BookingPostCallback callback) {
         Timestamp now = Timestamp.now();
 
         Message message = new Message();
@@ -230,6 +238,7 @@ public class MessageRepository {
                 .collection(Constants.COLLECTION_MESSAGES)
                 .add(message)
                 .addOnSuccessListener(ref -> {
+                    String messageId = ref.getId();
                     Map<String, Object> update = new HashMap<>();
                     update.put(Constants.FIELD_LAST_MESSAGE, "Booking request");
                     update.put(Constants.FIELD_LAST_MESSAGE_TIMESTAMP, now);
@@ -238,7 +247,7 @@ public class MessageRepository {
                             .collection(Constants.COLLECTION_CONVERSATIONS)
                             .document(conversationId)
                             .update(update)
-                            .addOnSuccessListener(unused -> callback.onSuccess())
+                            .addOnSuccessListener(unused -> callback.onSuccess(messageId))
                             .addOnFailureListener(e -> callback.onError(
                                     e.getMessage() != null ? e.getMessage()
                                             : "Failed to update conversation."));

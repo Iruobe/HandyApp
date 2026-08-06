@@ -28,10 +28,12 @@ import com.example.handyproject.data.model.Booking;
 import com.example.handyproject.data.model.Handyman;
 import com.example.handyproject.data.model.User;
 import com.example.handyproject.data.repository.AuthRepository;
+import com.example.handyproject.data.repository.BookingRepository;
 import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.data.repository.MessageRepository;
 import com.example.handyproject.data.repository.UserRepository;
 import com.example.handyproject.ui.common.utils.ImageUtils;
+import com.example.handyproject.utils.Constants;
 import com.example.handyproject.utils.CurrencyUtils;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.Timestamp;
@@ -51,6 +53,7 @@ public class BookingActivity extends AppCompatActivity {
     private final AuthRepository     authRepository     = new AuthRepository();
     private final UserRepository     userRepository     = new UserRepository();
     private final MessageRepository  messageRepository  = new MessageRepository();
+    private final BookingRepository  bookingRepository  = new BookingRepository();
 
     private static final int DATE_STRIP_DAYS = 60;
 
@@ -220,6 +223,9 @@ public class BookingActivity extends AppCompatActivity {
         Booking booking = new Booking();
         booking.setHandymanId(handymanUid);
         booking.setCustomerId(currentUser.getUid());
+        booking.setCustomerName(customerName);
+        booking.setHandymanName(handymanName);
+        booking.setStatus(Constants.BOOKING_STATUS_PENDING);
         booking.setAddress(address);
         booking.setNotes(description);
         booking.setScheduledAt(new Timestamp(scheduled.getTime()));
@@ -232,9 +238,19 @@ public class BookingActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String conversationId) {
                         messageRepository.postBookingMessage(conversationId, booking,
-                                new MessageRepository.MessageSendCallback() {
+                                new MessageRepository.BookingPostCallback() {
                                     @Override
-                                    public void onSuccess() {
+                                    public void onSuccess(String messageId) {
+                                        // Dual-write: parallel bookings record keyed by the
+                                        // message ID. Non-fatal — the booking message (chat
+                                        // source of truth) is already posted, so we navigate
+                                        // regardless of whether this record write succeeds.
+                                        bookingRepository.createBooking(messageId, booking,
+                                                new BookingRepository.SimpleCallback() {
+                                                    @Override public void onSuccess() {}
+                                                    @Override public void onError(String msg) {}
+                                                });
+
                                         Intent intent = new Intent(
                                                 BookingActivity.this, ChatThreadActivity.class);
                                         intent.putExtra(

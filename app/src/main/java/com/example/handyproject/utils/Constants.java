@@ -85,6 +85,14 @@ public class Constants {
     public static final String BOOKING_STATUS_CONFIRMED  = "confirmed";
     public static final String BOOKING_STATUS_DENIED     = "denied";
 
+    // Firestore field names — bookings collection (distinct from the booking-type
+    // MESSAGE fields above; reuses FIELD_HANDYMAN_ID / FIELD_CUSTOMER_ID /
+    // FIELD_CUSTOMER_NAME / FIELD_CREATED_AT). The bookings doc uses a plain
+    // "status" field, separate from a message's "bookingStatus".
+    public static final String FIELD_HANDYMAN_NAME = "handymanName";
+    public static final String FIELD_STATUS        = "status";
+    public static final String FIELD_QUOTE_AMOUNT  = "quoteAmount";
+
     // Firestore collections — reviews
     public static final String COLLECTION_REVIEWS    = "reviews";
 

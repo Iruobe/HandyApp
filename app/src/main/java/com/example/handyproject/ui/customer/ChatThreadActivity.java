@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
 import com.example.handyproject.data.repository.AuthRepository;
+import com.example.handyproject.data.repository.BookingRepository;
 import com.example.handyproject.data.repository.MessageRepository;
 import com.example.handyproject.ui.common.adapters.ChatMessageAdapter;
 import com.example.handyproject.ui.common.utils.ImageUtils;
@@ -31,6 +32,7 @@ public class ChatThreadActivity extends AppCompatActivity
     private ChatMessageAdapter adapter;
 
     private MessageRepository messageRepository;
+    private BookingRepository bookingRepository;
     private String conversationId;
 
     @Override
@@ -52,6 +54,7 @@ public class ChatThreadActivity extends AppCompatActivity
         }
 
         messageRepository = new MessageRepository();
+        bookingRepository = new BookingRepository();
 
         rvMessages     = findViewById(R.id.rvMessages);
         etMessageInput = findViewById(R.id.etMessageInput);
@@ -129,6 +132,14 @@ public class ChatThreadActivity extends AppCompatActivity
 
     @Override
     public void onConfirm(String messageId, double quoteAmount) {
+        // Sync the parallel bookings record (non-fatal — never blocks the chat outcome).
+        bookingRepository.updateBookingStatus(
+                messageId, Constants.BOOKING_STATUS_CONFIRMED, quoteAmount,
+                new BookingRepository.SimpleCallback() {
+                    @Override public void onSuccess() {}
+                    @Override public void onError(String msg) {}
+                });
+
         messageRepository.updateBookingStatus(
                 conversationId, messageId, Constants.BOOKING_STATUS_CONFIRMED, quoteAmount,
                 new MessageRepository.MessageSendCallback() {
@@ -157,6 +168,14 @@ public class ChatThreadActivity extends AppCompatActivity
 
     @Override
     public void onDeny(String messageId) {
+        // Sync the parallel bookings record (non-fatal — never blocks the chat outcome).
+        bookingRepository.updateBookingStatus(
+                messageId, Constants.BOOKING_STATUS_DENIED, null,
+                new BookingRepository.SimpleCallback() {
+                    @Override public void onSuccess() {}
+                    @Override public void onError(String msg) {}
+                });
+
         messageRepository.updateBookingStatus(
                 conversationId, messageId, Constants.BOOKING_STATUS_DENIED, null,
                 new MessageRepository.MessageSendCallback() {

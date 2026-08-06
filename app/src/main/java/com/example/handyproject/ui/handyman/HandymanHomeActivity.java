@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyproject.R;
+import com.example.handyproject.data.model.Booking;
 import com.example.handyproject.data.model.Handyman;
 import com.example.handyproject.data.repository.AuthRepository;
+import com.example.handyproject.data.repository.BookingRepository;
 import com.example.handyproject.data.repository.HandymanRepository;
 import com.example.handyproject.ui.common.adapters.EnquiryAdapter;
 import com.example.handyproject.ui.common.utils.ImageUtils;
@@ -28,9 +31,12 @@ import com.example.handyproject.ui.customer.MessagesActivity;
 import com.example.handyproject.ui.customer.NotificationsActivity;
 import com.example.handyproject.ui.customer.ProfileActivity;
 import com.example.handyproject.ui.customer.SearchActivity;
+import com.example.handyproject.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -53,7 +59,11 @@ public class HandymanHomeActivity extends AppCompatActivity {
     }
 
     private final HandymanRepository handymanRepository = new HandymanRepository();
+    private final BookingRepository  bookingRepository  = new BookingRepository();
+    private String currentUid = "";
+
     private TextView tvRating;
+    private TextView tvTotalJobs;
     private TextView tvNewBadge;
     private RecyclerView rvEnquiries;
     private EnquiryAdapter enquiryAdapter;
@@ -67,8 +77,12 @@ public class HandymanHomeActivity extends AppCompatActivity {
         ViewUtils.fixNavOverlap(findViewById(R.id.scrollContent), findViewById(R.id.bottomNav));
 
         tvRating    = findViewById(R.id.tvRating);
+        tvTotalJobs = findViewById(R.id.tvTotalJobs);
         tvNewBadge  = findViewById(R.id.tvNewBadge);
         rvEnquiries = findViewById(R.id.rvEnquiries);
+
+        FirebaseUser firebaseUser = new AuthRepository().getCurrentUser();
+        currentUid = firebaseUser != null ? firebaseUser.getUid() : "";
 
         loadRating();
         setupEnquiries();
@@ -88,14 +102,18 @@ public class HandymanHomeActivity extends AppCompatActivity {
                 startActivity(new Intent(this, NotificationsActivity.class)));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh on return (e.g. after a booking is confirmed elsewhere).
+        loadBookingStats();
+    }
+
     /** Mirrors HandymanProfileActivity's header: real synced handyman.rating, same formatting. */
     private void loadRating() {
-        AuthRepository authRepository = new AuthRepository();
-        FirebaseUser firebaseUser = authRepository.getCurrentUser();
-        String uid = firebaseUser != null ? firebaseUser.getUid() : "";
-        if (uid.isEmpty()) return;
+        if (currentUid.isEmpty()) return;
 
-        handymanRepository.fetchHandyman(uid, new HandymanRepository.HandymanCallback() {
+        handymanRepository.fetchHandyman(currentUid, new HandymanRepository.HandymanCallback() {
             @Override
             public void onSuccess(Handyman handyman) {
                 if (handyman == null) return;
@@ -112,23 +130,100 @@ public class HandymanHomeActivity extends AppCompatActivity {
     }
 
     private void setupEnquiries() {
-        enquiries.add(new EnquiryItem(
-                "Sarah Jenkins",
-                "Need help assembling a large IKEA wardrobe...",
-                "2h ago", "New"));
-        enquiries.add(new EnquiryItem(
-                "Mike Chen",
-                "Leaky faucet in the master bathroom.",
-                "Yesterday", "Responded"));
-        enquiries.add(new EnquiryItem(
-                "Amanda R.",
-                "TV mounting on drywall, 65 inch screen.",
-                "Oct 12", "Booked"));
-
+        // Data comes from the bookings collection in loadBookingStats(); starts empty.
         rvEnquiries.setLayoutManager(new LinearLayoutManager(this));
         enquiryAdapter = new EnquiryAdapter(enquiries);
         rvEnquiries.setAdapter(enquiryAdapter);
         rvEnquiries.setNestedScrollingEnabled(false);
+    }
+
+    /** Total Jobs = confirmed bookings; Recent Enquiries = last 3 bookings (any status). */
+    private void loadBookingStats() {
+        if (currentUid.isEmpty()) return;
+
+        bookingRepository.countConfirmedForHandyman(currentUid,
+                new BookingRepository.CountCallback() {
+                    @Override
+                    public void onSuccess(int count) {
+                        tvTotalJobs.setText(String.valueOf(count));
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        /* silent — keeps the "0" placeholder */
+                    }
+                });
+
+        bookingRepository.getRecentForHandyman(currentUid,
+                new BookingRepository.BookingListCallback() {
+                    @Override
+                    public void onSuccess(List<Booking> bookings) {
+                        enquiries.clear();
+                        int pending = 0;
+                        for (Booking booking : bookings) {
+                            enquiries.add(toEnquiryItem(booking));
+                            if (Constants.BOOKING_STATUS_PENDING.equals(booking.getStatus())) {
+                                pending++;
+                            }
+                        }
+                        enquiryAdapter.notifyDataSetChanged();
+
+                        if (pending > 0) {
+                            tvNewBadge.setText(pending + " New");
+                            tvNewBadge.setVisibility(View.VISIBLE);
+                        } else {
+                            tvNewBadge.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        /* silent — leaves the current list/badge as-is */
+                    }
+                });
+    }
+
+    private EnquiryItem toEnquiryItem(Booking booking) {
+        String name = (booking.getCustomerName() != null && !booking.getCustomerName().isEmpty())
+                ? booking.getCustomerName() : "Customer";
+
+        String message;
+        if (booking.getNotes() != null && !booking.getNotes().trim().isEmpty()) {
+            message = booking.getNotes();
+        } else {
+            message = booking.getAddress() != null ? booking.getAddress() : "";
+        }
+
+        return new EnquiryItem(name, message,
+                formatRelativeTime(booking.getCreatedAt()),
+                mapStatusToBadge(booking.getStatus()));
+    }
+
+    /** Maps a booking status to the three badge buckets EnquiryAdapter styles. */
+    private String mapStatusToBadge(String status) {
+        if (Constants.BOOKING_STATUS_CONFIRMED.equals(status)) return "Booked";   // teal
+        if (Constants.BOOKING_STATUS_DENIED.equals(status))    return "Declined"; // grey
+        return "New";                                                             // pending/null → red
+    }
+
+    // Relative-time formatting, mirroring NotificationAdapter's local helper.
+    private String formatRelativeTime(Timestamp timestamp) {
+        if (timestamp == null) return "";
+        long now  = System.currentTimeMillis();
+        long time = timestamp.toDate().getTime();
+        long diff = now - time;
+
+        if (diff < 60_000L) return "Just now";
+        if (diff < 3_600_000L) {
+            long minutes = diff / 60_000L;
+            return minutes + (minutes == 1 ? " minute ago" : " minutes ago");
+        }
+        if (diff < 86_400_000L) {
+            long hours = diff / 3_600_000L;
+            return hours + (hours == 1 ? " hour ago" : " hours ago");
+        }
+        if (diff < 172_800_000L) return "Yesterday";
+        return new SimpleDateFormat("d MMM", Locale.UK).format(timestamp.toDate());
     }
 
     private void setupBadge() {
