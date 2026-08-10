@@ -1,7 +1,9 @@
 package com.example.handyproject.ui.customer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import com.example.handyproject.data.repository.MessageRepository;
 import com.example.handyproject.data.repository.UserRepository;
 import com.google.firebase.auth.FirebaseUser;
 import com.example.handyproject.ui.common.utils.ImageUtils;
+import com.example.handyproject.utils.Constants;
 import com.example.handyproject.utils.CurrencyUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -70,6 +73,8 @@ public class HandymanProfileActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
+        applyViewerRoleGate();
+
         ImageUtils.loadAvatar(ivProfilePhoto, null);
 
         AuthRepository authRepository = new AuthRepository();
@@ -79,7 +84,13 @@ public class HandymanProfileActivity extends AppCompatActivity {
             userRepository.fetchUser(currentUid, new UserRepository.UserCallback() {
                 @Override
                 public void onSuccess(User user) {
-                    if (user != null) customerName = user.getFullName();
+                    if (user == null) return;
+                    customerName = user.getFullName();
+                    // Belt and braces: covers a handyman registered this session, before the
+                    // role pref is written at the next login/splash.
+                    if (Constants.ROLE_HANDYMAN.equals(user.getRole())) {
+                        btnBookNow.setVisibility(View.GONE);
+                    }
                 }
                 @Override
                 public void onFailure(String message) { /* silent — fallback used on click */ }
@@ -116,6 +127,19 @@ public class HandymanProfileActivity extends AppCompatActivity {
             intent.putExtra(EXTRA_HANDYMAN_UID, handymanUid);
             startActivity(intent);
         });
+    }
+
+    /**
+     * Booking is a customer-only action — a handyman viewing another handyman's profile
+     * (or their own) gets no Book Now button. Message stays available to everyone.
+     * Same SharedPreferences role check as ProfileReviewsFragment.checkEarnedGate().
+     */
+    private void applyViewerRoleGate() {
+        String role = getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+                .getString(Constants.PREF_KEY_ROLE, "");
+        if (Constants.ROLE_HANDYMAN.equals(role)) {
+            btnBookNow.setVisibility(View.GONE);
+        }
     }
 
     private void loadHandyman() {

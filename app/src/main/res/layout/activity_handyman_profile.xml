@@ -246,15 +246,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:orientation="horizontal">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnMessage"
                             style="@style/Widget.HandyProject.Button.Secondary"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_marginEnd="@dimen/padding_small"
                             android:text="Message"/>
 
                         <com.google.android.material.button.MaterialButton
@@ -262,7 +260,7 @@
                             style="@style/Widget.HandyProject.Button.Primary"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_marginStart="@dimen/padding_small"
+                            android:layout_marginStart="@dimen/padding_standard"
                             android:text="Book Now"/>
 
                     </LinearLayout>
