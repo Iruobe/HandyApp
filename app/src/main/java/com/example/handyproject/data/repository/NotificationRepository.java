@@ -31,7 +31,7 @@ public class NotificationRepository {
         listenerRegistration = FirebaseService.getFirestore()
                 .collection(Constants.COLLECTION_NOTIFICATIONS)
                 .whereEqualTo(Constants.FIELD_USER_ID, user.getUid())
-                .orderBy(Constants.FIELD_TIMESTAMP, Query.Direction.DESCENDING)
+                .orderBy(Constants.FIELD_CREATED_AT, Query.Direction.DESCENDING)
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) {
                         callback.onError(error.getMessage() != null

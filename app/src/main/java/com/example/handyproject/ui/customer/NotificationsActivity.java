@@ -34,9 +34,15 @@ public class NotificationsActivity extends AppCompatActivity {
     private final NotificationRepository notificationRepository = new NotificationRepository();
 
     private final List<Notification> allNotifications = new ArrayList<>();
-    private final String[] chipLabels = {"All", "Bookings", "Messages", "System"};
-    private final String[] chipTypes  = {null, Constants.TYPE_BOOKING, Constants.TYPE_MESSAGE, Constants.TYPE_SYSTEM};
-    private final MaterialCardView[] chipCards = new MaterialCardView[4];
+    private final String[] chipLabels = {"All", "Bookings", "Messages"};
+    // Parallel to chipLabels: null = no filter (All); otherwise the types that tab accepts.
+    // Bookings covers both the request and its later confirm/deny update.
+    private final String[][] chipTypes = {
+            null,
+            {Constants.TYPE_BOOKING, Constants.TYPE_BOOKING_UPDATE},
+            {Constants.TYPE_MESSAGE}
+    };
+    private final MaterialCardView[] chipCards = new MaterialCardView[chipLabels.length];
     private int selectedChipIndex = 0;
 
     @Override
@@ -113,20 +119,37 @@ public class NotificationsActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        adapter = new NotificationAdapter(this, notification ->
-                notificationRepository.markAsRead(notification.getId()));
+        adapter = new NotificationAdapter(this, this::onNotificationTapped);
         rvNotifications.setLayoutManager(new LinearLayoutManager(this));
         rvNotifications.setAdapter(adapter);
     }
 
+    /**
+     * Marks the notification read (the snapshot listener echoes the change back and
+     * clears the unread dot), then opens the linked chat if the doc carries one.
+     * No conversationId — a notification with nothing to open — stays on this screen.
+     */
+    private void onNotificationTapped(Notification notification) {
+        notificationRepository.markAsRead(notification.getId());
+
+        String conversationId = notification.getConversationId();
+        if (conversationId == null || conversationId.isEmpty()) return;
+
+        // The doc carries no contact name; ChatThreadActivity falls back to "Chat",
+        // same as the FCM tap path in HandyMessagingService.
+        Intent intent = new Intent(this, ChatThreadActivity.class);
+        intent.putExtra(ChatThreadActivity.EXTRA_CONVERSATION_ID, conversationId);
+        startActivity(intent);
+    }
+
     private void applyFilter() {
-        String type = chipTypes[selectedChipIndex];
+        String[] types = chipTypes[selectedChipIndex];
         List<Notification> filtered = new ArrayList<>();
-        if (type == null) {
+        if (types == null) {
             filtered.addAll(allNotifications);
         } else {
             for (Notification notification : allNotifications) {
-                if (type.equals(notification.getType())) {
+                if (matchesFilter(notification, types)) {
                     filtered.add(notification);
                 }
             }
@@ -136,6 +159,13 @@ public class NotificationsActivity extends AppCompatActivity {
         boolean isEmpty = filtered.isEmpty();
         rvNotifications.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
         layoutEmptyState.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+    }
+
+    private boolean matchesFilter(Notification notification, String[] types) {
+        for (String type : types) {
+            if (type.equals(notification.getType())) return true;
+        }
+        return false;
     }
 
     private void setupBottomNav() {

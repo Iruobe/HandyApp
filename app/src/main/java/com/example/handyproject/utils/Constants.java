@@ -45,17 +45,24 @@ public class Constants {
     public static final int MAX_PORTFOLIO_PHOTOS = 4;
 
     // Firestore field names — notifications
-    public static final String FIELD_USER_ID   = "userId";
-    public static final String FIELD_TYPE      = "type";
-    public static final String FIELD_TITLE     = "title";
-    public static final String FIELD_BODY      = "body";
-    public static final String FIELD_READ      = "read";
-    public static final String FIELD_TIMESTAMP = "timestamp";
+    // Ordering uses FIELD_CREATED_AT ("createdAt", defined above) — the notifications
+    // doc shape shares the same createdAt convention as users/bookings/reviews.
+    public static final String FIELD_USER_ID         = "userId";
+    public static final String FIELD_TYPE            = "type";
+    public static final String FIELD_TITLE           = "title";
+    public static final String FIELD_BODY            = "body";
+    public static final String FIELD_READ            = "read";
+    public static final String FIELD_CONVERSATION_ID = "conversationId";
+    public static final String FIELD_RELATED_ID      = "relatedId";
 
     // Notification types
-    public static final String TYPE_BOOKING = "booking";
-    public static final String TYPE_MESSAGE = "message";
-    public static final String TYPE_SYSTEM  = "system";
+    // NOTE: TYPE_BOOKING is dual-purpose — it is also the message *body* type
+    // (MessageRepository, ChatMessageAdapter, ReviewRepository). Do not repurpose it.
+    // TYPE_BOOKING_UPDATE is notifications-only.
+    public static final String TYPE_BOOKING        = "booking";
+    public static final String TYPE_BOOKING_UPDATE = "booking_update";
+    public static final String TYPE_MESSAGE        = "message";
+    public static final String TYPE_SYSTEM         = "system";
 
     // Notification
     public static final String NOTIFICATION_CHANNEL_ID = "app_channel";

@@ -62,7 +62,7 @@ public class NotificationAdapter extends
 
         holder.tvTitle.setText(notification.getTitle());
         holder.tvBody.setText(notification.getBody());
-        holder.tvTime.setText(formatRelativeTime(notification.getTimestamp()));
+        holder.tvTime.setText(formatRelativeTime(notification.getCreatedAt()));
         holder.viewUnreadDot.setVisibility(notification.isRead() ? View.GONE : View.VISIBLE);
 
         applyTypeStyle(holder, notification.getType());
